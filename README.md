@@ -53,7 +53,7 @@ The platform helps users discover, share, and manage lunchbox-friendly recipes (
 - **Phase 2:** PHP, Database (MySQL or course-required DB), HTML/CSS/JS
 
 ## Team members 
-- Dalal Algumlas
+- Dalal Alghumlas
 - Sara Aljuraybah
 - Haya Alomar
 - Fatimah Alhabashy
