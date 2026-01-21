@@ -1,0 +1,360 @@
+/* ===================== START SHARED CODE: THEME + GLOBAL ===================== */
+:root{
+  /* ===== Core Theme Colors ===== */
+
+  /* Light Fresh Green (main color) */
+  --primary: #6dda69;        /* fresh light green */
+  --primary-2: #6FBF9E;      /* hover / deeper green */
+  --primary-3: #4FAF8A;      /* strong accent green */
+
+  /* Backgrounds */
+  --bg: #FBFCFA;             /* off-white */
+  --card: #FFFFFF;           /* white cards */
+  --beige: #F2E8D8;          /* light warm beige */
+
+  /* Soft Yellow Accent (life, not strong) */
+  --yellow: #FFF2C2;         /* soft light yellow */
+
+  /* Text */
+  --text: #2F3E37;           /* dark green-gray */
+  --muted: #6E7F76;          /* muted text */
+
+  /* Borders & UI */
+  --border: #E4E8E5;
+
+  /* Shadows & Radius */
+  --shadow: 0 12px 30px rgba(47, 62, 55, 0.12);
+  --radius: 16px;
+
+  /* ===== Nutrition Category Colors ===== */
+  --protein: #4F8FE6;        /* blue */
+  --lowcarb: #9B6DDC;        /* purple */
+  --balanced: #5FBF84;       /* green */
+}
+
+*{ box-sizing: border-box; }
+html, body{ height: 100%; }
+body{
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+a{ color: inherit; text-decoration: none; }
+.container{
+  width: min(1100px, calc(100% - 32px));
+  margin: 0 auto;
+}
+/* ===================== END SHARED CODE: THEME + GLOBAL ===================== */
+
+
+/* ===================== START SHARED CODE: HEADER ===================== */
+/* Header */
+.site-header{
+  background: linear-gradient(90deg, var(--primary), #7BE8BB);
+  border-bottom: 1px solid rgba(255,255,255,0.45);
+}
+
+.header-inner{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 0;
+}
+
+.brand{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 240px;
+}
+
+.brand-logo{
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.35);
+  border: 1px solid rgba(255,255,255,0.35);
+  padding: 6px;
+}
+
+.brand-text{ display: grid; line-height: 1.1; }
+.brand-name{
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  color: #fff;
+  font-size: 18px;
+}
+.brand-tagline{
+  font-size: 12px;
+  color: rgba(255,255,255,0.92);
+}
+
+.nav{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.nav-link{
+  color: rgba(255,255,255,0.95);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 12px;
+  border-radius: 12px;
+}
+.nav-link:hover{
+  background: rgba(255,255,255,0.20);
+}
+
+.actions{ display: flex; gap: 10px; align-items: center; }
+/* ===================== END SHARED CODE: HEADER ===================== */
+
+
+/* ===================== START SHARED CODE: BUTTONS ===================== */
+.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-weight: 800;
+  font-size: 14px;
+  border: 1px solid transparent;
+  transition: transform 0.08s ease, background 0.15s ease, box-shadow 0.15s ease;
+  white-space: nowrap;
+}
+.btn:active{ transform: translateY(1px); }
+
+.btn-primary{
+  background: #fff;
+  color: var(--primary-3);
+  box-shadow: 0 10px 22px rgba(22, 59, 47, 0.12);
+}
+.btn-primary:hover{
+  background: rgba(255,255,255,0.95);
+}
+
+.btn-ghost{
+  background: rgba(255,255,255,0.20);
+  color: #fff;
+  border-color: rgba(255,255,255,0.35);
+}
+.btn-ghost:hover{
+  background: rgba(255,255,255,0.28);
+}
+/* ===================== END SHARED CODE: BUTTONS ===================== */
+
+
+/* ===================== START SHARED CODE: HERO ===================== */
+/* Hero */
+.hero{
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 18px;
+  padding: 22px 0 10px;
+}
+
+.hero-card{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
+
+.pill{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(47, 191, 136, 0.12);
+  border: 1px solid rgba(47, 191, 136, 0.25);
+  color: var(--primary-3);
+  font-weight: 900;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.hero-card h1{
+  margin: 0 0 10px;
+  font-size: 30px;
+  letter-spacing: 0.2px;
+}
+.hero-card p{
+  margin: 0 0 14px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+/* Nutrition tags */
+.hero-tags{
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 0 0 16px;
+}
+.tag{
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 12px;
+  border: 1px solid transparent;
+}
+.tag-protein{
+  color: #0B3A57;
+  background: rgba(45,156,219,0.16);
+  border-color: rgba(45,156,219,0.28);
+}
+.tag-lowcarb{
+  color: #3B1A5A;
+  background: rgba(155,81,224,0.14);
+  border-color: rgba(155,81,224,0.26);
+}
+.tag-balanced{
+  color: #0F3A22;
+  background: rgba(39,174,96,0.14);
+  border-color: rgba(39,174,96,0.26);
+}
+
+.hero-actions{ display: flex; gap: 10px; flex-wrap: wrap; }
+
+.hero-image .image-placeholder{
+  height: 100%;
+  min-height: 190px;
+  background: radial-gradient(circle at 30% 30%, rgba(99,211,165,0.35), rgba(215,239,228,0.55));
+  border: 1px dashed rgba(47, 191, 136, 0.45);
+  border-radius: var(--radius);
+  display: grid;
+  place-items: center;
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+/* ===================== END SHARED CODE: HERO ===================== */
+
+
+/* ===================== START SHARED CODE: CARDS ===================== */
+/* Cards */
+.grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  padding: 14px 0 26px;
+}
+
+.card{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: 0 10px 24px rgba(22, 59, 47, 0.08);
+}
+
+.card-top{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.badge{
+  font-size: 12px;
+  font-weight: 900;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(99,211,165,0.18);
+  border: 1px solid rgba(47,191,136,0.28);
+  color: var(--primary-3);
+}
+
+.card h2{ margin: 0 0 8px; font-size: 18px; }
+.card p{ margin: 0 0 12px; color: var(--muted); line-height: 1.7; }
+
+.link{
+  display: inline-block;
+  font-weight: 900;
+  color: var(--primary-3);
+  padding: 9px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(47,191,136,0.28);
+  background: rgba(99,211,165,0.14);
+}
+.link:hover{ background: rgba(99,211,165,0.20); }
+/* ===================== END SHARED CODE: CARDS ===================== */
+
+
+/* ===================== START SHARED CODE: FOOTER ===================== */
+/* Footer */
+.site-footer{
+  border-top: 1px solid var(--border);
+  background: rgba(99,211,165,0.10);
+}
+.footer-inner{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+.footer-links{ display: flex; gap: 12px; }
+.footer-links a:hover{ color: var(--text); }
+/* ===================== END SHARED CODE: FOOTER ===================== */
+
+
+/* ===================== START SHARED CODE: RESPONSIVE ===================== */
+/* Responsive */
+@media (max-width: 900px){
+  .header-inner{ flex-wrap: wrap; justify-content: center; }
+  .nav{ justify-content: center; }
+  .actions{ justify-content: center; width: 100%; }
+  .hero{ grid-template-columns: 1fr; }
+  .grid{ grid-template-columns: 1fr; }
+}
+/* ===================== END SHARED CODE: RESPONSIVE ===================== */
+
+
+/* ===================== START SHARED CODE: CATEGORY CHIPS ===================== */
+/* Category chips */
+.chip-row{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.chip{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 13px;
+  border: 1px solid transparent;
+  transition: transform 0.08s ease, background 0.15s ease;
+}
+.chip:active{ transform: translateY(1px); }
+
+.chip-protein{
+  background: rgba(45,156,219,0.14);
+  border-color: rgba(45,156,219,0.26);
+  color: #0B3A57;
+}
+.chip-lowcarb{
+  background: rgba(155,81,224,0.12);
+  border-color: rgba(155,81,224,0.24);
+  color: #3B1A5A;
+}
+.chip-balanced{
+  background: rgba(39,174,96,0.12);
+  border-color: rgba(39,174,96,0.24);
+  color: #0F3A22;
+}
+.chip:hover{ filter: brightness(0.98); }
+/* ===================== END SHARED CODE: CATEGORY CHIPS ===================== */
