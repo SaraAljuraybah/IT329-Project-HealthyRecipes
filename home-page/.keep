@@ -1,1 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lunchy</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <!-- Brand / Logo -->
+      <a class="brand" href="#">
+        <img src="images/logo.png" alt="Lunchy Logo" class="brand-logo" />
+        <div class="brand-text">
+          <span class="brand-name">Lunchy</span>
+          <span class="brand-tagline">Fresh lunch boxes • simple & healthy</span>
+        </div>
+      </a>
+
+      <!-- Navigation -->
+      <nav class="nav">
+        <a href="#" class="nav-link">Home</a>
+        <a href="#" class="nav-link">Recipes</a>
+        <a href="#" class="nav-link">Categories</a>
+        <a href="#" class="nav-link">Contact</a>
+      </nav>
+
+      <!-- Actions -->
+      <div class="actions">
+        <a class="btn btn-ghost" href="#">Log In</a>
+        <a class="btn btn-primary" href="#">Sign Up</a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="container">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-card">
+        <span class="pill">Lunch Box Ideas</span>
+        <h1>Bright, Healthy Lunch Boxes — Every Day.</h1>
+        <p>
+          Explore lunch box recipes tagged by nutrition style: High Protein, Low Carb, or Balanced.
+          Perfect for university, work, and busy days.
+        </p>
+
+        <div class="hero-tags">
+          <span class="tag tag-protein">High Protein</span>
+          <span class="tag tag-lowcarb">Low Carb</span>
+          <span class="tag tag-balanced">Balanced</span>
+        </div>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#">Explore Recipes</a>
+          <a class="btn btn-ghost" href="#">Add a Recipe</a>
+        </div>
+      </div>
+
+      <div class="hero-image" aria-label="Meal image placeholder">
+        <div class="image-placeholder">
+          <span>Meal Image Placeholder</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Category Cards -->
+    <section class="grid">
+      <article class="card">
+        <div class="card-top">
+          <h2>Nutrition Categories</h2>
+          <span class="badge">New</span>
+        </div>
+        <p>Pick a style and build your lunch box around it.</p>
+
+        <div class="chip-row">
+          <a class="chip chip-protein" href="#">High Protein</a>
+          <a class="chip chip-lowcarb" href="#">Low Carb</a>
+          <a class="chip chip-balanced" href="#">Balanced</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <h2>Quick Lunch Boxes</h2>
+        </div>
+        <p>Fast prep, clean ingredients, and great taste.</p>
+        <a href="#" class="link">Discover</a>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <h2>My Favorites</h2>
+        </div>
+        <p>Save the best lunch box ideas in one place.</p>
+        <a href="#" class="link">Go to Favorites</a>
+      </article>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2026 Lunchy. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
 
