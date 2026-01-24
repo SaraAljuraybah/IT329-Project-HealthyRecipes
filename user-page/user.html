@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Dashboard | LunchBoxLab</title>
+
+  <!-- Shared -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Page -->
+  <link rel="stylesheet" href="user.css">
+</head>
+<body>
+
+  <!-- HEADER (shared) -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#">
+        <img class="brand-logo" src="assets/images/logo.png" alt="LunchBoxLab logo">
+        <span class="brand-text">
+          <span class="brand-name">LunchBoxLab</span>
+          <span class="brand-tagline">Pack smart. Eat better.</span>
+        </span>
+      </a>
+
+      <nav class="nav">
+        <a class="nav-link" href="#">Explore</a>
+        <a class="nav-link" href="#">My Recipes</a>
+        <a class="nav-link" href="#">Favourites</a>
+      </nav>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="#">My Recipes</a>
+        <a class="btn btn-ghost" href="login.html">Sign Out</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container user-wrap">
+
+    <!-- 1) Welcome -->
+    <section class="hero-user">
+      <div>
+        <div class="pill">☀️ Good morning</div>
+        <h1>Hi, Sara!</h1>
+        <p class="muted">Ready to pack something healthy today?</p>
+        <div class="chip-row">
+          <span class="chip chip-balanced">Balanced</span>
+          <span class="chip chip-protein">High Protein</span>
+          <span class="chip chip-lowcarb">Low Carb</span>
+        </div>
+      </div>
+
+      <div class="quick-box">
+        <div class="quick-title">Today’s goal</div>
+        <div class="quick-line">✅ 1 main + 1 snack + water</div>
+        <div class="quick-line muted">Tip: add fruit for freshness 🍓</div>
+      </div>
+    </section>
+
+    <!-- 2) Profile + 3) Stats -->
+    <section class="top-grid">
+
+      <!-- 2) User information -->
+      <div class="panel profile-card">
+        <div class="profile-top">
+          <img class="avatar" src="assets/images/logo.png" alt="Profile photo">
+          <div>
+            <div class="p-name">Sara Aljuraybah</div>
+            <div class="p-email muted">sara@email.com</div>
+            <div class="p-meta">Lunchbox style: <strong>Balanced</strong></div>
+          </div>
+        </div>
+
+        <div class="profile-info">
+          <div class="info">
+            <span class="muted">First name</span>
+            <span class="strong">Sara</span>
+          </div>
+          <div class="info">
+            <span class="muted">Last name</span>
+            <span class="strong">Aljuraybah</span>
+          </div>
+          <div class="info">
+            <span class="muted">Email</span>
+            <span class="strong">sara@email.com</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3) My recipes summary -->
+      <div class="panel stats-card">
+        <div class="stats-head">
+          <h2>My Activity</h2>
+          <span class="badge">This week</span>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat">
+            <div class="stat-num">6</div>
+            <div class="muted">Recipes shared</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">41</div>
+            <div class="muted">Total likes</div>
+          </div>
+        </div>
+
+        <a class="link" href="#">Go to My Recipes →</a>
+      </div>
+
+    </section>
+
+    <!-- 4) All recipes + filter (UI only) -->
+    <section class="panel">
+      <div class="section-head">
+        <div>
+          <h2>Explore Lunchboxes</h2>
+          <p class="muted">Pick ideas that are easy to pack and stay fresh.</p>
+        </div>
+
+        <div class="filter-ui">
+          <select class="select" aria-label="Filter by category">
+            <option>All categories</option>
+            <option>Balanced Lunch Boxes</option>
+            <option>Low Carb Lunch Boxes</option>
+            <option>High Protein Boxes</option>
+          </select>
+          <button class="btn-filter" type="button">Filter</button>
+        </div>
+      </div>
+
+      <div class="recipe-grid">
+        <article class="recipe-card">
+          <img class="r-img" src="assets/images/recipes/chicken-wrap-box.png" alt="Chicken Wrap Box">
+          <div class="r-body">
+            <div class="r-top">
+              <span class="cat balanced">Balanced</span>
+              <span class="likes">❤️ 18</span>
+            </div>
+            <h3 class="r-title"><a href="#">Chicken Wrap Box</a></h3>
+            <p class="muted r-desc">Quick wrap + veggies + dip. Stays fresh for hours.</p>
+            <div class="r-creator">
+              <img class="mini-ava" src="assets/images/logo.png" alt="Creator">
+              <span class="muted">by Raghad</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="recipe-card">
+          <img class="r-img" src="assets/images/recipes/greek-yogurt-parfait.png" alt="Greek Yogurt Parfait">
+          <div class="r-body">
+            <div class="r-top">
+              <span class="cat protein">High Protein</span>
+              <span class="likes">❤️ 12</span>
+            </div>
+            <h3 class="r-title"><a href="#">Greek Yogurt Parfait</a></h3>
+            <p class="muted r-desc">Yogurt + berries + granola in a jar.</p>
+            <div class="r-creator">
+              <img class="mini-ava" src="assets/images/logo.png" alt="Creator">
+              <span class="muted">by Shahad</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="recipe-card">
+          <img class="r-img" src="assets/images/recipes/mini-veggie-bento.png" alt="Mini Veggie Bento">
+          <div class="r-body">
+            <div class="r-top">
+              <span class="cat lowcarb">Low Carb</span>
+              <span class="likes">❤️ 9</span>
+            </div>
+            <h3 class="r-title"><a href="#">Mini Veggie Bento</a></h3>
+            <p class="muted r-desc">Colorful veggies + hummus + crackers.</p>
+            <div class="r-creator">
+              <img class="mini-ava" src="assets/images/logo.png" alt="Creator">
+              <span class="muted">by Dana</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 5) Favourite recipes -->
+    <section class="panel">
+      <div class="section-head">
+        <div>
+          <h2>Saved for Later</h2>
+          <p class="muted">Your favourite lunchbox ideas.</p>
+        </div>
+      </div>
+
+      <div class="fav-grid">
+        <div class="fav-card">
+          <img class="fav-img" src="assets/images/recipes/turkey-sandwich-box.png" alt="Turkey Sandwich Box">
+          <div class="fav-body">
+            <div class="fav-title"><a href="#">Turkey Sandwich Box</a></div>
+            <div class="fav-actions">
+              <a class="remove" href="user.html">Remove</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="fav-card">
+          <img class="fav-img" src="assets/images/recipes/tuna-salad-jar.png" alt="Tuna Salad Jar">
+          <div class="fav-body">
+            <div class="fav-title"><a href="#">Tuna Salad Jar</a></div>
+            <div class="fav-actions">
+              <a class="remove" href="user.html">Remove</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+     <div class="signout-row">
+        <a class="text-link" href="login.html">Sign out</a>
+      </div> 
+
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER (shared) -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© 2026 LunchBoxLab • IT329</span>
+      <div class="footer-links">
+        <a href="#">Explore</a>
+        <a href="#">My Recipes</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
