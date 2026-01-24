@@ -1,0 +1,168 @@
+/* Uses your shared variables from style.css */
+
+.login-layout{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 22px 0 26px;
+}
+
+.login-card,
+.inspo-card{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px;
+}
+
+.login-card h1{
+  margin: 0 0 10px;
+  font-size: 28px;
+  letter-spacing: 0.2px;
+}
+
+.muted{ color: var(--muted); line-height: 1.8; }
+
+.login-form{ display: grid; gap: 12px; margin-top: 14px; }
+
+.field{ display: grid; gap: 8px; font-weight: 900; font-size: 13px; }
+.input{
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 12px;
+  outline: none;
+  background: #fff;
+  font-weight: 800;
+}
+.input:focus{
+  border-color: rgba(79,175,138,0.55);
+  box-shadow: 0 0 0 4px rgba(79,175,138,0.12);
+}
+
+.mini-note{
+  background: rgba(255,242,194,0.65);
+  border: 1px solid rgba(255,242,194,0.95);
+  border-radius: 14px;
+  padding: 10px 12px;
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.login-actions{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 6px;
+}
+/*
+.btn-wide{ width: 100%; justify-content: center; }
+*/
+/* CTA Login Button Override */
+.btn-login{
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  color: #fff !important;
+  font-weight: 1000;
+  font-size: 15px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  box-shadow: 0 14px 30px rgba(79, 175, 138, 0.35);
+  letter-spacing: 0.3px;
+  border: none;
+}
+
+/* FIX hover issue */
+.btn-login:hover{
+  background: linear-gradient(135deg, var(--primary-2), var(--primary-3));
+  color: #fff !important;
+  box-shadow: 0 18px 36px rgba(79, 175, 138, 0.45);
+  transform: translateY(-2px);
+}
+
+/* FIX active click */
+.btn-login:active{
+  background: linear-gradient(135deg, var(--primary-3), var(--primary-2));
+  transform: translateY(0);
+  box-shadow: 0 10px 22px rgba(79, 175, 138, 0.35);
+}
+
+.arrow{
+  margin-left: 6px;
+  transition: transform 0.15s ease;
+}
+.btn-login:hover .arrow{
+  transform: translateX(4px);
+}
+
+
+
+
+
+
+
+
+
+
+.sub-link{
+  text-align: center;
+  margin-top: 6px;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.text-link{
+  font-weight: 900;
+  color: var(--primary-3);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.inspo-card{
+  background: radial-gradient(circle at 30% 25%, rgba(255,242,194,0.55), rgba(99,211,165,0.12));
+}
+
+.inspo-top{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.spark{
+  font-size: 22px;
+}
+
+.inspo-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 14px 0;
+}
+
+.mini{
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.75);
+  padding: 12px;
+}
+
+.mini-icon{
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: rgba(99,211,165,0.18);
+  border: 1px solid rgba(47,191,136,0.28);
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.mini-title{ font-weight: 1000; margin-bottom: 4px; }
+.mini-text{ color: var(--muted); font-weight: 800; font-size: 13px; line-height: 1.5; }
+
+@media (max-width: 900px){
+  .login-layout{ grid-template-columns: 1fr; }
+  .login-actions{ grid-template-columns: 1fr; }
+  .inspo-grid{ grid-template-columns: 1fr; }
+}
