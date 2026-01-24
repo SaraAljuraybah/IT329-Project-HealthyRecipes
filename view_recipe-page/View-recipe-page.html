@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View recipe page</title>
+    <link rel="stylesheet" href="style.css">
+	<script src="Script.js"></script>
+</head>
+<body class="body_vr">
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <!-- Brand / Logo -->
+      <a class="brand" href="#">
+        <img src="images/logo.png" alt="Lunchy Logo" class="brand-logo" />
+        <div class="brand-text">
+          <span class="brand-name">Lunchy</span>
+          <span class="brand-tagline">Fresh lunch boxes • simple & healthy</span>
+        </div>
+      </a>
+
+      <!-- Navigation -->
+      <nav class="nav">
+        <a href="#" class="nav-link">Home</a>
+        <a href="#" class="nav-link">Recipes</a>
+        <a href="#" class="nav-link">Categories</a>
+        <a href="#" class="nav-link">Contact</a>
+      </nav>
+
+      <!-- Actions -->
+      <div class="actions">
+        <a class="btn btn-ghost" href="#">Log In</a>
+        <a class="btn btn-primary" href="#">Sign Up</a>
+      </div>
+
+    </div>
+  </header>
+  
+  
+<main class="container container_vr">
+    
+   <div class="actions_vr">
+    <a href="" class="btn_vr btn-square_vr btn-gradient_vr">
+        <img src="fav-icon.png" alt="" class="btn-icon_vr">
+        <span>Favourites</span>
+    </a>
+    <a href="" class="btn_vr btn-square_vr btn-gradient_vr">
+        <img src="like-icon.png" alt="" class="btn-icon_vr">
+        <span>Like</span>
+    </a>
+    <a href="" class="btn_vr btn-square_vr btn-report_vr">
+        <img src="report-icon.png" alt="" class="btn-icon_vr">
+        <span>Report</span>
+    </a>
+</div>
+
+    <section class="hero_vr">
+        <div class="card_vr">
+            <h1 class="title_vr">High-Protein Egg Sandwich 🥪</h1>
+            <div class="image-container_vr">
+                <img src="recipephoto-vr.jpeg" alt="Egg Sandwich" class="recipe-img_vr">
+            </div>
+            <div class="catchy-text_vr">
+                <p>Fuel your day! Packed with 25g of protein. ✨</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="grid_vr">
+        <article class="card_vr">
+            <div class="card-top_vr"><h2>Recipe Creator</h2></div>
+            <div class="creator-box_vr">
+                <span class="user-name_vr">Chef Sarah</span>
+<img src="account_vr.svg" alt="Profile Icon" class="profile-icon_vr">        </article>
+        <article class="card_vr">
+            <div class="card-top_vr"><h2>Details</h2></div>
+            <p><span class="tag_vr tag-protein_vr">High Protein</span></p> <p class="desc_text_vr"><strong>Description:</strong> Healthy whole-grain bread with mashed eggs and avocado.</p> 
+        </article>
+    </section>
+
+    <section class="grid_vr">
+       <article class="card_vr">
+    <div class="card-top_vr">
+        <h2>Ingredients Progress</h2>
+        <span id="progress_text_vr" class="badge">0%</span>
+    </div>
+    <div class="progress_container_vr">
+        <div id="progress_bar_vr" class="progress_bar_vr"></div>
+    </div>
+    <ul class="list_vr ingredients_list_vr">
+        <li><label class="checkbox_container_vr"><input type="checkbox" class="ingredient_check_vr"> 2 Large boiled eggs<span class="checkmark_vr"></span></label></li>
+        <li><label class="checkbox_container_vr"><input type="checkbox" class="ingredient_check_vr"> 2 Slices of whole-grain bread<span class="checkmark_vr"></span></label></li>
+        <li><label class="checkbox_container_vr"><input type="checkbox" class="ingredient_check_vr"> 1/2 Ripe avocado<span class="checkmark_vr"></span></label></li>
+        <li><label class="checkbox_container_vr"><input type="checkbox" class="ingredient_check_vr"> 1 Tablespoon Greek yogurt<span class="checkmark_vr"></span></label></li>
+        <li><label class="checkbox_container_vr"><input type="checkbox" class="ingredient_check_vr"> Pinch of salt and black pepper<span class="checkmark_vr"></span></label></li>
+        <li><label class="checkbox_container_vr"><input type="checkbox" class="ingredient_check_vr"> Fresh chili flakes (optional)<span class="checkmark_vr"></span></label></li>
+    </ul>
+</article>
+
+
+       <article class="card_vr">
+    <div class="card-top_vr"><h2>Instructions</h2></div>
+    <ol class="list_vr">
+        <li>Peel the boiled eggs and place them in a small bowl.</li>
+        <li>Add the Greek yogurt, salt, and pepper, then mash everything with a fork until creamy.</li>
+        <li>Toast the whole-grain bread slices until they are golden and crispy.</li>
+        <li>Spread the mashed avocado on one side of the toast.</li>
+        <li>Top with the egg mixture and sprinkle some chili flakes for an extra kick.</li>
+        <li>Close the sandwich, cut it in half, and enjoy your healthy meal!</li>
+    </ol>
+</article>
+    </section>
+
+    <section class="card_vr video-card_vr">
+        <div class="card-top_vr"><h2>Recipe Video</h2></div>
+        <div class="video-content_vr">
+		<video controls class="recipe-video_vr">
+        <source src="video_vr.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+          
+            <a href="https://pin.it/9wAMiY1nN" target="_blank" class="link_vr">Watch on Pinterest 🔗</a>
+        </div>
+    </section>
+
+  <section class="card_vr">
+    <div class="card-top_vr"><h2>Comments</h2></div>
+    
+    <form action="" class="comment-form_vr">
+        <textarea class="input_vr" placeholder="Add a comment..."></textarea>
+        <button type="submit" class="btn_vr btn-primary_vr">Add Comment</button>
+    </form>
+
+    <div class="comments-scroll-box_vr">
+        
+ <div class="comment-item_vr">
+    <div class="comment-text-wrapper_vr">
+        <span class="comment-author_vr">Noura</span>
+        <p class="comment-body_vr">This looks delicious! I'll definitely try it tomorrow for lunch.</p>
+    </div>
+    <img src="account_vr.svg" alt="Profile" class="profile-icon_vr">
+</div>
+
+<div class="comment-item_vr">
+    <div class="comment-text-wrapper_vr">
+        <span class="comment-author_vr">Ahmed</span>
+        <p class="comment-body_vr">Perfect high-protein meal for my gym days. Thanks for sharing!</p>
+    </div>
+    <img src="account_vr.svg" alt="Profile" class="profile-icon_vr">
+</div>
+
+<div class="comment-item_vr">
+    <div class="comment-text-wrapper_vr">
+        <span class="comment-author_vr">Sara</span>
+        <p class="comment-body_vr">I love how easy the instructions are to follow. Great job!</p>
+    </div>
+    <img src="account_vr.svg" alt="Profile" class="profile-icon_vr">
+</div>
+
+<div class="comment-item_vr">
+    <div class="comment-text-wrapper_vr">
+        <span class="comment-author_vr">Fahad</span>
+        <p class="comment-body_vr">Can I replace the avocado with low-fat cheese? Looks amazing anyway.</p>
+    </div>
+    <img src="account_vr.svg" alt="Profile" class="profile-icon_vr">
+</div>
+
+<div class="comment-item_vr">
+    <div class="comment-text-wrapper_vr">
+        <span class="comment-author_vr">Laila</span>
+        <p class="comment-body_vr">Finally, a healthy sandwich that actually tastes good and fresh.</p>
+    </div>
+    <img src="account_vr.svg" alt="Profile" class="profile-icon_vr">
+</div>
+
+<div class="comment-item_vr">
+    <div class="comment-text-wrapper_vr">
+        <span class="comment-author_vr">Mona</span>
+        <p class="comment-body_vr">The progress bar for ingredients is so helpful and interactive!</p>
+    </div>
+    <img src="account_vr.svg" alt="Profile" class="profile-icon_vr">
+</div>
+
+<div class="comment-item_vr">
+    <div class="comment-text-wrapper_vr">
+        <span class="comment-author_vr">Khalid</span>
+        <p class="comment-body_vr">Great vibe coding project, very clean design and easy to navigate.</p>
+    </div>
+    <img src="account_vr.svg" alt="Profile" class="profile-icon_vr">
+</div>
+
+<div class="comment-item_vr">
+    <div class="comment-text-wrapper_vr">
+        <span class="comment-author_vr">Reema</span>
+        <p class="comment-body_vr">Added this to my favorites immediately ❤️ Best lunch box idea!</p>
+    </div>
+    <img src="account_vr.svg" alt="Profile" class="profile-icon_vr">
+</div>
+
+<div class="comment-item_vr">
+    <div class="comment-text-wrapper_vr">
+        <span class="comment-author_vr">Omar</span>
+        <p class="comment-body_vr">The video tutorial makes it so much easier to understand the steps.</p>
+    </div>
+    <img src="account_vr.svg" alt="Profile" class="profile-icon_vr">
+</div>
+
+<div class="comment-item_vr">
+    <div class="comment-text-wrapper_vr">
+        <span class="comment-author_vr">Huda</span>
+        <p class="comment-body_vr">Does it stay fresh if I make it at night and take it to work tomorrow?</p>
+    </div>
+    <img src="account_vr.svg" alt="Profile" class="profile-icon_vr">
+</div> </div>
+</section>
+</main>
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2026 Lunchy. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
