@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Admin Page </title>
+    <link rel="stylesheet" href="style.css">
+
+<style>
+
+.page{ padding: 22px 0 30px; }
+
+.page-top{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 12px 0 16px;
+}
+
+.page-title h1{
+  margin: 8px 0 6px;
+  font-size: 26px;
+  letter-spacing: 0.2px;
+}
+
+.highlight{
+  color: var(--primary-3);
+  font-weight: 900;
+}
+
+.muted{ color: var(--muted); }
+
+.panel{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 24px rgba(22, 59, 47, 0.08);
+  padding: 16px;
+  margin: 12px 0;
+}
+
+.panel-head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.panel h2{
+  margin: 0;
+  font-size: 18px;
+}
+
+.count-pill{
+  font-size: 12px;
+  font-weight: 900;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 242, 194, 0.65);
+  border: 1px solid rgba(255, 242, 194, 0.95);
+}
+
+.info-grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.info-item{
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(99,211,165,0.08);
+}
+
+.info-label{
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.info-value{
+  font-weight: 900;
+}
+
+.table-wrap{
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.table{
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+  background: #fff;
+}
+
+.table thead th{
+  text-align: left;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  padding: 12px 14px;
+  color: var(--muted);
+  background: rgba(99,211,165,0.10);
+  border-bottom: 1px solid var(--border);
+}
+
+.table tbody td{
+  padding: 14px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+}
+
+.table tbody tr:hover{
+  background: rgba(99,211,165,0.06);
+}
+
+.table-link{
+  font-weight: 900;
+  color: var(--primary-3);
+}
+
+
+
+.user-mini{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar{
+  width: 40px;
+  height: 40px;
+  border-radius: 50% ;
+  object-fit: cover;
+  border: none;
+}
+
+.user-name{
+  font-weight: 900;
+}
+
+.action-form{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.select{
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  font-weight: 800;
+  min-width: 170px;
+}
+
+.btn-small{
+  padding: 10px 12px;
+  border-radius: 14px;
+}
+
+
+
+
+
+/* responsive  */
+@media (max-width: 900px){
+  .page-top{ flex-direction: column; }
+  .info-grid{ grid-template-columns: 1fr; }
+  .table{ min-width: 620px; }
+}
+
+
+</style>
+
+</head>
+<body>
+    
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <!--  Logo -->
+      <a class="brand" href="#">
+        <img src="images/logo.jpg" alt="Lunchy Logo" class="brand-logo" />
+        <div class="brand-text">
+          <span class="brand-name">Lunchy</span>
+          <span class="brand-tagline">Fresh lunch boxes • simple & healthy</span>
+        </div>
+      </a>
+
+      <!-- Navigation -->
+      <nav class="nav">
+        <a href="#" class="nav-link">Home</a>
+        <a href="#" class="nav-link">Recipes</a>
+        <a href="#" class="nav-link">Categories</a>
+        <a href="#" class="nav-link">Contact</a>
+      </nav>
+
+      <!-- Actions -->
+      <div class="actions">
+        <a class="btn btn-ghost" href="#">Log In</a>
+        <a class="btn btn-primary" href="#">Sign Up</a>
+      </div>
+
+    </div>
+  </header>
+
+
+
+<main class="container page">
+  <!-- Page Top -->
+  <section class="page-top">
+    <div class="page-title">
+      <h1>Welcome, <span class="highlight">Haya</span> 👋</h1>
+      <p class="muted">Review reported content and manage user access</p>
+    </div>
+
+    <a class="btn btn-primary signout" href="index.html">Sign-out</a>
+ 
+  </section>
+
+
+
+
+  <!-- Admin Info -->
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Admin Information</h2>
+    </div>
+
+    <div class="info-grid">
+
+      <div class="info-item">
+        <span class="info-label">Name</span>
+        <span class="info-value">Haya Alomar</span>
+      </div>
+
+      <div class="info-item">
+        <span class="info-label">Email</span>
+        <span class="info-value">admin@gmail.com</span>
+      </div>
+
+    </div>
+  </section>
+
+
+
+
+
+
+
+  <!-- Pending Reports -->
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Pending Reports</h2>
+      <span class="count-pill">3 reports</span>
+    </div>
+
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Recipe</th>
+            <th>Recipe Creator</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>
+              <a class="table-link" href="view_recipe.html">Spicy Tuna Wrap</a>
+            </td>
+
+            <td>
+              <div class="user-mini">
+                <img class="avatar" src="images/user.png" alt="user" />
+                <div>
+                  <div class="user-name">Sara Alharbi</div>
+                 
+                </div>
+              </div>
+            </td>
+
+            <td>
+
+              <form class="action-form"  method="get">
+
+                <select class="select" name="action">
+                  <option value="" selected disabled>Choose action</option> 
+                  <option value="block">Block user</option>
+                  <option value="dismiss">Dismiss report</option>
+                </select>
+
+                <button class="btn btn-primary btn-small" type="submit">Submit</button>
+
+              </form>
+
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <a class="table-link" href="view_recipe.html">Overnight Oats (Chocolate)</a>
+            </td>
+
+            <td>
+              <div class="user-mini">
+                <img class="avatar" src="images/user.png" alt="user" />
+                <div>
+                  <div class="user-name">Noura aziz</div>
+                  
+                </div>
+              </div>
+            </td>
+
+            <td>
+              <form class="action-form" method="get">
+                <select class="select" name="action">
+                  <option value="" selected disabled>Choose action</option>
+                  <option value="block">Block user</option>
+                  <option value="dismiss">Dismiss report</option>
+                </select>
+                <button class="btn btn-primary btn-small" type="submit">Submit</button>
+              </form>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <a class="table-link" href="view_recipe.html">Keto Bread</a>
+            </td>
+
+            <td>
+              <div class="user-mini">
+                <img class="avatar" src="images/user.png" alt="user" />
+                <div>
+                  <div class="user-name">Reem Alsubaie</div>
+                  
+                </div>
+              </div>
+            </td>
+
+            <td>
+              <form class="action-form"  method="get">
+                <select class="select" name="action">
+                  <option value="" selected disabled>Choose action</option>
+                  <option value="block">Block user</option>
+                  <option value="dismiss">Dismiss report</option>
+                </select>
+                <button class="btn btn-primary btn-small" type="submit" >Submit</button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  
+  </section>
+
+  <!-- Blocked Users -->
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Blocked Users</h2>
+      <span class="count-pill">2 users</span>
+    </div>
+
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>
+              <div class="user-mini">
+                <img class="avatar" src="images/user.png" alt="user" />
+                <div class="user-name">Maha </div>
+              </div>
+            </td>
+            <td class="muted">maha@email.com</td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="user-mini">
+                <img class="avatar" src="images/user.png" alt="user" />
+                <div class="user-name">Lama Almutairi</div>
+              </div>
+            </td>
+            <td class="muted">lama@email.com</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>©️ 2026 Lunchy. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+
+
+
+
+</body>
+</html>
