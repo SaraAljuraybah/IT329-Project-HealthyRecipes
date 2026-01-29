@@ -56,7 +56,7 @@ The platform helps users discover, share, and manage lunchbox-friendly recipes (
 - Dalal Alghumlas
 - Sara Aljuraybah
 - Haya Alomar
-- Fatimah Alhabashy
+- Fatimah Alhebshi
 - Norah Alotaiby
 
 ## Notes
