@@ -1,0 +1,329 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding: 20px 0;
+}
+
+.page-title {
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--text);
+  margin: 0;
+  position: relative;
+}
+
+.page-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-2));
+  border-radius: 2px;
+}
+
+.btn-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  color: white;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 10px 25px rgba(109, 218, 105, 0.3);
+}
+
+.btn-add::before {
+  content: '+';
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.btn-add:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(109, 218, 105, 0.4);
+}
+
+/* ===== Cards layout (Flexbox "grid") ===== */
+.recipes-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 60px;
+  align-items: stretch; /* keeps cards same-row height */
+}
+
+/* Merge your duplicated .recipe-card into one */
+.recipe-card {
+  background: var(--card);
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  box-shadow: 0 8px 24px rgba(47, 62, 55, 0.08);
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  /* sizing */
+  flex: 1 1 280px;   /* min size ~280px and wraps */
+  max-width: 360px;  /* stops them from getting huge */
+
+  /* for uniform buttons */
+  display: flex;
+  flex-direction: column;
+}
+
+.recipe-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 40px rgba(47, 62, 55, 0.15);
+}
+
+.recipe-header {
+  position: relative;
+  height: 180px; /* slightly smaller */
+  overflow: hidden;
+}
+
+.recipe-thumb-large {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.recipe-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 8px 14px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--primary-3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Make body stretch so footer sticks to bottom */
+.recipe-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.recipe-title {
+  font-size: 20px; /* slightly smaller */
+  font-weight: 900;
+  color: var(--text);
+  margin: 0 0 14px;
+  text-decoration: none;
+  display: block;
+  transition: color 0.2s ease;
+}
+
+.recipe-title:hover {
+  color: var(--primary-3);
+}
+
+.recipe-section {
+  margin-bottom: 16px;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-label::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  background: var(--primary);
+  border-radius: 50%;
+}
+
+.ingredients-list,
+.instructions-list {
+  margin: 0;
+  padding-left: 20px;
+  line-height: 1.7;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.ingredients-list li,
+.instructions-list li {
+  margin-bottom: 6px;
+}
+
+/* OPTIONAL: keeps cards more uniform if text differs */
+.ingredients-list {
+  max-height: 110px;
+  overflow-y: auto;
+}
+
+.instructions-list {
+  max-height: 90px;
+  overflow-y: auto;
+}
+
+/* ===== Video slot: reserve same height in every card ===== */
+.video-container {
+  height: 130px; /* reserved slot so buttons align */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.video-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(79, 143, 230, 0.1);
+  color: #2B5F99;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 13px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(79, 143, 230, 0.3);
+}
+
+.video-link::before {
+  content: '▶';
+  font-size: 10px;
+}
+
+.video-link:hover {
+  background: rgba(79, 143, 230, 0.15);
+  transform: translateX(3px);
+}
+
+.recipe-video {
+  width: 100%;
+  height: 100%; /* fill reserved slot */
+  border-radius: 12px;
+  object-fit: cover;
+  border: 2px solid var(--border);
+}
+
+.no-video {
+  display: inline-block;
+  padding: 10px 16px;
+  background: rgba(110, 127, 118, 0.08);
+  color: var(--muted);
+  border-radius: 10px;
+  font-style: italic;
+  font-size: 13px;
+  border: 1px dashed var(--border);
+}
+
+/* Footer pinned at bottom */
+.recipe-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 2px solid var(--border);
+  margin-top: auto; /* pushes footer to bottom */
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.action-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.edit-link {
+  background: rgba(79, 143, 230, 0.1);
+  color: #2B5F99;
+  border: 1px solid rgba(79, 143, 230, 0.3);
+}
+
+.edit-link:hover {
+  background: rgba(79, 143, 230, 0.2);
+  transform: translateY(-2px);
+}
+
+.delete-link {
+  background: rgba(239, 68, 68, 0.1);
+  color: #991B1B;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.delete-link:hover {
+  background: rgba(239, 68, 68, 0.2);
+  transform: translateY(-2px);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--muted);
+  background: var(--card);
+  border-radius: 20px;
+  border: 2px dashed var(--border);
+}
+
+.empty-state h3 {
+  font-size: 24px;
+  font-weight: 900;
+  margin: 0 0 12px;
+  color: var(--text);
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 15px;
+}
+
+@media (max-width: 900px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .page-title {
+    font-size: 28px;
+  }
+
+  .recipes-grid {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .recipe-card {
+    max-width: none;
+  }
+}

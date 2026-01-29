@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Recipes - Lunchy</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="my-recipes-style.css">
+</head>
+
+<body>
+    <!-- Header from style.css -->
+    <header class="site-header">
+        <div class="container">
+            <div class="header-inner">
+                <a class="brand" href="#">
+                    <img class="brand-logo" src="logo.jpeg" alt="LunchBoxLab logo">
+                    <span class="brand-text">
+                        <span class="brand-name">Lunchy</span>
+                        <span class="brand-tagline">Pack smart. Eat better.</span>
+                    </span>
+                </a>
+                <nav class="nav">
+                    <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    <a href="my-recipes.html" class="nav-link">My Recipes</a>
+                    <a href="meal-plans.html" class="nav-link">Meal Plans</a>
+                </nav>
+                <div class="actions">
+                    <a href="profile.html" class="btn btn-ghost">Profile</a>
+                    <a href="index.html" class="btn btn-primary">Log out</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <h1 class="page-title">My Recipes</h1>
+            <a href="add-recipe.html" class="btn-add">Add New Recipe</a>
+        </div>
+
+        <div class="recipes-grid">
+            <!-- Recipe Card 1 -->
+            <div class="recipe-card">
+                <div class="recipe-header">
+                    <a href="#"><img src="media/images/quinoa-lunchbox.png"
+                        alt="Mediterranean Quinoa Box" class="recipe-thumb-large"></a>
+                    <div class="recipe-badge">❤ 34 likes</div>
+                </div>
+                <div class="recipe-body">
+                    <a href="view-recipe.html?id=1" class="recipe-title">Mediterranean Quinoa Box</a>
+
+                    <div class="recipe-section">
+                        <div class="section-label">Ingredients</div>
+                        <ul class="ingredients-list">
+                            <li>Cooked quinoa - 150g</li>
+                            <li>Cherry tomatoes - 60g</li>
+                            <li>Cucumber - 50g</li>
+                            <li>Feta cheese - 40g</li>
+                            <li>Kalamata olives - 30g</li>
+                            <li>Lemon vinaigrette - 2 tbsp</li>
+                        </ul>
+                    </div>
+
+                    <div class="recipe-section">
+                        <div class="section-label">Instructions</div>
+                        <ol class="instructions-list">
+                            <li>Cook quinoa according to package directions and let cool</li>
+                            <li>Dice cucumber and halve cherry tomatoes</li>
+                            <li>Crumble feta cheese into small pieces</li>
+                            <li>Layer quinoa in lunchbox compartment</li>
+                            <li>Arrange vegetables, olives, and feta on top</li>
+                            <li>Pack dressing separately to add before eating</li>
+                        </ol>
+                    </div>
+
+                    <div class="video-container">
+                        <a href="https://youtube.com/watch?v=mediterranean-box" class="video-link" target="_blank">Watch
+                            Video</a>
+                    </div>
+
+                    <div class="recipe-footer">
+                        <div class="action-buttons">
+                            <a href="edit-recipe.html?id=1" class="action-link edit-link">Edit</a>
+                            <a href="my-recipes.html" class="action-link delete-link">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recipe Card 2 -->
+            <div class="recipe-card">
+                <div class="recipe-header">
+                    <a href="#"><img src="media/images/turkey-veggie-wrap.png"
+                        alt="Turkey & Veggie Wraps" class="recipe-thumb-large"></a>
+                    <div class="recipe-badge">❤ 28 likes</div>
+                </div>
+                <div class="recipe-body">
+                    <a href="view-recipe.html?id=2" class="recipe-title">Turkey & Veggie Wraps</a>
+
+                    <div class="recipe-section">
+                        <div class="section-label">Ingredients</div>
+                        <ul class="ingredients-list">
+                            <li>Whole wheat tortillas - 2 pieces</li>
+                            <li>Sliced turkey breast - 120g</li>
+                            <li>Lettuce leaves - 4 pieces</li>
+                            <li>Sliced bell peppers - 60g</li>
+                            <li>Hummus - 3 tbsp</li>
+                            <li>Baby carrots - 80g</li>
+                        </ul>
+                    </div>
+
+                    <div class="recipe-section">
+                        <div class="section-label">Instructions</div>
+                        <ol class="instructions-list">
+                            <li>Lay tortillas flat on clean surface</li>
+                            <li>Spread hummus evenly on each tortilla</li>
+                            <li>Layer turkey slices in the center</li>
+                            <li>Add lettuce and bell peppers on top</li>
+                            <li>Roll tightly and cut in half diagonally</li>
+                            <li>Pack wraps and carrot sticks in separate lunchbox sections</li>
+                        </ol>
+                    </div>
+
+                    <div class="video-container">
+                        <span class="no-video">No video for recipe</span>
+                    </div>
+
+                    <div class="recipe-footer">
+                        <div class="action-buttons">
+                            <a href="edit-recipe.html?id=2" class="action-link edit-link">Edit</a>
+                            <a href="my-recipes.html" class="action-link delete-link">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recipe Card 3 -->
+            <div class="recipe-card">
+                <div class="recipe-header">
+                    <a href="#"><img src="media/images/protein-power.png"
+                        alt="Protein Power Box" class="recipe-thumb-large"></a>
+                    <div class="recipe-badge">❤ 52 likes</div>
+                </div>
+                <div class="recipe-body">
+                    <a href="view-recipe.html?id=3" class="recipe-title">Protein Power Box</a>
+
+                    <div class="recipe-section">
+                        <div class="section-label">Ingredients</div>
+                        <ul class="ingredients-list">
+                            <li>Hard-boiled eggs - 2 pieces</li>
+                            <li>Grilled chicken strips - 100g</li>
+                            <li>Mixed nuts - 40g</li>
+                            <li>Cheese cubes - 50g</li>
+                            <li>Grape tomatoes - 60g</li>
+                            <li>Whole grain crackers - 8 pieces</li>
+                        </ul>
+                    </div>
+
+                    <div class="recipe-section">
+                        <div class="section-label">Instructions</div>
+                        <ol class="instructions-list">
+                            <li>Boil eggs for 10 minutes, then cool and peel</li>
+                            <li>Grill chicken breast and slice into strips</li>
+                            <li>Cut cheese into bite-sized cubes</li>
+                            <li>Arrange eggs in first lunchbox compartment</li>
+                            <li>Add chicken strips to second compartment</li>
+                            <li>Fill remaining sections with nuts, cheese, tomatoes, and crackers</li>
+                        </ol>
+                    </div>
+
+                    <div class="video-container">
+                        <video controls class="recipe-video">
+                            <source src="media/videos/recipe1.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+
+                    <div class="recipe-footer">
+                        <div class="action-buttons">
+                            <a href="edit-recipe.html?id=3" class="action-link edit-link">Edit</a>
+                            <a href="my-recipes.html" class="action-link delete-link">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recipe Card 4 -->
+            <div class="recipe-card">
+                <div class="recipe-header">
+                    <a href="#"><img src="media/images/veggie-bento.png"
+                        alt="Rainbow Veggie Bento" class="recipe-thumb-large"></a>
+                    <div class="recipe-badge">❤ 41 likes</div>
+                </div>
+                <div class="recipe-body">
+                    <a href="view-recipe.html?id=4" class="recipe-title">Rainbow Veggie Bento</a>
+
+                    <div class="recipe-section">
+                        <div class="section-label">Ingredients</div>
+                        <ul class="ingredients-list">
+                            <li>Edamame - 80g</li>
+                            <li>Shredded carrots - 60g</li>
+                            <li>Purple cabbage - 50g</li>
+                            <li>Snap peas - 70g</li>
+                            <li>Brown rice - 120g</li>
+                            <li>Sesame ginger dressing - 2 tbsp</li>
+                        </ul>
+                    </div>
+
+                    <div class="recipe-section">
+                        <div class="section-label">Instructions</div>
+                        <ol class="instructions-list">
+                            <li>Cook brown rice and let it cool slightly</li>
+                            <li>Steam edamame and snap peas for 3-4 minutes</li>
+                            <li>Shred carrots and thinly slice purple cabbage</li>
+                            <li>Pack rice in largest lunchbox section</li>
+                            <li>Arrange colorful vegetables in separate compartments</li>
+                            <li>Store dressing in small container to drizzle before eating</li>
+                        </ol>
+                    </div>
+
+                    <div class="video-container">
+                        <a href="https://youtube.com/watch?v=rainbow-bento" class="video-link" target="_blank">Watch
+                            Video</a>
+                    </div>
+
+                    <div class="recipe-footer">
+                        <div class="action-buttons">
+                            <a href="edit-recipe.html?id=4" class="action-link edit-link">Edit</a>
+                            <a href="my-recipes.html" class="action-link delete-link">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer from shared.css -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div>&copy; 2026 Lunchy. All rights reserved.</div>
+                <div class="footer-links">
+                    <a href="privacy.html">Privacy</a>
+                    <a href="terms.html">Terms</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
