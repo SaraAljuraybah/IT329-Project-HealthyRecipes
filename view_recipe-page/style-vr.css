@@ -215,58 +215,80 @@ a{ color: inherit; text-decoration: none; }
 
 
 
-
-
-
-/* -------------------------------  3 Buttons in the top --- --------------------------------------------*/
+/* ------------------------------- 3 Buttons in the hero card --- --------------------------------------------*/
 .actions_vr {
     display: flex;
-    justify-content: flex-end;
-    gap: 15px;
-    margin-bottom: 25px;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid var(--border);
 }
 
 .btn-square_vr {
-    width: 65px;
-    height: 65px;
+    width: 60px;
+    height: 60px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 4px;
-    border-radius: var(--radius);
+    border-radius: 12px;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: none;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(47, 62, 55, 0.1);
 }
 
 .btn-square_vr:hover {
-    transform: translateY(-8px) scale(1.05);
-    box-shadow: 0 10px 20px rgba(109, 218, 105, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(47, 62, 55, 0.15);
+}
+
+.btn-square_vr:active {
+    transform: translateY(-1px);
 }
 
 .btn-square_vr span {
-    font-size: 10px;
-    color: #ffffff;
-    font-weight: 700;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
 }
 
 .btn-icon_vr {
- width: 32px; 
-    height: 32px;
+    width: 24px;
+    height: 24px;
     object-fit: contain;
+    filter: brightness(0) invert(1);
 }
 
-.btn-gradient_vr { background: linear-gradient(90deg, var(--primary), #7BE8BB); }
-.btn-report_vr { background: #FF8A8A; }
+.btn-gradient_vr { 
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-2) 100%);
+}
 
+.btn-gradient_vr span {
+    color: #ffffff;
+}
 
+.btn-gradient_vr:hover {
+    box-shadow: 0 8px 20px rgba(109, 218, 105, 0.25);
+}
 
-/* ------------------------------- end 3 Buttons in the top --- --------------------------------------------*/
+.btn-report_vr { 
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF8A8A 100%);
+}
 
+.btn-report_vr span {
+    color: #ffffff;
+}
 
+.btn-report_vr:hover {
+    box-shadow: 0 8px 20px rgba(255, 107, 107, 0.25);
+}
 
-
+/* ------------------------------- end 3 Buttons in the hero card --- --------------------------------------------*/
 /* --------------------------------------------- Image and name section -------------------------------------- */
 
 .title_vr {

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Lunchy</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .about-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+        }
+
+        .about-card {
+            background: var(--card);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 24px rgba(47, 62, 55, 0.08);
+            border: 2px solid var(--border);
+        }
+
+        .about-card h1 {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--text);
+            margin: 0 0 24px;
+        }
+
+        .about-card p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text);
+            margin: 0 0 20px;
+        }
+
+        .about-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .about-card {
+                padding: 30px 24px;
+            }
+
+            .about-card h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../explore-page/explore.html">
+        <img class="brand-logo" src="../media/logo.jpg" alt="LunchBoxLab logo">
+        <span class="brand-text">
+          <span class="brand-name">LunchBoxLab</span>
+          <span class="brand-tagline">Pack smart. Eat better.</span>
+        </span>
+      </a>
+
+      <nav class="nav">
+        <a class="nav-link" href="../explore-page/explore.html">Explore</a>
+        <a class="nav-link" href="../my_recipes-page/my-recipes.html">My Recipes</a>
+        <a class="nav-link" href="../about-us-page/about-us.html">About Us</a>
+      </nav>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="../user-page/user.html">My Profile</a>
+        <a class="btn btn-ghost" href="../home-page/index.html">Log Out</a>
+      </div>
+    </div>
+  </header>
+
+    <!-- Main Content -->
+    <main class="about-container">
+        <div class="about-card">
+            <h1>About Lunchy</h1>
+            <p>Lunchy is a web application designed to help you discover, create, and share healthy lunchbox recipes. Whether you're meal prepping for the week or looking for quick lunch ideas, we've got you covered.</p>
+            <p>Our platform makes it easy to browse recipes, save your favorites, and organize your meal plans all in one place. Join our community and start your journey to healthier eating today!</p>
+            <p>This project was created as part of a web development course to demonstrate modern web design and user experience principles.</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© 2026 LunchBoxLab • IT329</span>
+      <div class="footer-links">
+        <a href="../explore-page/explore.html">Explore</a>
+        <a href="../my_recipes-page/my-recipes.html">My Recipes</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

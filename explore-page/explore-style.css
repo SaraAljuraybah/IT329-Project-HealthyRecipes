@@ -1,0 +1,250 @@
+/* explore.css */
+
+.panel {
+  padding: 40px 0 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--border);
+}
+
+.section-head h2 {
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--text);
+  margin: 0 0 8px;
+  position: relative;
+}
+
+.section-head h2::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-2));
+  border-radius: 2px;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 15px;
+  margin: 0;
+}
+
+.filter-ui {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.select {
+  padding: 12px 16px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 200px;
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(109, 218, 105, 0.1);
+}
+
+.select:hover {
+  border-color: var(--primary-2);
+}
+
+.btn-filter {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 8px 20px rgba(109, 218, 105, 0.25);
+  font-family: inherit;
+}
+
+.btn-filter:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(109, 218, 105, 0.35);
+}
+
+.btn-filter:active {
+  transform: translateY(0);
+}
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+.recipe-card {
+  background: var(--card);
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  box-shadow: 0 8px 24px rgba(47, 62, 55, 0.08);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.recipe-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 40px rgba(47, 62, 55, 0.15);
+  border-color: var(--primary);
+}
+
+.r-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+.r-body {
+  padding: 20px;
+}
+
+.r-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.cat {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid transparent;
+}
+
+.cat.balanced {
+  background: rgba(95, 191, 132, 0.14);
+  border-color: rgba(95, 191, 132, 0.26);
+  color: #0F3A22;
+}
+
+.cat.protein {
+  background: rgba(79, 143, 230, 0.16);
+  border-color: rgba(79, 143, 230, 0.28);
+  color: #0B3A57;
+}
+
+.cat.lowcarb {
+  background: rgba(155, 109, 220, 0.14);
+  border-color: rgba(155, 109, 220, 0.26);
+  color: #3B1A5A;
+}
+
+.likes {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary-3);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(109, 218, 105, 0.1);
+  border: 1px solid rgba(109, 218, 105, 0.2);
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.r-title {
+  margin: 0 0 10px;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.r-title a {
+  color: var(--text);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.r-title a:hover {
+  color: var(--primary-3);
+}
+
+.r-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 16px;
+}
+
+.r-creator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.mini-ava {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  object-fit: cover;
+}
+
+.r-creator .muted {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .section-head {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .filter-ui {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .select {
+    width: 100%;
+  }
+
+  .btn-filter {
+    width: 100%;
+  }
+
+  .recipe-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-head h2 {
+    font-size: 28px;
+  }
+}
