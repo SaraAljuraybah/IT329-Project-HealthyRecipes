@@ -1,0 +1,420 @@
+/* =========================================================
+   START SHARED CODE : THEME + GLOBAL
+   ========================================================= */
+
+:root{
+  --primary: #6DDA69;       /* fresh light green */
+  --primary-2: #63CFA0;
+  --primary-3: #2FAF7C;
+
+  --bg: #FBFCFA;            /* off-white */
+  --card: #FFFFFF;
+  --beige: #F2E8D8;         /* light beige */
+  --yellow: #FFF2C2;        /* soft yellow */
+
+  --text: #2F3E37;
+  --muted: #6E7F76;
+
+  --border: #E4E8E5;
+  --shadow: 0 12px 30px rgba(47,62,55,0.12);
+  --radius: 16px;
+}
+
+*{ box-sizing: border-box; }
+
+body{
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+a{ text-decoration: none; color: inherit; }
+
+.container{
+  width: min(1100px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+/* =========================================================
+   END SHARED CODE : THEME + GLOBAL
+   ========================================================= */
+
+
+/* =========================================================
+   START SHARED CODE : HEADER
+   ========================================================= */
+
+.site-header{
+  background: linear-gradient(90deg, var(--primary), #7BE8BB);
+  border-bottom: 1px solid rgba(255,255,255,0.45);
+}
+
+.header-inner{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 0;
+}
+
+.brand{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo{
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.35);
+  padding: 6px;
+}
+
+.brand-name{
+  font-weight: 900;
+  color: #fff;
+  font-size: 18px;
+}
+
+.brand-tagline{
+  font-size: 12px;
+  color: rgba(255,255,255,0.92);
+}
+
+.nav{
+  display: flex;
+  gap: 14px;
+}
+
+.nav-link{
+  color: #fff;
+  font-weight: 700;
+  padding: 10px 12px;
+  border-radius: 12px;
+}
+
+.nav-link:hover{
+  background: rgba(255,255,255,0.2);
+}
+
+.actions{
+  display: flex;
+  gap: 10px;
+}
+
+/* =========================================================
+   END SHARED CODE : HEADER
+   ========================================================= */
+
+
+/* =========================================================
+   START SHARED CODE : BUTTONS
+   ========================================================= */
+
+.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-weight: 800;
+  font-size: 14px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn-primary{
+  background: #fff;
+  color: var(--primary-3);
+  box-shadow: 0 10px 22px rgba(22,59,47,0.12);
+}
+
+.btn-primary:hover{
+  background: rgba(255,255,255,0.95);
+}
+
+.btn-ghost{
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+.btn-ghost:hover{
+  background: rgba(255,255,255,0.28);
+}
+
+.btn-soft{
+  background: var(--yellow);
+  color: #6B5A1A;
+  border: 1px solid var(--yellow);
+}
+
+.btn-soft:hover{
+  filter: brightness(0.98);
+}
+
+/* =========================================================
+   END SHARED CODE : BUTTONS
+   ========================================================= */
+
+
+/* =========================================================
+   START SHARED CODE : FORM STYLING
+   ========================================================= */
+
+.form{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 22px;
+}
+
+.form-title{
+  margin: 0 0 14px;
+  font-size: 20px;
+}
+
+.form-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.form-group{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group.full{
+  grid-column: 1 / -1;
+}
+
+.label{
+  font-size: 13px;
+  font-weight: 900;
+  color: #214236;
+}
+
+.input, .select, .textarea{
+  width: 100%;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.textarea{
+  min-height: 120px;
+  resize: vertical;
+}
+
+.input:focus, .select:focus, .textarea:focus{
+  border-color: var(--primary-3);
+  box-shadow: 0 0 0 4px rgba(109,218,105,0.25);
+}
+
+.helper{
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.form-actions{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+/* =========================================================
+   END SHARED CODE : FORM STYLING
+   ========================================================= */
+
+
+/* =========================================================
+   START SHARED CODE : FOOTER
+   ========================================================= */
+
+.site-footer{
+  border-top: 1px solid var(--border);
+  background: var(--beige);
+  margin-top: 40px;
+}
+
+.footer-inner{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.footer-links{
+  display: flex;
+  gap: 12px;
+}
+
+.footer-links a:hover{
+  color: var(--text);
+}
+
+/* =========================================================
+   END SHARED CODE : FOOTER
+   ========================================================= */
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px){
+  .header-inner{
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nav{
+    justify-content: center;
+  }
+
+  .actions{
+    width: 100%;
+    justify-content: center;
+  }
+
+  .form-grid{
+    grid-template-columns: 1fr;
+  }
+}
+/* =========================================================
+   START SHARED CODE : FILE UPLOAD STYLE
+   ========================================================= */
+
+.file-upload{
+  border: 2px dashed var(--primary-3);
+  background: linear-gradient(
+      135deg,
+      rgba(255,242,194,0.5),
+      rgba(109,218,105,0.15)
+  );
+  border-radius: var(--radius);
+  padding: 26px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+  position: relative;
+}
+
+.file-upload:hover{
+  background: linear-gradient(
+      135deg,
+      rgba(255,242,194,0.8),
+      rgba(109,218,105,0.25)
+  );
+  transform: translateY(-2px);
+}
+
+.upload-icon{
+  font-size: 28px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.upload-text{
+  margin: 0;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.upload-text span{
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* When file selected */
+.file-upload.active{
+  border-color: var(--primary);
+  background: rgba(109,218,105,0.18);
+}
+
+/* =========================================================
+   END SHARED CODE : FILE UPLOAD STYLE
+   ========================================================= */
+/* =========================================================
+   START SHARED CODE : FILE UPLOAD (RECIPE PHOTO)
+   ========================================================= */
+
+.file-upload{
+  border: 2px dashed var(--primary-3);
+  background: linear-gradient(135deg, rgba(255,242,194,0.55), rgba(109,218,105,0.14));
+  border-radius: var(--radius);
+  padding: 22px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.file-upload:hover{
+  background: linear-gradient(135deg, rgba(255,242,194,0.85), rgba(109,218,105,0.22));
+  transform: translateY(-2px);
+}
+
+.file-upload-photo{
+  padding: 24px;
+}
+
+.file-upload.active{
+  border-color: var(--primary);
+  background: rgba(109,218,105,0.18);
+}
+
+.upload-icon{
+  font-size: 30px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.upload-text{
+  margin: 0 0 8px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.upload-text span{
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.upload-filename{
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+/* Preview box */
+.photo-preview{
+  margin-top: 14px;
+  height: 160px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background-size: cover;
+  background-position: center;
+  box-shadow: var(--shadow);
+}
+
+/* =========================================================
+   END SHARED CODE : FILE UPLOAD (RECIPE PHOTO)
+   ========================================================= */
