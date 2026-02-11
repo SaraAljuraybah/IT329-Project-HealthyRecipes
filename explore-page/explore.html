@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explore Deliciousness!</title>
-    <link rel="stylesheet" href="explore-style.css">
-    <link rel="stylesheet" href="../style.css">
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Deliciousness!</title>
+  <link rel="stylesheet" href="explore-style.css">
+  <link rel="stylesheet" href="../style.css">
+
 </head>
+
 <body>
 
   <!-- HEADER (shared) -->
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="#">
-        <img class="brand-logo" src="../media/logo.jpg" alt="LunchBoxLab logo">
+        <img class="brand-logo" src="../media/logo.jpg" alt="Lunchy logo">
         <span class="brand-text">
-          <span class="brand-name">LunchBoxLab</span>
+          <span class="brand-name">Lunchy</span>
           <span class="brand-tagline">Pack smart. Eat better.</span>
         </span>
       </a>
@@ -34,74 +36,78 @@
     </div>
   </header>
 
-    <section class="panel">
-      <div class="section-head">
-        <div>
-          <h2>Explore Lunchboxes</h2><br>
-        </div>
-
-        <div class="filter-ui">
-          <select class="select" aria-label="Filter by category">
-            <option>All categories</option>
-            <option>Balanced Lunch Boxes</option>
-            <option>Low Carb Lunch Boxes</option>
-            <option>High Protein Boxes</option>
-          </select>
-          <button class="btn-filter" type="button">Filter</button>
-        </div>
+  <section class="panel">
+    <div class="section-head">
+      <div>
+        <h2>Explore Lunchboxes</h2><br>
       </div>
 
-      <div class="recipe-grid">
-        <article class="recipe-card">
-          <img class="r-img" src="../media/chicken-wrap-box.png" alt="Chicken Wrap Box">
-          <div class="r-body">
-            <div class="r-top">
-              <span class="cat balanced">Balanced</span>
-              <span class="likes">❤️ 18</span>
-            </div>
-            <h3 class="r-title"><a href="#">Chicken Wrap Box</a></h3>
-            <p class="muted r-desc">Quick wrap + veggies + dip. Stays fresh for hours.</p>
-            <div class="r-creator">
-              <img class="mini-ava" src="../media/logo.png" alt="Creator">
-              <span class="muted">by Raghad</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="recipe-card">
-          <img class="r-img" src="../media/greek-yogurt-parfait.png" alt="Greek Yogurt Parfait">
-          <div class="r-body">
-            <div class="r-top">
-              <span class="cat protein">High Protein</span>
-              <span class="likes">❤️ 12</span>
-            </div>
-            <h3 class="r-title"><a href="#">Greek Yogurt Parfait</a></h3>
-            <p class="muted r-desc">Yogurt + berries + granola in a jar.</p>
-            <div class="r-creator">
-              <img class="mini-ava" src="../media/logo.png" alt="Creator">
-              <span class="muted">by Shahad</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="recipe-card">
-          <img class="r-img" src="../media/mini-veggie-bento.png" alt="Mini Veggie Bento">
-          <div class="r-body">
-            <div class="r-top">
-              <span class="cat lowcarb">Low Carb</span>
-              <span class="likes">❤️ 9</span>
-            </div>
-            <h3 class="r-title"><a href="#">Mini Veggie Bento</a></h3>
-            <p class="muted r-desc">Colorful veggies + hummus + crackers.</p>
-            <div class="r-creator">
-              <img class="mini-ava" src="../media/logo.png" alt="Creator">
-              <span class="muted">by Dana</span>
-            </div>
-          </div>
-        </article>
+      <div class="filter-ui">
+        <select class="select" aria-label="Filter by category">
+          <option>All categories</option>
+          <option>Balanced Lunch Boxes</option>
+          <option>Low Carb Lunch Boxes</option>
+          <option>High Protein Boxes</option>
+        </select>
+        <button class="btn-filter" type="button">Filter</button>
       </div>
-    </section>
-    <!-- SCRIPT -->
-   
+    </div>
+
+    <div class="recipe-grid">
+      <article class="recipe-card">
+        <img class="r-img" src="../media/chicken-wrap-box.png" alt="Chicken Wrap Box">
+        <div class="r-body">
+          <div class="r-top">
+            <span class="cat balanced">Balanced</span>
+            <span class="likes">❤️ 18</span>
+          </div>
+          <h3 class="r-title"><a href="#">Chicken Wrap Box</a></h3>
+          <p class="muted r-desc">Quick wrap + veggies + dip. Stays fresh for hours.</p>
+          <div class="r-creator">
+            <img class="mini-ava" src="../media/logo.png" alt="Creator">
+            <span class="muted">by Raghad</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="recipe-card">
+        <img class="r-img" src="../media/greek-yogurt-parfait.png" alt="Greek Yogurt Parfait">
+        <div class="r-body">
+          <div class="r-top">
+            <span class="cat protein">High Protein</span>
+            <span class="likes">❤️ 12</span>
+          </div>
+          <h3 class="r-title"><a href="#">Greek Yogurt Parfait</a></h3>
+          <p class="muted r-desc">Yogurt + berries + granola in a jar.</p>
+          <div class="r-creator">
+            <img class="mini-ava" src="../media/logo.png" alt="Creator">
+            <span class="muted">by Shahad</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="recipe-card">
+        <img class="r-img" src="../media/mini-veggie-bento.png" alt="Mini Veggie Bento">
+        <div class="r-body">
+          <div class="r-top">
+            <span class="cat lowcarb">Low Carb</span>
+            <span class="likes">❤️ 9</span>
+          </div>
+          <h3 class="r-title"><a href="#">Mini Veggie Bento</a></h3>
+          <p class="muted r-desc">Colorful veggies + hummus + crackers.</p>
+          <div class="r-creator">
+            <img class="mini-ava" src="../media/logo.png" alt="Creator">
+            <span class="muted">by Dana</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>&copy; 2026 Lunchy. All rights reserved.</span>
+    </div>
+  </footer>
 </body>
+
 </html>
