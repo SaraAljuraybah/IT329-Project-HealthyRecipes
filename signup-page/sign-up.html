@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lunchy | Sign Up</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== START SHARED HTML: HEADER ===== -->
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <a class="brand" href="index.html">
+        <img src="images/logo.png" alt="Lunchy Logo" class="brand-logo" />
+        <div class="brand-text">
+          <span class="brand-name">Lunchy</span>
+        
+        </div>
+      </a>
+
+      <nav class="nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="user.html" class="nav-link">User</a>
+        <a href="my-recipes.html" class="nav-link">My Recipes</a>
+        <a href="admin.html" class="nav-link">Admin</a>
+      </nav>
+
+      <div class="actions">
+        <a class="btn btn-ghost" href="login.html">Log In</a>
+        <a class="btn btn-primary" href="signup.html">Sign Up</a>
+      </div>
+
+    </div>
+  </header>
+  <!-- ===== END SHARED HTML: HEADER ===== -->
+
+  <main class="container" style="padding: 26px 0 34px;">
+    <h1 class="page-title">Create Your Account</h1>
+    <p class="page-subtitle">
+      Sign up as a user to share your lunch box recipes and save favorites.
+    </p>
+
+    <!-- Sign Up Form -->
+    <form class="form" id="signupForm" novalidate>
+      <h2 class="form-title">Sign Up</h2>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="label" for="firstName">First Name *</label>
+          <input class="input" type="text" id="firstName" name="firstName" required />
+        </div>
+
+        <div class="form-group">
+          <label class="label" for="lastName">Last Name *</label>
+          <input class="input" type="text" id="lastName" name="lastName" required />
+        </div>
+
+        <div class="form-group full">
+          <label class="label" for="email">Email *</label>
+          <input class="input" type="email" id="email" name="email" required />
+        </div>
+
+        <div class="form-group full">
+          <label class="label" for="password">Password *</label>
+          <input class="input" type="password" id="password" name="password" minlength="6" required />
+          <div class="helper">Minimum 6 characters.</div>
+        </div>
+
+       <div class="form-group full">
+  <label class="label">Profile Image (optional)</label>
+
+  <div class="file-upload" id="fileUploadBox">
+    <input type="file" id="profileImage" name="profileImage" accept="image/*" hidden />
+    
+    <div class="upload-content">
+      <span class="upload-icon">📁</span>
+      <p class="upload-text">
+        Drag & Drop your image here <br>
+        <span>or click to browse</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="helper">If empty, a default image will be used.</div>
+</div>
+
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Create Account</button>
+        <a class="btn btn-ghost" href="login.html">Already have an account?</a>
+      </div>
+    </form>
+  </main>
+
+  <!-- ===== START SHARED HTML: FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2026 Lunchy. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms & Conditions</a>
+      </div>
+    </div>
+  </footer>
+  <!-- ===== END SHARED HTML: FOOTER ===== -->
+
+  <script>
+    // Phase 1: No backend. Just simulate a successful sign-up and redirect.
+    document.getElementById("signupForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const firstName = document.getElementById("firstName").value.trim();
+      const lastName  = document.getElementById("lastName").value.trim();
+      const email     = document.getElementById("email").value.trim();
+      const password  = document.getElementById("password").value;
+
+      if (!firstName || !lastName || !email || !password) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+
+      alert("Account created successfully! (Phase 1 demo)\nRedirecting to User Page...");
+      window.location.href = "user.html";
+    });
+
+
+  const fileBox = document.getElementById("fileUploadBox");
+  const fileInput = document.getElementById("profileImage");
+
+  fileBox.addEventListener("click", () => {
+    fileInput.click();
+  });
+
+  fileInput.addEventListener("change", () => {
+    if (fileInput.files.length > 0) {
+      fileBox.classList.add("active");
+      fileBox.querySelector(".upload-text").innerHTML =
+        "Selected: " + fileInput.files[0].name;
+    }
+  });
+
+
+  </script>
+
+</body>
+</html>
