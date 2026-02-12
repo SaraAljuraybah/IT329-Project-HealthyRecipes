@@ -1,388 +1,353 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../style.css">
-    <title>Edit Recipe - Lunchy</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
+  <!-- ✅ Same as Add Recipe -->
+  <link rel="stylesheet" href="../DalalStyle.css">
+  <link rel="stylesheet" href="../style.css">
 
-.page{
-  padding: 32px 0 50px;
-}
+  <title>Edit Recipe - Lunchy</title>
 
-.page-top{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 28px;
-  flex-wrap: wrap;
-}
+  <style>
+    /* ============================
+       EDIT RECIPE — MATCH ADD RECIPE STYLE
+       (uses DalalStyle.css look)
+       ============================ */
 
-.page-title h1{
-  margin: 0 0 6px;
-  font-size: 36px;
-  font-weight: 900;
-  background: linear-gradient(135deg, var(--primary), var(--primary-2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: 0.5px;
-  text-shadow: 0 2px 10px rgba(109, 218, 105, 0.2);
-}
+    .page{
+      padding: 26px 0 34px; /* نفس Add Recipe main padding */
+    }
 
-.page-title .muted{
-  margin: 0;
-  font-size: 15px;
-  color: var(--muted);
-}
+    /* Top title area */
+    .page-top{
+      margin-bottom: 18px;
+    }
 
+    .page-title h1{
+      margin: 0 0 6px;
+      font-size: 34px;
+      font-weight: 900;
+      color: var(--text);
+      letter-spacing: 0.2px;
+    }
 
-.form-card{
-  max-width: 900px;
-  margin: 0 auto;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 32px;
-}
+    .page-title .muted{
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+    }
 
-.recipe-form{
-  display: grid;
-  gap: 24px;
-}
+    /* Make the edit form container match .form */
+    .form-card{
+      max-width: 1000px;
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px; /* نفس .form */
+    }
 
-.form-group{
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+    /* Make the form feel like Add Recipe */
+    .recipe-form{
+      display: grid;
+      gap: 14px;
+    }
 
-.form-group label{
-  font-weight: 900;
-  font-size: 14px;
-  color: var(--primary-3);
-  letter-spacing: 0.3px;
-}
+    /* Labels like .label */
+    .form-group label,
+    .section-head h3{
+      font-size: 13px;
+      font-weight: 900;
+      color: #214236; /* نفس .label */
+      letter-spacing: 0;
+      margin: 0;
+    }
 
-.form-group input,
-.form-group textarea,
-.form-group select{
-  width: 100%;
-  padding: 12px 14px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  font-family: inherit;
-  font-size: 14px;
-  background: var(--bg);
-  color: var(--text);
-  transition: all 0.2s ease;
-}
+    /* Inputs like .input/.select/.textarea */
+    .form-group input,
+    .form-group textarea,
+    .form-group select,
+    .section input,
+    .media-card input[type="url"]{
+      width: 100%;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      transition: 0.2s ease;
+      background: #fff;
+      color: var(--text);
+    }
 
-.form-group textarea{
-  resize: none;
-  min-height: 80px;
-}
+    .form-group textarea{
+      min-height: 120px; /* نفس Add Recipe textarea */
+      resize: vertical;
+    }
 
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus{
-  outline: none;
-  border-color: var(--primary-3);
-  box-shadow: 0 0 0 3px rgba(79, 175, 138, 0.12);
-  background: #fff;
-}
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus,
+    .section input:focus,
+    .media-card input[type="url"]:focus{
+      border-color: var(--primary-3);
+      box-shadow: 0 0 0 4px rgba(109,218,105,0.25);
+    }
 
+    /* Media area -> make it look like form sections */
+    .media-grid{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 6px;
+    }
 
-.media-grid{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-top: 8px;
-}
+    .media-card{
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      padding: 16px;
+    }
 
-.media-card{
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: var(--bg);
-  padding: 18px;
-}
+    .media-head h3{
+      margin: 0 0 6px;
+      font-size: 14px;
+      font-weight: 900;
+      color: #214236;
+    }
 
-.media-head h3{
-  margin: 0 0 4px;
-  font-size: 15px;
-  font-weight: 900;
-  color: var(--primary-3);
-}
+    .media-head p{
+      margin: 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
 
-.media-head p{
-  margin: 0;
-  font-size: 13px;
-  color: var(--muted);
-}
+    /* File button -> convert to "file-upload vibe" */
+    .file-btn{
+      margin-top: 12px;
+      display: block;
+      width: 100%;
+      border: 2px dashed var(--primary-3);
+      background: linear-gradient(135deg, rgba(255,242,194,0.55), rgba(109,218,105,0.14));
+      border-radius: var(--radius);
+      padding: 18px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s ease;
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--text);
+    }
 
+    .file-btn:hover{
+      background: linear-gradient(135deg, rgba(255,242,194,0.85), rgba(109,218,105,0.22));
+      transform: translateY(-2px);
+    }
 
-.file-btn{
-  margin-top: 14px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: 1px dashed var(--primary-3);
-  background: rgba(79, 175, 138, 0.08);
-  font-weight: 800;
-  font-size: 13px;
-  color: var(--primary-3);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
+    .file-btn input{
+      display: none;
+    }
 
-.file-btn:hover{
-  background: rgba(79, 175, 138, 0.15);
-  transform: translateY(-1px);
-}
+    /* Preview boxes similar to photo-preview */
+    .preview-box{
+      margin-top: 12px;
+      height: 160px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #fff;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-.file-btn input{
-  display: none;
-}
+    .preview-img,
+    .preview-video{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
+    /* Sections: cleaner like Add Recipe */
+    .section{
+      border: none;
+      background: transparent;
+      padding: 0;
+      margin-top: 6px;
+    }
 
-.preview-box{
-  margin-top: 14px;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  background: #fff;
-  height: 160px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+    .section-head{
+      margin: 10px 0 6px;
+    }
 
-.preview-img,
-.preview-video{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+    .section-head p{
+      margin: 0;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
 
+    /* Ingredients / Steps rows */
+    .ingredients-list,
+    .steps-list{
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 10px 0 0;
+    }
 
-.section{
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 20px;
-  background: var(--bg);
-}
+    .ingredient-row{
+      display: grid;
+      grid-template-columns: 1fr 1fr 44px;
+      gap: 10px;
+      align-items: center;
+    }
 
-.section-head{
-  margin-bottom: 16px;
-}
+    .step-row{
+      display: grid;
+      grid-template-columns: 1fr 44px;
+      gap: 10px;
+      align-items: center;
+    }
 
-.section-head h3{
-  margin: 0 0 4px;
-  font-size: 16px;
-  font-weight: 900;
-  color: var(--primary-3);
-}
+    /* Hide the green circle numbers vibe; match Add recipe style */
+    .step-number{
+      display: none;
+    }
 
-.section-head p{
-  margin: 0;
-  font-size: 13px;
-  color: var(--muted);
-}
+    /* Remove buttons: clean */
+    .icon-btn{
+      height: 44px;
+      width: 44px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #fff;
+      cursor: pointer;
+      font-size: 18px;
+      color: #b23b3b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s ease;
+    }
 
+    .icon-btn:hover{
+      background: #fff3f3;
+      border-color: #e9b4b4;
+    }
 
-.ingredients-list{
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 14px;
-}
+    /* Add buttons like btn-soft */
+    .btn-add{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 14px;
+      border: 1px solid var(--yellow);
+      cursor: pointer;
+      transition: 0.2s ease;
 
-.ingredient-row{
-  display: grid;
-  grid-template-columns: 2fr 1fr 44px;
-  gap: 10px;
-  align-items: center;
-}
+      background: var(--yellow);
+      color: #6B5A1A;
+      margin-top: 10px;
+    }
 
-.ingredient-row input{
-  margin: 0;
-}
+    .btn-add:hover{
+      filter: brightness(0.98);
+      transform: none;
+    }
 
-.steps-list{
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 14px;
-}
+    /* OR line match */
+    .or-line{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 12px 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
 
-.step-row{
-  display: grid;
-  grid-template-columns: 36px 1fr 44px;
-  gap: 10px;
-  align-items: center;
-}
+    .or-line::before,
+    .or-line::after{
+      content: "";
+      height: 1px;
+      background: var(--border);
+      flex: 1;
+    }
 
-.step-number{
-  background: var(--primary-3);
-  color: #fff;
-  font-weight: 900;
-  border-radius: 50%;
-  height: 32px;
-  width: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  box-shadow: 0 2px 8px rgba(79, 175, 138, 0.3);
-}
+    /* Actions match Add Recipe vibe */
+    .form-actions{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      justify-content: flex-start;
+    }
 
-.icon-btn{
-  height: 44px;
-  width: 44px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: #fff;
-  cursor: pointer;
-  font-size: 16px;
-  color: #e74c3c;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-}
+    .btn-cancel{
+      background: rgba(255,255,255,0.2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
 
-.icon-btn:hover{
-  background: #fee;
-  border-color: #e74c3c;
-  transform: scale(1.05);
-}
+    .btn-cancel:hover{
+      background: rgba(255,255,255,0.4);
+    }
 
-.btn-add{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 10px 16px;
-  border-radius: 12px;
-  border: 1px dashed var(--primary-3);
-  background: rgba(79, 175, 138, 0.08);
-  font-weight: 800;
-  font-size: 13px;
-  color: var(--primary-3);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
+    .btn-save{
+      background: #fff;
+      color: var(--primary-3);
+      box-shadow: 0 10px 22px rgba(22,59,47,0.12);
+      border: 1px solid transparent;
+    }
 
-.btn-add:hover{
-  background: rgba(79, 175, 138, 0.15);
-  transform: translateY(-1px);
-}
+    .btn-save:hover{
+      background: rgba(255,255,255,0.95);
+      transform: none;
+    }
 
-.or-line{
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 14px 0;
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 700;
-}
+    /* Responsive */
+    @media (max-width: 900px){
+      .media-grid{
+        grid-template-columns: 1fr;
+      }
+    }
 
-.or-line::before,
-.or-line::after{
-  content: "";
-  height: 1px;
-  background: var(--border);
-  flex: 1;
-}
-
-.form-actions{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 8px;
-  padding-top: 24px;
-  border-top: 1px solid var(--border);
-}
-
-.btn-cancel{
-  background: transparent;
-  color: var(--muted);
-  border: 1px solid var(--border);
-}
-
-.btn-cancel:hover{
-  background: var(--bg);
-  color: var(--text);
-}
-
-.btn-save{
-  background: linear-gradient(135deg, var(--primary), var(--primary-2));
-  color: #fff;
-  box-shadow: 0 4px 14px rgba(79, 175, 138, 0.3);
-}
-
-.btn-save:hover{
-  box-shadow: 0 6px 20px rgba(79, 175, 138, 0.4);
-  transform: translateY(-1px);
-}
-
-/* Responsive */
-@media (max-width: 768px){
-  .page-top{
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .form-card{
-    padding: 24px 18px;
-  }
-  
-  .media-grid{
-    grid-template-columns: 1fr;
-  }
-  
-  .ingredient-row{
-    grid-template-columns: 1fr;
-  }
-  
-  .ingredient-row .icon-btn{
-    justify-self: end;
-  }
-  
-  .step-row{
-    grid-template-columns: 36px 1fr;
-  }
-  
-  .step-row .icon-btn{
-    grid-column: 2;
-    justify-self: end;
-    margin-top: 8px;
-  }
-  
-  .form-actions{
-    flex-direction: column-reverse;
-  }
-  
-  .form-actions .btn{
-    width: 100%;
-  }
-}
-</style>
-
+    @media (max-width: 768px){
+      .form-card{
+        padding: 18px;
+      }
+      .ingredient-row{
+        grid-template-columns: 1fr;
+      }
+      .ingredient-row .icon-btn{
+        justify-self: end;
+      }
+      .step-row{
+        grid-template-columns: 1fr 44px;
+      }
+      .form-actions .btn{
+        width: 100%;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- Header -->
- <header class="site-header">
+  <!-- Header -->
+  <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="../explore-page/explore.html">
         <img class="brand-logo" src="../media/logo.png" alt="Lunchy logo">
@@ -405,258 +370,259 @@
     </div>
   </header>
 
-<main class="container page">
+  <main class="container page">
 
-  <section class="page-top">
-    <div class="page-title">
-      <h1>Edit Recipe</h1>
-      <p class="muted">Update your recipe details from here</p>
+    <section class="page-top">
+      <div class="page-title">
+        <h1>Edit Recipe</h1>
+        <p class="muted">Update your recipe details from here</p>
+      </div>
+    </section>
+
+    <div class="form-card">
+      <form class="recipe-form" action="../my_recipes-page/my-recipes.html" method="get">
+
+        <!-- Recipe Name -->
+        <div class="form-group">
+          <label>Recipe Name</label>
+          <input type="text" value="Spicy Tuna Wrap" required>
+        </div>
+
+        <!-- Category -->
+        <div class="form-group">
+          <label>Category</label>
+          <select required>
+            <option>High Protein</option>
+            <option selected>Low Carb</option>
+            <option>Balanced</option>
+          </select>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label>Description</label>
+          <textarea rows="3" required>Fresh tuna wrap with spicy sauce and vegetables.</textarea>
+        </div>
+
+        <!-- Recipe Photo -->
+        <div class="form-group">
+          <label>Recipe Photo</label>
+
+          <div class="media-grid">
+            <div class="media-card">
+              <div class="media-head">
+                <h3>Upload New Photo</h3>
+                <p>Choose a high-quality image</p>
+              </div>
+
+              <label class="file-btn">
+                📷 Choose Photo
+                <input type="file" id="photoInput" accept="image/*">
+              </label>
+            </div>
+
+            <div class="media-card">
+              <div class="media-head">
+                <h3>Current Photo</h3>
+                <p>Preview of your recipe image</p>
+              </div>
+
+              <div class="preview-box">
+                <img src="../media/chicken-wrap.jpg" alt="Current recipe photo" class="preview-img" id="currentPhoto">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ingredients -->
+        <div class="section">
+          <div class="section-head">
+            <h3>Ingredients</h3>
+            <p>List all ingredients with quantities</p>
+          </div>
+
+          <div class="ingredients-list" id="ingredientsList">
+            <div class="ingredient-row">
+              <input type="text" name="ing_name[]" placeholder="Ingredient name" value="Tuna" required>
+              <input type="text" name="ing_qty[]" placeholder="Quantity" value="100g" required>
+              <button type="button" class="icon-btn remove-ing" title="Remove">×</button>
+            </div>
+
+            <div class="ingredient-row">
+              <input type="text" name="ing_name[]" placeholder="Ingredient name" value="Wrap bread" required>
+              <input type="text" name="ing_qty[]" placeholder="Quantity" value="1 piece" required>
+              <button type="button" class="icon-btn remove-ing" title="Remove">×</button>
+            </div>
+          </div>
+
+          <button type="button" class="btn-add" id="addIngredientBtn">+ Add Ingredient</button>
+        </div>
+
+        <!-- Steps -->
+        <div class="section">
+          <div class="section-head">
+            <h3>Instructions</h3>
+            <p>Write clear step-by-step instructions</p>
+          </div>
+
+          <div class="steps-list" id="stepsList">
+            <div class="step-row">
+              <span class="step-number">1</span>
+              <input type="text" name="step[]" value="Mix ingredients" required>
+              <button type="button" class="icon-btn remove-step" title="Remove">×</button>
+            </div>
+
+            <div class="step-row">
+              <span class="step-number">2</span>
+              <input type="text" name="step[]" value="Wrap the tuna in bread" required>
+              <button type="button" class="icon-btn remove-step" title="Remove">×</button>
+            </div>
+          </div>
+
+          <button type="button" class="btn-add" id="addStepBtn">+ Add Step</button>
+        </div>
+
+        <!-- Video -->
+        <div class="section">
+          <div class="section-head">
+            <h3>Video (Optional)</h3>
+            <p>Upload a video or paste a YouTube link</p>
+          </div>
+
+          <div class="media-grid">
+            <div class="media-card">
+              <label class="file-btn">
+                🎥 Choose Video
+                <input type="file" id="videoInput" accept="video/*">
+              </label>
+
+              <div class="or-line"><span>OR</span></div>
+
+              <input type="url" id="videoUrl" placeholder="Paste video URL ">
+            </div>
+
+            <div class="media-card">
+              <div class="media-head">
+                <h3>Current Video</h3>
+                <p>Preview your recipe video</p>
+              </div>
+
+              <div class="preview-box">
+                <video class="preview-video" id="currentVideo" controls>
+                  <source src="../media/sample-video.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+          <a href="../my_recipes-page/my-recipes.html" class="btn btn-cancel">Cancel</a>
+          <button type="submit" class="btn btn-save">Save Changes</button>
+        </div>
+
+      </form>
     </div>
-  </section>
 
-  <div class="form-card">
-    <form class="recipe-form" action="../my_recipes-page/my-recipes.html" method="get">
+  </main>
 
-      <!-- Recipe Name -->
-      <div class="form-group">
-        <label>Recipe Name</label>
-        <input type="text" value="Spicy Tuna Wrap" required>
-      </div>
-
-      <!-- Category -->
-      <div class="form-group">
-        <label>Category</label>
-        <select required>
-          <option>High Protein</option>
-          <option selected>Low Carb</option>
-          <option>Balanced</option>
-        </select>
-      </div>
-
-      <!-- Description -->
-      <div class="form-group">
-        <label>Description</label>
-        <textarea rows="3" required>Fresh tuna wrap with spicy sauce and vegetables.</textarea>
-      </div>
-
-      <!-- Recipe Photo -->
-      <div class="form-group">
-        <label>Recipe Photo</label>
-        <div class="media-grid">
-          <div class="media-card">
-            <div class="media-head">
-              <h3>Upload New Photo</h3>
-              <p>Choose a high-quality image</p>
-            </div>
-            <label class="file-btn">
-              📷 Choose Photo
-              <input type="file" id="photoInput" accept="image/*">
-            </label>
-          </div>
-
-          <div class="media-card">
-            <div class="media-head">
-              <h3>Current Photo</h3>
-              <p>Preview of your recipe image</p>
-            </div>
-            <div class="preview-box">
-              <img src="../media/recipe1.jpg" alt="Current recipe photo" class="preview-img" id="currentPhoto">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Ingredients -->
-      <div class="section">
-        <div class="section-head">
-          <h3>Ingredients</h3>
-          <p>List all ingredients with quantities</p>
-        </div>
-
-        <div class="ingredients-list" id="ingredientsList">
-          <div class="ingredient-row">
-            <input type="text" name="ing_name[]" placeholder="Ingredient name" value="Tuna" required>
-            <input type="text" name="ing_qty[]" placeholder="Quantity" value="100g" required>
-            <button type="button" class="icon-btn remove-ing" title="Remove">×</button>
-          </div>
-
-          <div class="ingredient-row">
-            <input type="text" name="ing_name[]" placeholder="Ingredient name" value="Wrap bread" required>
-            <input type="text" name="ing_qty[]" placeholder="Quantity" value="1 piece" required>
-            <button type="button" class="icon-btn remove-ing" title="Remove">×</button>
-          </div>
-        </div>
-
-        <button type="button" class="btn-add" id="addIngredientBtn">+ Add Ingredient</button>
-      </div>
-
-      <!-- Steps -->
-      <div class="section">
-        <div class="section-head">
-          <h3>Instructions</h3>
-          <p>Write clear step-by-step instructions</p>
-        </div>
-
-        <div class="steps-list" id="stepsList">
-          <div class="step-row">
-            <span class="step-number">1</span>
-            <input type="text" name="step[]" value="Mix ingredients" required>
-            <button type="button" class="icon-btn remove-step" title="Remove">×</button>
-          </div>
-
-          <div class="step-row">
-            <span class="step-number">2</span>
-            <input type="text" name="step[]" value="Wrap the tuna in bread" required>
-            <button type="button" class="icon-btn remove-step" title="Remove">×</button>
-          </div>
-        </div>
-
-        <button type="button" class="btn-add" id="addStepBtn">+ Add Step</button>
-      </div>
-
-      <!-- Video -->
-      <div class="section">
-        <div class="section-head">
-          <h3>Video (Optional)</h3>
-          <p>Upload a video or paste a YouTube link</p>
-        </div>
-
-        <div class="media-grid">
-          <div class="media-card">
-            <label class="file-btn">
-              🎥 Choose Video
-              <input type="file" id="videoInput" accept="video/*">
-            </label>
-
-            <div class="or-line"><span>OR</span></div>
-
-            <input type="url" id="videoUrl" placeholder="Paste video URL ">
-          </div>
-
-          <div class="media-card">
-            <div class="media-head">
-              <h3>Current Video</h3>
-              <p>Preview your recipe video</p>
-            </div>
-            <div class="preview-box">
-              <video class="preview-video" id="currentVideo" controls>
-                <source src="../media/sample-video.mp4" type="video/mp4">
-              </video>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Form Actions -->
-      <div class="form-actions">
-        <a href="../my_recipes-page/my-recipes.html" class="btn btn-cancel">Cancel</a>
-        <button type="submit" class="btn btn-save"> Save Changes</button>
-      </div>
-
-    </form>
-  </div>
-
-</main>
-
-<!-- Footer -->
+  <!-- Footer -->
   <footer class="site-footer">
     <div class="container footer-inner">
       <span>&copy; 2026 Lunchy. All rights reserved.</span>
     </div>
   </footer>
 
-<script>
-// Photo Preview
-const photoInput = document.getElementById("photoInput");
-const currentPhoto = document.getElementById("currentPhoto");
+  <script>
+    // Photo Preview
+    const photoInput = document.getElementById("photoInput");
+    const currentPhoto = document.getElementById("currentPhoto");
 
-photoInput.addEventListener("change", function() {
-  const file = this.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      currentPhoto.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
-});
-
-// Video Preview
-const videoInput = document.getElementById("videoInput");
-const currentVideo = document.getElementById("currentVideo");
-
-videoInput.addEventListener("change", function() {
-  const file = this.files[0];
-  if (file) {
-    const url = URL.createObjectURL(file);
-    currentVideo.src = url;
-    currentVideo.onloadeddata = () => URL.revokeObjectURL(url);
-  }
-});
-
-// Ingredients Management
-const ingredientsList = document.getElementById("ingredientsList");
-const addIngredientBtn = document.getElementById("addIngredientBtn");
-
-// Steps Management
-const stepsList = document.getElementById("stepsList");
-const addStepBtn = document.getElementById("addStepBtn");
-
-function renumberSteps() {
-  stepsList.querySelectorAll(".step-row").forEach((row, i) => {
-    row.querySelector(".step-number").textContent = i + 1;
-  });
-}
-
-function wireRemoveButtons(scope = document) {
-  scope.querySelectorAll(".remove-ing").forEach(btn => {
-    btn.onclick = () => {
-      const rows = ingredientsList.querySelectorAll(".ingredient-row");
-      if (rows.length > 1) btn.closest(".ingredient-row").remove();
-    };
-  });
-
-  scope.querySelectorAll(".remove-step").forEach(btn => {
-    btn.onclick = () => {
-      const rows = stepsList.querySelectorAll(".step-row");
-      if (rows.length > 1) {
-        btn.closest(".step-row").remove();
-        renumberSteps();
+    photoInput.addEventListener("change", function() {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          currentPhoto.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
       }
-    };
-  });
-}
+    });
 
-addIngredientBtn.addEventListener("click", () => {
-  const row = document.createElement("div");
-  row.className = "ingredient-row";
-  row.innerHTML = `
-    <input type="text" name="ing_name[]" placeholder="Ingredient name" required>
-    <input type="text" name="ing_qty[]" placeholder="Quantity" required>
-    <button type="button" class="icon-btn remove-ing" title="Remove">×</button>
-  `;
-  ingredientsList.appendChild(row);
-  wireRemoveButtons(row);
-});
+    // Video Preview
+    const videoInput = document.getElementById("videoInput");
+    const currentVideo = document.getElementById("currentVideo");
 
-addStepBtn.addEventListener("click", () => {
-  const row = document.createElement("div");
-  row.className = "step-row";
-  row.innerHTML = `
-    <span class="step-number">${stepsList.querySelectorAll(".step-row").length + 1}</span>
-    <input type="text" name="step[]" placeholder="Write a step..." required>
-    <button type="button" class="icon-btn remove-step" title="Remove">×</button>
-  `;
-  stepsList.appendChild(row);
-  wireRemoveButtons(row);
-});
+    videoInput.addEventListener("change", function() {
+      const file = this.files[0];
+      if (file) {
+        const url = URL.createObjectURL(file);
+        currentVideo.src = url;
+        currentVideo.onloadeddata = () => URL.revokeObjectURL(url);
+      }
+    });
 
-// Initial wiring
-wireRemoveButtons();
-</script>
+    // Ingredients Management
+    const ingredientsList = document.getElementById("ingredientsList");
+    const addIngredientBtn = document.getElementById("addIngredientBtn");
+
+    // Steps Management
+    const stepsList = document.getElementById("stepsList");
+    const addStepBtn = document.getElementById("addStepBtn");
+
+    function renumberSteps() {
+      stepsList.querySelectorAll(".step-row").forEach((row, i) => {
+        row.querySelector(".step-number").textContent = i + 1;
+      });
+    }
+
+    function wireRemoveButtons(scope = document) {
+      scope.querySelectorAll(".remove-ing").forEach(btn => {
+        btn.onclick = () => {
+          const rows = ingredientsList.querySelectorAll(".ingredient-row");
+          if (rows.length > 1) btn.closest(".ingredient-row").remove();
+        };
+      });
+
+      scope.querySelectorAll(".remove-step").forEach(btn => {
+        btn.onclick = () => {
+          const rows = stepsList.querySelectorAll(".step-row");
+          if (rows.length > 1) {
+            btn.closest(".step-row").remove();
+            renumberSteps();
+          }
+        };
+      });
+    }
+
+    addIngredientBtn.addEventListener("click", () => {
+      const row = document.createElement("div");
+      row.className = "ingredient-row";
+      row.innerHTML = `
+        <input type="text" name="ing_name[]" placeholder="Ingredient name" required>
+        <input type="text" name="ing_qty[]" placeholder="Quantity" required>
+        <button type="button" class="icon-btn remove-ing" title="Remove">×</button>
+      `;
+      ingredientsList.appendChild(row);
+      wireRemoveButtons(row);
+    });
+
+    addStepBtn.addEventListener("click", () => {
+      const row = document.createElement("div");
+      row.className = "step-row";
+      row.innerHTML = `
+        <span class="step-number">${stepsList.querySelectorAll(".step-row").length + 1}</span>
+        <input type="text" name="step[]" placeholder="Write a step..." required>
+        <button type="button" class="icon-btn remove-step" title="Remove">×</button>
+      `;
+      stepsList.appendChild(row);
+      wireRemoveButtons(row);
+    });
+
+    // Initial wiring
+    wireRemoveButtons();
+  </script>
 
 </body>
-
 </html>
-
-
