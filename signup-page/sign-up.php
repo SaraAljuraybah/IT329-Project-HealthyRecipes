@@ -1,45 +1,64 @@
 <?php
 
-include "db.php";
+session_start();
+include "../db.php";
 
-$firstName = $_POST['firstName'];
-$lastName  = $_POST['lastName'];
-$email     = $_POST['email'];
-$password  = $_POST['password'];
+$first = $_POST['firstName'];
+$last = $_POST['lastName'];
+$email = $_POST['email'];
+$password = $_POST['password'];
 
-$imageName = "default-user.png";
 
-/* upload image */
-
-if(isset($_FILES['profileImage']) && $_FILES['profileImage']['error'] == 0){
-
-    $imageName = time() . "_" . $_FILES['profileImage']['name'];
-
-    move_uploaded_file(
-        $_FILES['profileImage']['tmp_name'],
-        "uploads/" . $imageName
-    );
+if(isset($_POST['adminCode']) && $_POST['adminCode'] == "1445"){
+    $userType = "admin";
+} else {
+    $userType = "user";
 }
 
-/* insert user */
+# check email exists
+$sql = "SELECT * FROM user WHERE emailAddress='$email'";
+$result = $conn->query($sql);
 
+if($result->num_rows > 0){
+    echo "Email already exists";
+    exit();
+}
+
+# hash password
+$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+# image upload
+if(isset($_FILES['photo']) && $_FILES['photo']['name'] != ""){
+    $photo = time() . "_" . $_FILES['photo']['name'];
+    move_uploaded_file($_FILES['photo']['tmp_name'], "uploads/" . $photo);
+} else {
+    $photo = "default-user.png";
+}
+
+# insert user
 $sql = "INSERT INTO user 
-(firstName,lastName,emailAddress,password,photoFileName)
-
-VALUES
-
-('$firstName','$lastName','$email','$password','$imageName')";
+(userType,firstName,lastName,emailAddress,password,photoFileName)
+VALUES 
+('$userType','$first','$last','$email','$hashedPassword','$photo')";
 
 if($conn->query($sql)){
 
-    header("Location: login.html");
+    # تسجيل دخول مباشرة
+    $_SESSION['user_id'] = $conn->insert_id;
+    $_SESSION['firstName'] = $first;
+    $_SESSION['user_type'] = $userType;
+
+    # توجيه حسب النوع
+    if($userType == "admin"){
+        header("Location: ../admin-page/admin.html");
+    } else {
+        header("Location: ../user-page/user.html");
+    }
+
     exit();
 
-}
-else{
-
-    echo "Error: " . $conn->error;
-
+} else {
+    echo "ERROR: " . $conn->error;
 }
 
 ?>

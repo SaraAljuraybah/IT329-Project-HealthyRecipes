@@ -4,37 +4,38 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lunchy | Sign Up</title>
-  <link rel="stylesheet" href="style.css" />
+
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../DalalStyle.css" />
 </head>
 <body>
 
-  <!-- ===== START SHARED HTML: HEADER ===== -->
+  <!-- HEADER -->
   <header class="site-header">
     <div class="container header-inner">
 
-      <a class="brand" href="index.html">
-        <img src="images/logo.png" alt="Lunchy Logo" class="brand-logo" />
+      <a class="brand" href="../home-page/index.html">
+        <img src="../images/logo.png" alt="Lunchy Logo" class="brand-logo" />
         <div class="brand-text">
           <span class="brand-name">Lunchy</span>
-        
         </div>
       </a>
 
+  
       <nav class="nav">
-        <a href="index.html" class="nav-link">Home</a>
-        <a href="user.html" class="nav-link">User</a>
-        <a href="my-recipes.html" class="nav-link">My Recipes</a>
-        <a href="admin.html" class="nav-link">Admin</a>
+        <a href="../home-page/index.html" class="nav-link">Home</a>
+        <a href="../user-page/user.html" class="nav-link">User</a>
+        <a href="../my_recipes-page/my_recipes.html" class="nav-link">My Recipes</a>
+        <a href="../admin-page/admin.html" class="nav-link">Admin</a>
       </nav>
 
       <div class="actions">
-        <a class="btn btn-ghost" href="login.html">Log In</a>
-        <a class="btn btn-primary" href="signup.html">Sign Up</a>
+        <a class="btn btn-ghost" href="../login-page/login.html">Log In</a>
+        <a class="btn btn-primary" href="../signup-page/sign-up.html">Sign Up</a>
       </div>
 
     </div>
   </header>
-  <!-- ===== END SHARED HTML: HEADER ===== -->
 
   <main class="container" style="padding: 26px 0 34px;">
     <h1 class="page-title">Create Your Account</h1>
@@ -42,7 +43,7 @@
       Sign up as a user to share your lunch box recipes and save favorites.
     </p>
 
-    <!-- Sign Up Form -->
+    
     <form class="form" id="signupForm" novalidate action="sign-up.php" method="POST" enctype="multipart/form-data">
       <h2 class="form-title">Sign Up</h2>
 
@@ -68,34 +69,47 @@
           <div class="helper">Minimum 6 characters.</div>
         </div>
 
-       <div class="form-group full">
-  <label class="label">Profile Image (optional)</label>
+        <div class="form-group full">
+          <label>User Type *</label>
+          <select name="userType" class="input" required>
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
 
-  <div class="file-upload" id="fileUploadBox">
-    <input type="file" id="profileImage" name="profileImage" accept="image/*" hidden />
-    
-    <div class="upload-content">
-      <span class="upload-icon">📁</span>
-      <p class="upload-text">
-        Drag & Drop your image here <br>
-        <span>or click to browse</span>
-      </p>
-    </div>
-  </div>
+        <div class="form-group full">
+          <label>Admin Code (optional)</label>
+          <input type="text" name="adminCode" class="input" placeholder="Enter admin code if you are admin">
+        </div>
 
-  <div class="helper">If empty, a default image will be used.</div>
-</div>
+        <div class="form-group full">
+          <label class="label">Profile Image (optional)</label>
+
+          <div class="file-upload" id="fileUploadBox">
+            <input type="file" id="profileImage" name="photo" accept="image/*" hidden />
+
+            <div class="upload-content">
+              <span class="upload-icon">📁</span>
+              <p class="upload-text">
+                Drag & Drop your image here <br>
+                <span>or click to browse</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="helper">If empty, a default image will be used.</div>
+        </div>
 
       </div>
 
       <div class="form-actions">
         <button type="submit" class="btn btn-primary">Create Account</button>
-        <a class="btn btn-ghost" href="login.html">Already have an account?</a>
+        <a class="btn btn-ghost" href="../login-page/login.html">Already have an account?</a>
       </div>
     </form>
   </main>
 
-  <!-- ===== START SHARED HTML: FOOTER ===== -->
+  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="container footer-inner">
       <p>© 2026 Lunchy. All rights reserved.</p>
@@ -105,10 +119,8 @@
       </div>
     </div>
   </footer>
-  <!-- ===== END SHARED HTML: FOOTER ===== -->
 
   <script>
-   
   const fileBox = document.getElementById("fileUploadBox");
   const fileInput = document.getElementById("profileImage");
 
@@ -123,10 +135,7 @@
         "Selected: " + fileInput.files[0].name;
     }
   });
-
-
   </script>
 
 </body>
 </html>
-
