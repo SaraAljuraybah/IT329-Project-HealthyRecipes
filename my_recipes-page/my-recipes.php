@@ -3,12 +3,12 @@ session_start();
 require_once '../db.php';
 
 // TEMP فقط للتطوير (احذفيه لاحقًا)
-if (!isset($_SESSION['userID'])) {
+if (!isset($_SESSION['user_id'])) {
     $_SESSION['userID'] = 2;
     $_SESSION['userType'] = 'user';
 }
 
-$userID = $_SESSION['userID'];
+$user_id = $_SESSION['user_id'];
 
 // Get all recipes for this user
 $sql = "SELECT recipe.*, recipecategory.categoryName
@@ -18,7 +18,7 @@ $sql = "SELECT recipe.*, recipecategory.categoryName
         ORDER BY recipe.id DESC";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $userID);
+$stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
@@ -89,7 +89,7 @@ $result = $stmt->get_result();
         <div class="recipe-card">
             <div class="recipe-header">
                 <a href="../view_recipe-page/View-recipe-page.php?id=<?php echo $recipeID; ?>">
-                    <img src="../media/<?php echo htmlspecialchars($row['photoFileName']); ?>"
+                    <img src="../media/recipes/<?php echo htmlspecialchars($row['photoFileName']); ?>"
                          alt="<?php echo htmlspecialchars($row['name']); ?>"
                          class="recipe-thumb-large">
                 </a>
@@ -122,7 +122,7 @@ $result = $stmt->get_result();
                 <div class="video-container">
                     <?php if (!empty($row['videoFilePath'])): ?>
                         <video controls class="recipe-video">
-                            <source src="../media/recipes<?php echo htmlspecialchars($row['videoFilePath']); ?>" type="video/mp4">
+                            <source src="../media/recipes/<?php echo htmlspecialchars($row['videoFilePath']); ?>" type="video/mp4">
                         </video>
                     <?php elseif (!empty($row['videoURL'])): ?>
                         <a href="<?php echo htmlspecialchars($row['videoURL']); ?>" target="_blank">Watch Video</a>

@@ -1,0 +1,569 @@
+<?php
+session_start();
+require_once '../db.php';
+
+// TEMP فقط للتطوير
+if (!isset($_SESSION['user_id'])) {
+    $_SESSION['user_id'] = 2;
+    $_SESSION['userType'] = 'user';
+}
+
+if (!isset($_GET['id'])) {
+    die("Recipe ID is missing.");
+}
+
+$recipeID = (int) $_GET['id'];
+$user_id = $_SESSION['user_id'];
+
+// Get recipe and make sure it belongs to this user
+$sql = "SELECT * FROM recipe WHERE id = ? AND user_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ii", $recipeID, $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows === 0) {
+    die("Recipe not found or you do not have permission to edit it.");
+}
+
+$recipe = $result->fetch_assoc();
+
+// Get categories
+$catSql = "SELECT * FROM recipecategory";
+$catResult = $conn->query($catSql);
+
+// Get ingredients
+$ingSql = "SELECT * FROM ingredients WHERE recipeID = ?";
+$ingStmt = $conn->prepare($ingSql);
+$ingStmt->bind_param("i", $recipeID);
+$ingStmt->execute();
+$ingredients = $ingStmt->get_result();
+
+// Get instructions
+$insSql = "SELECT * FROM instructions WHERE recipeID = ? ORDER BY stepOrder ASC";
+$insStmt = $conn->prepare($insSql);
+$insStmt->bind_param("i", $recipeID);
+$insStmt->execute();
+$instructions = $insStmt->get_result();
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../DalalStyle.css">
+  <link rel="stylesheet" href="../style.css">
+  <title>Edit Recipe - Lunchy</title>
+  
+  <style>
+    /* ============================
+       EDIT RECIPE — MATCH ADD RECIPE STYLE
+       (uses DalalStyle.css look)
+       ============================ */
+
+    .page{
+      padding: 26px 0 34px; /* نفس Add Recipe main padding */
+    }
+
+    /* Top title area */
+    .page-top{
+      margin-bottom: 18px;
+    }
+
+    .page-title h1{
+      margin: 0 0 6px;
+      font-size: 34px;
+      font-weight: 900;
+      color: var(--text);
+      letter-spacing: 0.2px;
+    }
+
+    .page-title .muted{
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    /* Make the edit form container match .form */
+    .form-card{
+      max-width: 1000px;
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px; /* نفس .form */
+    }
+
+    /* Make the form feel like Add Recipe */
+    .recipe-form{
+      display: grid;
+      gap: 14px;
+    }
+
+    /* Labels like .label */
+    .form-group label,
+    .section-head h3{
+      font-size: 13px;
+      font-weight: 900;
+      color: #214236; /* نفس .label */
+      letter-spacing: 0;
+      margin: 0;
+    }
+
+    /* Inputs like .input/.select/.textarea */
+    .form-group input,
+    .form-group textarea,
+    .form-group select,
+    .section input,
+    .media-card input[type="url"]{
+      width: 100%;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      transition: 0.2s ease;
+      background: #fff;
+      color: var(--text);
+    }
+
+    .form-group textarea{
+      min-height: 120px; /* نفس Add Recipe textarea */
+      resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus,
+    .section input:focus,
+    .media-card input[type="url"]:focus{
+      border-color: var(--primary-3);
+      box-shadow: 0 0 0 4px rgba(109,218,105,0.25);
+    }
+
+    /* Media area -> make it look like form sections */
+    .media-grid{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 6px;
+    }
+
+    .media-card{
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      padding: 16px;
+    }
+
+    .media-head h3{
+      margin: 0 0 6px;
+      font-size: 14px;
+      font-weight: 900;
+      color: #214236;
+    }
+
+    .media-head p{
+      margin: 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* File button -> convert to "file-upload vibe" */
+    .file-btn{
+      margin-top: 12px;
+      display: block;
+      width: 100%;
+      border: 2px dashed var(--primary-3);
+      background: linear-gradient(135deg, rgba(255,242,194,0.55), rgba(109,218,105,0.14));
+      border-radius: var(--radius);
+      padding: 18px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s ease;
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .file-btn:hover{
+      background: linear-gradient(135deg, rgba(255,242,194,0.85), rgba(109,218,105,0.22));
+      transform: translateY(-2px);
+    }
+
+    .file-btn input{
+      display: none;
+    }
+
+    /* Preview boxes similar to photo-preview */
+    .preview-box{
+      margin-top: 12px;
+      height: 160px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #fff;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .preview-img,
+    .preview-video{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Sections: cleaner like Add Recipe */
+    .section{
+      border: none;
+      background: transparent;
+      padding: 0;
+      margin-top: 6px;
+    }
+
+    .section-head{
+      margin: 10px 0 6px;
+    }
+
+    .section-head p{
+      margin: 0;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    /* Ingredients / Steps rows */
+    .ingredients-list,
+    .steps-list{
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 10px 0 0;
+    }
+
+    .ingredient-row{
+      display: grid;
+      grid-template-columns: 1fr 1fr 44px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .step-row{
+      display: grid;
+      grid-template-columns: 1fr 44px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    /* Hide the green circle numbers vibe; match Add recipe style */
+    .step-number{
+      display: none;
+    }
+
+    /* Remove buttons: clean */
+    .icon-btn{
+      height: 44px;
+      width: 44px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #fff;
+      cursor: pointer;
+      font-size: 18px;
+      color: #b23b3b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s ease;
+    }
+
+    .icon-btn:hover{
+      background: #fff3f3;
+      border-color: #e9b4b4;
+    }
+
+    /* Add buttons like btn-soft */
+    .btn-add{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 14px;
+      border: 1px solid var(--yellow);
+      cursor: pointer;
+      transition: 0.2s ease;
+
+      background: var(--yellow);
+      color: #6B5A1A;
+      margin-top: 10px;
+    }
+
+    .btn-add:hover{
+      filter: brightness(0.98);
+      transform: none;
+    }
+
+    /* OR line match */
+    .or-line{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 12px 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .or-line::before,
+    .or-line::after{
+      content: "";
+      height: 1px;
+      background: var(--border);
+      flex: 1;
+    }
+
+    /* Actions match Add Recipe vibe */
+    .form-actions{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      justify-content: flex-start;
+    }
+
+    .btn-cancel{
+      background: rgba(255,255,255,0.2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-cancel:hover{
+      background: rgba(255,255,255,0.4);
+    }
+
+    .btn-save{
+      background: #fff;
+      color: var(--primary-3);
+      box-shadow: 0 10px 22px rgba(22,59,47,0.12);
+      border: 1px solid transparent;
+    }
+
+    .btn-save:hover{
+      background: rgba(255,255,255,0.95);
+      transform: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px){
+      .media-grid{
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px){
+      .form-card{
+        padding: 18px;
+      }
+      .ingredient-row{
+        grid-template-columns: 1fr;
+      }
+      .ingredient-row .icon-btn{
+        justify-self: end;
+      }
+      .step-row{
+        grid-template-columns: 1fr 44px;
+      }
+      .form-actions .btn{
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="../explore-page/explore.html">
+      <img class="brand-logo" src="../media/logo.png" alt="Lunchy logo">
+      <span class="brand-text">
+        <span class="brand-name">Lunchy</span>
+        <span class="brand-tagline">Pack smart. Eat better.</span>
+      </span>
+    </a>
+
+    <nav class="nav">
+      <a class="nav-link" href="../explore-page/explore.html">Explore</a>
+      <a class="nav-link" href="../my_recipes-page/my-recipes.php">My Recipes</a>
+      <a class="nav-link" href="../about-us-page/about-us.html">About Us</a>
+    </nav>
+
+    <div class="actions">
+      <a class="btn btn-primary" href="../user-page/user.html">My Profile</a>
+      <a class="btn btn-ghost" href="../home-page/index.html">Log Out</a>
+    </div>
+  </div>
+</header>
+
+<main class="container page">
+  <section class="page-top">
+    <div class="page-title">
+      <h1>Edit Recipe</h1>
+      <p class="muted">Update your recipe details from here</p>
+    </div>
+  </section>
+
+  <div class="form-card">
+    <form class="recipe-form" action="update_recipe.php" method="POST" enctype="multipart/form-data">
+
+      <input type="hidden" name="recipeID" value="<?php echo $recipeID; ?>">
+      <input type="hidden" name="oldPhoto" value="<?php echo htmlspecialchars($recipe['photoFileName']); ?>">
+      <input type="hidden" name="oldVideoFile" value="<?php echo htmlspecialchars($recipe['videoFilePath']); ?>">
+
+      <div class="form-group">
+        <label>Recipe Name</label>
+        <input type="text" name="name" value="<?php echo htmlspecialchars($recipe['name']); ?>" required>
+      </div>
+
+      <div class="form-group">
+        <label>Category</label>
+        <select name="categoryID" required>
+          <?php while ($cat = $catResult->fetch_assoc()): ?>
+            <option value="<?php echo $cat['id']; ?>" <?php if ($cat['id'] == $recipe['categoryID']) echo 'selected'; ?>>
+              <?php echo htmlspecialchars($cat['categoryName']); ?>
+            </option>
+          <?php endwhile; ?>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea name="description" rows="3" required><?php echo htmlspecialchars($recipe['description']); ?></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Recipe Photo</label>
+        <input type="file" name="photo" accept="image/*">
+        <p>Current photo:</p>
+        <img src="../media/<?php echo htmlspecialchars($recipe['photoFileName']); ?>" alt="Current photo" style="width:180px; border-radius:12px;">
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <h3>Ingredients</h3>
+        </div>
+
+        <div class="ingredients-list" id="ingredientsList">
+          <?php while ($ing = $ingredients->fetch_assoc()): ?>
+            <div class="ingredient-row">
+              <input type="text" name="ing_name[]" value="<?php echo htmlspecialchars($ing['ingredientName']); ?>" required>
+              <input type="text" name="ing_qty[]" value="<?php echo htmlspecialchars($ing['ingredientQuantity']); ?>" required>
+              <button type="button" class="icon-btn remove-ing">×</button>
+            </div>
+          <?php endwhile; ?>
+        </div>
+
+        <button type="button" class="btn-add" id="addIngredientBtn">+ Add Ingredient</button>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <h3>Instructions</h3>
+        </div>
+
+        <div class="steps-list" id="stepsList">
+          <?php while ($step = $instructions->fetch_assoc()): ?>
+            <div class="step-row">
+              <input type="text" name="step[]" value="<?php echo htmlspecialchars($step['step']); ?>" required>
+              <button type="button" class="icon-btn remove-step">×</button>
+            </div>
+          <?php endwhile; ?>
+        </div>
+
+        <button type="button" class="btn-add" id="addStepBtn">+ Add Step</button>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <h3>Video (Optional)</h3>
+        </div>
+
+        <input type="file" name="videoFile" accept="video/*">
+        <div class="or-line"><span>OR</span></div>
+        <input type="url" name="videoURL" value="<?php echo htmlspecialchars($recipe['videoURL']); ?>" placeholder="Paste video URL">
+      </div>
+
+      <div class="form-actions">
+        <a href="../my_recipes-page/my-recipes.php" class="btn btn-cancel">Cancel</a>
+        <button type="submit" class="btn btn-save">Save Changes</button>
+      </div>
+
+    </form>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <span>&copy; 2026 Lunchy. All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+const ingredientsList = document.getElementById("ingredientsList");
+const addIngredientBtn = document.getElementById("addIngredientBtn");
+
+const stepsList = document.getElementById("stepsList");
+const addStepBtn = document.getElementById("addStepBtn");
+
+function wireRemoveButtons(scope = document) {
+  scope.querySelectorAll(".remove-ing").forEach(btn => {
+    btn.onclick = () => {
+      const rows = ingredientsList.querySelectorAll(".ingredient-row");
+      if (rows.length > 1) btn.closest(".ingredient-row").remove();
+    };
+  });
+
+  scope.querySelectorAll(".remove-step").forEach(btn => {
+    btn.onclick = () => {
+      const rows = stepsList.querySelectorAll(".step-row");
+      if (rows.length > 1) btn.closest(".step-row").remove();
+    };
+  });
+}
+
+addIngredientBtn.addEventListener("click", () => {
+  const row = document.createElement("div");
+  row.className = "ingredient-row";
+  row.innerHTML = `
+    <input type="text" name="ing_name[]" placeholder="Ingredient name" required>
+    <input type="text" name="ing_qty[]" placeholder="Quantity" required>
+    <button type="button" class="icon-btn remove-ing">×</button>
+  `;
+  ingredientsList.appendChild(row);
+  wireRemoveButtons(row);
+});
+
+addStepBtn.addEventListener("click", () => {
+  const row = document.createElement("div");
+  row.className = "step-row";
+  row.innerHTML = `
+    <input type="text" name="step[]" placeholder="Write a step..." required>
+    <button type="button" class="icon-btn remove-step">×</button>
+  `;
+  stepsList.appendChild(row);
+  wireRemoveButtons(row);
+});
+
+wireRemoveButtons();
+</script>
+
+</body>
+</html>
