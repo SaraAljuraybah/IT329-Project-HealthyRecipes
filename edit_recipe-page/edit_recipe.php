@@ -4,7 +4,7 @@ require_once '../db.php';
 
 // TEMP فقط للتطوير
 if (!isset($_SESSION['user_id'])) {
-    $_SESSION['user_id'] = 2;
+    $_SESSION['userID'] = 2;
     $_SESSION['userType'] = 'user';
 }
 
@@ -13,7 +13,7 @@ if (!isset($_GET['id'])) {
 }
 
 $recipeID = (int) $_GET['id'];
-$user_id = $_SESSION['user_id'];
+$user_id = $_SESSION['userID'];
 
 // Get recipe and make sure it belongs to this user
 $sql = "SELECT * FROM recipe WHERE id = ? AND user_id = ?";
