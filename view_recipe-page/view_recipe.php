@@ -1,4 +1,117 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
+session_start();
+include("../db.php");
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login-page/login.html?error=Please login first");
+    exit();
+}
+
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    echo "Recipe not found.";
+    exit();
+}
+
+$recipeID = intval($_GET['id']);
+$currentUserID = $_SESSION['user_id'];
+$currentUserType = $_SESSION['user_type'];
+
+/* get recipe + creator + category */
+$sql = "SELECT recipe.*, user.firstName, user.lastName, user.photoFileName AS userPhoto, recipecategory.categoryName
+        FROM recipe
+        JOIN user ON recipe.userID = user.id
+        JOIN recipecategory ON recipe.categoryID = recipecategory.id
+        WHERE recipe.id = ?";
+
+$stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, "i", $recipeID);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+
+if (mysqli_num_rows($result) == 0) {
+    echo "Recipe not found.";
+    exit();
+}
+
+$recipe = mysqli_fetch_assoc($result);
+
+/* ingredients */
+$sqlIngredients = "SELECT * FROM ingredients WHERE recipeID = ?";
+$stmtIngredients = mysqli_prepare($conn, $sqlIngredients);
+mysqli_stmt_bind_param($stmtIngredients, "i", $recipeID);
+mysqli_stmt_execute($stmtIngredients);
+$resultIngredients = mysqli_stmt_get_result($stmtIngredients);
+
+/* instructions */
+$sqlInstructions = "SELECT * FROM instructions WHERE recipeID = ? ORDER BY stepOrder ASC";
+$stmtInstructions = mysqli_prepare($conn, $sqlInstructions);
+mysqli_stmt_bind_param($stmtInstructions, "i", $recipeID);
+mysqli_stmt_execute($stmtInstructions);
+$resultInstructions = mysqli_stmt_get_result($stmtInstructions);
+
+/* comments newest first */
+$sqlComments = "SELECT comment.*, user.firstName, user.lastName
+                FROM comment
+                JOIN user ON comment.userID = user.id
+                WHERE comment.recipeID = ?
+                ORDER BY comment.date DESC";
+$stmtComments = mysqli_prepare($conn, $sqlComments);
+mysqli_stmt_bind_param($stmtComments, "i", $recipeID);
+mysqli_stmt_execute($stmtComments);
+$resultComments = mysqli_stmt_get_result($stmtComments);
+
+/* check like */
+$liked = false;
+$sqlLike = "SELECT * FROM likes WHERE userID = ? AND recipeID = ?";
+$stmtLike = mysqli_prepare($conn, $sqlLike);
+mysqli_stmt_bind_param($stmtLike, "ii", $currentUserID, $recipeID);
+mysqli_stmt_execute($stmtLike);
+$resultLike = mysqli_stmt_get_result($stmtLike);
+if (mysqli_num_rows($resultLike) > 0) {
+    $liked = true;
+}
+
+/* check favourite */
+$favourited = false;
+$sqlFav = "SELECT * FROM favourites WHERE userID = ? AND recipeID = ?";
+$stmtFav = mysqli_prepare($conn, $sqlFav);
+mysqli_stmt_bind_param($stmtFav, "ii", $currentUserID, $recipeID);
+mysqli_stmt_execute($stmtFav);
+$resultFav = mysqli_stmt_get_result($stmtFav);
+if (mysqli_num_rows($resultFav) > 0) {
+    $favourited = true;
+}
+
+/* check report */
+$reported = false;
+$sqlReport = "SELECT * FROM report WHERE userID = ? AND recipeID = ?";
+$stmtReport = mysqli_prepare($conn, $sqlReport);
+mysqli_stmt_bind_param($stmtReport, "ii", $currentUserID, $recipeID);
+mysqli_stmt_execute($stmtReport);
+$resultReport = mysqli_stmt_get_result($stmtReport);
+if (mysqli_num_rows($resultReport) > 0) {
+    $reported = true;
+}
+
+/* count likes */
+$totalLikes = 0;
+$sqlCountLikes = "SELECT COUNT(*) AS totalLikes FROM likes WHERE recipeID = ?";
+$stmtCountLikes = mysqli_prepare($conn, $sqlCountLikes);
+mysqli_stmt_bind_param($stmtCountLikes, "i", $recipeID);
+mysqli_stmt_execute($stmtCountLikes);
+$resultCountLikes = mysqli_stmt_get_result($stmtCountLikes);
+$rowLikes = mysqli_fetch_assoc($resultCountLikes);
+$totalLikes = $rowLikes['totalLikes'];
+
+/* show action buttons only if user is not creator and not admin */
+$showButtons = true;
+if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
+    $showButtons = false;
+}
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -22,13 +135,13 @@
 
         <nav class="nav">
             <a class="nav-link" href="../explore-page/explore.html">Explore</a>
-            <a class="nav-link" href="../my_recipes-page/my-recipes.html">My Recipes</a>
+            <a class="nav-link" href="../my_recipes-page/my-recipes.php">My Recipes</a>
             <a class="nav-link" href="../about-us-page/about-us.html">About Us</a>
         </nav>
 
         <div class="actions">
-            <a class="btn btn-primary" href="../user-page/user.html">My Profile</a>
-            <a class="btn btn-ghost" href="../home-page/index.html">Log Out</a>
+            <a class="btn btn-primary" href="../user-page/user.php">My Profile</a>
+            <a class="btn btn-ghost" href="../logout.php">Log Out</a>
         </div>
     </div>
 </header>

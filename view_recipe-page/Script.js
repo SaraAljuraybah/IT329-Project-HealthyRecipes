@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     const checkboxes = document.querySelectorAll('.ingredient_check_vr');
     const progressBar = document.getElementById('progress_bar_vr');
@@ -7,12 +6,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', () => {
-          
             const total = checkboxes.length;
             const checked = document.querySelectorAll('.ingredient_check_vr:checked').length;
             const percentage = Math.round((checked / total) * 100);
 
-          
             progressBar.style.width = percentage + '%';
             progressText.innerText = percentage + '%';
 
