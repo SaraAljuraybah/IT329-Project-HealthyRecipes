@@ -2,21 +2,16 @@
 session_start();
 require_once '../db.php';
 
-// TEMP فقط للتطوير
-if (!isset($_SESSION['userID'])) {
-    $_SESSION['userID'] = 2;
-    $_SESSION['userType'] = 'user';
-}
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     die("Invalid request method.");
 }
 
-if (!isset($_SESSION['userID'])) {
-    die("You must be logged in.");
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login-page/login.html");
+    exit();
 }
 
-$userID = $_SESSION['userID'];
+$userID = $_SESSION['user_id'];
 
 // Get form data
 $recipeID = isset($_POST['recipeID']) ? (int) $_POST['recipeID'] : 0;

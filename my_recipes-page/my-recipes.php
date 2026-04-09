@@ -2,12 +2,16 @@
 session_start();
 require_once '../db.php';
 
-// TEMP فقط للتطوير (احذفيه لاحقًا)
+/* TEMP فقط للتطوير (احذفيه لاحقًا)
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['userID'] = 2;
     $_SESSION['userType'] = 'user';
 }
-
+*/
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login-page/login.html");
+    exit();
+}
 $user_id = $_SESSION['user_id'];
 
 // Get all recipes for this user

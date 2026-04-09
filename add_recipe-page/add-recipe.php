@@ -2,12 +2,16 @@
 session_start();
 require_once "../db.php";
 
-// TEMP for testing only if you are not logged in yet
+/*TEMP for testing only if you are not logged in yet
 // remove this later
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['user_id'] = 2;
 }
-
+*/
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login-page/login.html");
+    exit();
+}
 $categoryResult = $conn->query("SELECT id, categoryName FROM recipecategory ORDER BY categoryName");
 ?>
 <!DOCTYPE html>

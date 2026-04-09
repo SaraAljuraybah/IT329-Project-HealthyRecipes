@@ -2,10 +2,9 @@
 session_start();
 require_once '../db.php';
 
-// TEMP فقط للتطوير
 if (!isset($_SESSION['user_id'])) {
-    $_SESSION['userID'] = 2;
-    $_SESSION['userType'] = 'user';
+    header("Location: ../login-page/login.html");
+    exit();
 }
 
 if (!isset($_GET['id'])) {
@@ -13,10 +12,10 @@ if (!isset($_GET['id'])) {
 }
 
 $recipeID = (int) $_GET['id'];
-$user_id = $_SESSION['userID'];
+$user_id = $_SESSION['user_id'];
 
 // Get recipe and make sure it belongs to this user
-$sql = "SELECT * FROM recipe WHERE id = ? AND user_id = ?";
+$sql = "SELECT * FROM recipe WHERE id = ? AND userID = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ii", $recipeID, $user_id);
 $stmt->execute();
