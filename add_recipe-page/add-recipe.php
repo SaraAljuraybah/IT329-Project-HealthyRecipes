@@ -5,7 +5,7 @@ require_once "../db.php";
 // TEMP for testing only if you are not logged in yet
 // remove this later
 if (!isset($_SESSION['user_id'])) {
-    $_SESSION['user_id'] = 4;
+    $_SESSION['user_id'] = 2;
 }
 
 $categoryResult = $conn->query("SELECT id, categoryName FROM recipecategory ORDER BY categoryName");
