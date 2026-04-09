@@ -1,0 +1,283 @@
+<?php
+session_start();
+require_once "../db.php";
+
+// TEMP for testing only if you are not logged in yet
+// remove this later
+if (!isset($_SESSION['user_id'])) {
+    $_SESSION['user_id'] = 4;
+}
+
+$categoryResult = $conn->query("SELECT id, categoryName FROM recipecategory ORDER BY categoryName");
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lunchy | Add Recipe</title>
+  <link rel="stylesheet" href="../DalalStyle.css" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+  <!-- ===== START SHARED HTML: HEADER ===== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../explore-page/explore.html">
+        <img class="brand-logo" src="../media/logo.png" alt="Lunchy logo">
+        <span class="brand-text">
+          <span class="brand-name">Lunchy</span>
+          <span class="brand-tagline">Pack smart. Eat better.</span>
+        </span>
+      </a>
+
+      <nav class="nav">
+        <a class="nav-link" href="../explore-page/explore.html">Explore</a>
+        <a class="nav-link" href="../my_recipes-page/my-recipes.php">My Recipes</a>
+        <a class="nav-link" href="../about-us-page/about-us.html">About Us</a>
+      </nav>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="../user-page/user.html">My Profile</a>
+        <a class="btn btn-ghost" href="../home-page/index.html">Log Out</a>
+      </div>
+    </div>
+  </header>
+  <!-- ===== END SHARED HTML: HEADER ===== -->
+
+  <main class="container" style="padding: 26px 0 34px;">
+    <h1 class="page-title">Add New Recipe</h1>
+    <p class="page-subtitle">
+      Fill in the recipe details. You can add multiple ingredients and steps.
+    </p>
+
+    <form class="form" id="addRecipeForm" action="insert_recipe.php" method="POST" enctype="multipart/form-data" novalidate>
+      <h2 class="form-title">Recipe Information</h2>
+
+      <div class="form-grid">
+        <div class="form-group full">
+          <label class="label" for="recipeName">Recipe Name *</label>
+          <input class="input" type="text" id="recipeName" name="name" required />
+        </div>
+
+        <div class="form-group">
+          <label class="label" for="category">Category *</label>
+          <select class="select" id="category" name="categoryID" required>
+            <option value="">Select a category</option>
+            <?php while ($row = $categoryResult->fetch_assoc()) { ?>
+              <option value="<?php echo $row['id']; ?>">
+                <?php echo htmlspecialchars($row['categoryName']); ?>
+              </option>
+            <?php } ?>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="label" for="lunchType">Lunch Box Type *</label>
+          <select class="select" id="lunchType" name="lunchBoxType" required>
+            <option value="">Select a type</option>
+            <option value="University">University</option>
+            <option value="Work">Work</option>
+            <option value="Kids">Kids</option>
+            <option value="Snack">Snack</option>
+          </select>
+        </div>
+
+        <div class="form-group full">
+          <label class="label" for="description">Description *</label>
+          <textarea class="textarea" id="description" name="description" required
+            placeholder="Briefly describe the recipe and why it fits a lunch box..."></textarea>
+        </div>
+
+        <div class="form-group full">
+          <label class="label">Photo *</label>
+
+          <div class="file-upload file-upload-photo" id="recipePhotoBox">
+            <input class="file-input" type="file" id="photo" name="photo" accept="image/*" required hidden />
+
+            <div class="upload-content">
+              <span class="upload-icon">📷</span>
+              <p class="upload-text">
+                Upload a meal photo <br>
+                <span>Click to browse</span>
+              </p>
+              <p class="upload-filename" id="recipePhotoName">No file selected</p>
+            </div>
+
+            <div class="photo-preview" id="photoPreview" aria-label="Photo preview" hidden></div>
+          </div>
+
+          <div class="helper">Use a clear photo with good lighting.</div>
+        </div>
+      </div>
+
+      <hr style="border: none; border-top: 1px solid var(--border); margin: 18px 0;">
+
+      <h2 class="form-title">Ingredients *</h2>
+      <div class="helper">Click “Add Ingredient” to add more items.</div>
+
+      <div id="ingredientsContainer" style="margin-top: 12px;">
+        <div class="form-group full ingredient-row">
+          <label class="label" for="ingredient-1">Ingredient 1</label>
+          <div class="form-grid">
+            <div class="form-group">
+              <input class="input" type="text" id="ingredient-1" name="ingredientName[]" required placeholder="e.g., Whole wheat wrap" />
+            </div>
+            <div class="form-group">
+              <input class="input" type="text" id="ingredient-qty-1" name="ingredientQuantity[]" required placeholder="e.g., 2 pieces" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-soft" id="addIngredientBtn">+ Add Ingredient</button>
+        <button type="button" class="btn btn-soft" id="removeIngredientBtn">− Remove Last</button>
+      </div>
+
+      <hr style="border: none; border-top: 1px solid var(--border); margin: 18px 0;">
+
+      <h2 class="form-title">Instructions *</h2>
+      <div class="helper">Click “Add Step” to add more steps.</div>
+
+      <div id="stepsContainer" style="margin-top: 12px;">
+        <div class="form-group full step-row">
+          <label class="label" for="step-1">Step 1</label>
+          <input class="input" type="text" id="step-1" name="step[]" required placeholder="e.g., Spread the sauce on the wrap" />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-soft" id="addStepBtn">+ Add Step</button>
+        <button type="button" class="btn btn-soft" id="removeStepBtn">− Remove Last</button>
+      </div>
+
+      <hr style="border: none; border-top: 1px solid var(--border); margin: 18px 0;">
+
+      <h2 class="form-title">Video / URL (optional)</h2>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label class="label" for="videoFile">Upload Video</label>
+          <input class="input" type="file" id="videoFile" name="videoFile" accept="video/*" />
+          <div class="helper">Upload a video file or use a video link below.</div>
+        </div>
+
+        <div class="form-group full">
+          <label class="label" for="videoUrl">Video Link</label>
+          <input class="input" type="url" id="videoUrl" name="videoURL" placeholder="https://..." />
+          <div class="helper">Leave both empty if there is no video.</div>
+        </div>
+      </div>
+
+      <div class="form-actions" style="margin-top: 18px;">
+        <button type="submit" class="btn btn-primary">Submit Recipe</button>
+        <a class="btn btn-ghost" href="../my_recipes-page/my-recipes.php">Back to My Recipes</a>
+      </div>
+    </form>
+  </main>
+
+  <!-- ===== START SHARED HTML: FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>&copy; 2026 Lunchy. All rights reserved.</span>
+    </div>
+  </footer>
+  <!-- ===== END SHARED HTML: FOOTER ===== -->
+
+  <script>
+    let ingredientCount = 1;
+    let stepCount = 1;
+
+    const ingredientsContainer = document.getElementById("ingredientsContainer");
+    const stepsContainer = document.getElementById("stepsContainer");
+
+    document.getElementById("addIngredientBtn").addEventListener("click", () => {
+      ingredientCount++;
+      const wrapper = document.createElement("div");
+      wrapper.className = "form-group full ingredient-row";
+      wrapper.innerHTML = `
+        <label class="label" for="ingredient-${ingredientCount}">Ingredient ${ingredientCount}</label>
+        <div class="form-grid">
+          <div class="form-group">
+            <input class="input" type="text" id="ingredient-${ingredientCount}" name="ingredientName[]" required
+                   placeholder="e.g., Lettuce, tomatoes..." />
+          </div>
+          <div class="form-group">
+            <input class="input" type="text" id="ingredient-qty-${ingredientCount}" name="ingredientQuantity[]" required
+                   placeholder="e.g., 1 cup" />
+          </div>
+        </div>
+      `;
+      ingredientsContainer.appendChild(wrapper);
+    });
+
+    document.getElementById("removeIngredientBtn").addEventListener("click", () => {
+      if (ingredientCount <= 1) return;
+      ingredientsContainer.lastElementChild.remove();
+      ingredientCount--;
+    });
+
+    document.getElementById("addStepBtn").addEventListener("click", () => {
+      stepCount++;
+      const wrapper = document.createElement("div");
+      wrapper.className = "form-group full step-row";
+      wrapper.innerHTML = `
+        <label class="label" for="step-${stepCount}">Step ${stepCount}</label>
+        <input class="input" type="text" id="step-${stepCount}" name="step[]" required
+               placeholder="e.g., Pack it in a lunch box container" />
+      `;
+      stepsContainer.appendChild(wrapper);
+    });
+
+    document.getElementById("removeStepBtn").addEventListener("click", () => {
+      if (stepCount <= 1) return;
+      stepsContainer.lastElementChild.remove();
+      stepCount--;
+    });
+
+    document.getElementById("addRecipeForm").addEventListener("submit", (e) => {
+      const name = document.getElementById("recipeName").value.trim();
+      const category = document.getElementById("category").value;
+      const lunchType = document.getElementById("lunchType").value;
+      const description = document.getElementById("description").value.trim();
+      const videoFile = document.getElementById("videoFile").files.length;
+      const videoUrl = document.getElementById("videoUrl").value.trim();
+
+      if (!name || !category || !lunchType || !description) {
+        e.preventDefault();
+        alert("Please fill in all required fields.");
+        return;
+      }
+
+      if (videoFile > 0 && videoUrl !== "") {
+        e.preventDefault();
+        alert("Please choose either a video file or a video link, not both.");
+        return;
+      }
+    });
+
+    const recipePhotoBox = document.getElementById("recipePhotoBox");
+    const recipePhotoInput = document.getElementById("photo");
+    const recipePhotoName = document.getElementById("recipePhotoName");
+    const photoPreview = document.getElementById("photoPreview");
+
+    recipePhotoBox.addEventListener("click", () => {
+      recipePhotoInput.click();
+    });
+
+    recipePhotoInput.addEventListener("change", () => {
+      if (recipePhotoInput.files.length === 0) return;
+
+      const file = recipePhotoInput.files[0];
+      recipePhotoBox.classList.add("active");
+      recipePhotoName.textContent = "Selected: " + file.name;
+
+      const url = URL.createObjectURL(file);
+      photoPreview.style.backgroundImage = `url('${url}')`;
+      photoPreview.hidden = false;
+    });
+  </script>
+
+</body>
+</html>
