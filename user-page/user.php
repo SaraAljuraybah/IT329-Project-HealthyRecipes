@@ -219,7 +219,7 @@ $favsResult = $conn->query($sqlFavs);
               <span class="likes">❤️ <?php echo $recipe['likeCount']; ?></span>
             </div>
             <h3 class="r-title">
-              <a href="../view_recipe-page/View-recipe-page.html?id=<?php echo $recipe['id']; ?>">
+              <a href="../view_recipe-page/view_recipe.php?id=<?php echo $recipe['id']; ?>">
                 <?php echo htmlspecialchars($recipe['name']); ?>
               </a>
             </h3>
@@ -264,7 +264,7 @@ $favsResult = $conn->query($sqlFavs);
                alt="<?php echo htmlspecialchars($fav['name']); ?>">
           <div class="fav-body">
             <div class="fav-title">
-              <a href="../view_recipe-page/View-recipe-page.html?id=<?php echo $fav['id']; ?>">
+              <a href="../view_recipe-page/view_recipe.php?id=<?php echo $fav['id']; ?>">
                 <?php echo htmlspecialchars($fav['name']); ?>
               </a>
             </div>
