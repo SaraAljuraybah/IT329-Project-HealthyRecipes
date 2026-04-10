@@ -1,9 +1,14 @@
 <?php
 session_start();
 require_once __DIR__ . '/../db.php';
+
+// #5 - Security
 if (!isset($_SESSION['user_id'])) {
-    die("You must be logged in first.");
+    header("Location: ../login-page/login.html");
+    exit();
 }
+
+
 
 $userID = $_SESSION['user_id'];
 

@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require_once __DIR__ . '/../db.php';
+include "../db.php";
 $email = $_POST['email'];
 $password = $_POST['password'];
 
@@ -37,7 +37,7 @@ $_SESSION['user_type'] = $user['userType'];
 if($user['userType'] == "admin"){
     header("Location: ../admin-page/admin.html");
 } else {
-    header("Location: ../user-page/user.html");
+    header("Location: ../user-page/user.php");
 }
 
 exit();

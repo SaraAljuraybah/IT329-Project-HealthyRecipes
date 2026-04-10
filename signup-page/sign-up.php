@@ -1,7 +1,10 @@
 <?php
 
+
+
 session_start();
 include "../db.php";
+
 
 $first = $_POST['firstName'];
 $last = $_POST['lastName'];
@@ -24,13 +27,14 @@ if($result->num_rows > 0){
     exit();
 }
 
+
 # hash password
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
 # image upload
 if(isset($_FILES['photo']) && $_FILES['photo']['name'] != ""){
     $photo = time() . "_" . $_FILES['photo']['name'];
-    move_uploaded_file($_FILES['photo']['tmp_name'], "uploads/" . $photo);
+move_uploaded_file($_FILES['photo']['tmp_name'], "../uploads/" . $photo);
 } else {
     $photo = "default-user.png";
 }
