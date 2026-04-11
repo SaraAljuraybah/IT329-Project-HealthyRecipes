@@ -3,16 +3,15 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 session_start();
-include("../db.php");
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login-page/login.html?error=Please login first");
+    header("Location: ../login-page/login.html");
     exit();
 }
+include("../db.php");
 
 if (!isset($_POST['recipeID']) || !isset($_POST['comment'])) {
-    echo "Invalid request.";
-    exit();
+    die("Invalid request");
 }
 
 $recipeID = intval($_POST['recipeID']);
