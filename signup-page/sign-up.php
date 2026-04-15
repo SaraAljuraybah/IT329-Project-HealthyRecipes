@@ -54,7 +54,7 @@ if($conn->query($sql)){
 
     # توجيه حسب النوع
     if($userType == "admin"){
-        header("Location: ../admin-page/admin.html");
+        header("Location: ../admin-page/admin.php");
     } else {
         header("Location: ../user-page/user.html");
     }

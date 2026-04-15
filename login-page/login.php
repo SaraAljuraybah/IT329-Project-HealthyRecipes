@@ -35,7 +35,7 @@ $_SESSION['user_type'] = $user['userType'];
 
 
 if($user['userType'] == "admin"){
-    header("Location: ../admin-page/admin.html");
+    header("Location: ../admin-page/admin.php");
 } else {
     header("Location: ../user-page/user.php");
 }

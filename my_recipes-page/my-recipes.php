@@ -51,7 +51,7 @@ $result = $stmt->get_result();
             <a class="nav-link" href="../about-us-page/about-us.html">About Us</a>
         </nav>
         <div class="actions">
-            <a class="btn btn-primary" href="../user-page/user.html">My Profile</a>
+            <a class="btn btn-primary" href="../user-page/user.php">My Profile</a>
             <a class="btn btn-ghost" href="../logout.php">Log Out</a>
         </div>
     </div>

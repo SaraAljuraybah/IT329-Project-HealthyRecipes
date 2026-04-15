@@ -405,7 +405,7 @@ $instructions = $insStmt->get_result();
     </nav>
 
     <div class="actions">
-      <a class="btn btn-primary" href="../user-page/user.html">My Profile</a>
+      <a class="btn btn-primary" href="../user-page/user.php">My Profile</a>
       <a class="btn btn-ghost" href="../home-page/index.html">Log Out</a>
     </div>
   </div>
