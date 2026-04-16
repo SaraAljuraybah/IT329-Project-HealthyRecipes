@@ -1,19 +1,94 @@
 <?php
 session_start();
 require_once __DIR__ . '/../db.php';
-/* TEMP فقط للتطوير (احذفيه لاحقًا)
-if (!isset($_SESSION['user_id'])) {
-    $_SESSION['userID'] = 2;
-    $_SESSION['userType'] = 'user';
-}
-*/
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../login-page/login.html");
     exit();
 }
+
 $user_id = $_SESSION['user_id'];
 
-// Get all recipes for this user
+/* =========================
+   DELETE RECIPE (same page)
+   ========================= */
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_recipe_id'])) {
+    $recipeID = (int) $_POST['delete_recipe_id'];
+
+    // Check recipe belongs to this user
+    $checkStmt = $conn->prepare("SELECT photoFileName, videoFilePath FROM recipe WHERE id = ? AND userID = ?");
+    $checkStmt->bind_param("ii", $recipeID, $user_id);
+    $checkStmt->execute();
+    $checkResult = $checkStmt->get_result();
+
+    if ($checkResult->num_rows > 0) {
+        $recipe = $checkResult->fetch_assoc();
+        $photoFileName = $recipe['photoFileName'] ?? '';
+        $videoFilePath = $recipe['videoFilePath'] ?? '';
+
+        $conn->begin_transaction();
+
+        try {
+            // delete related records first
+            $tables = ["ingredients", "instructions", "likes", "favourites", "comment", "report"];
+
+            foreach ($tables as $table) {
+                $stmt = $conn->prepare("DELETE FROM $table WHERE recipeID = ?");
+                $stmt->bind_param("i", $recipeID);
+                $stmt->execute();
+            }
+
+            // delete recipe itself
+            $deleteStmt = $conn->prepare("DELETE FROM recipe WHERE id = ? AND userID = ?");
+            $deleteStmt->bind_param("ii", $recipeID, $user_id);
+            $deleteStmt->execute();
+
+            if ($deleteStmt->affected_rows === 0) {
+                throw new Exception("Recipe deletion failed.");
+            }
+
+            $conn->commit();
+
+            // delete files after DB success
+            if (!empty($photoFileName)) {
+                $photoPath1 = __DIR__ . '/../media/recipes/' . $photoFileName;
+                $photoPath2 = __DIR__ . '/../media/' . $photoFileName;
+
+                if (file_exists($photoPath1)) {
+                    @unlink($photoPath1);
+                } elseif (file_exists($photoPath2)) {
+                    @unlink($photoPath2);
+                }
+            }
+
+            if (!empty($videoFilePath)) {
+                $videoPath = __DIR__ . '/../media/recipes/' . $videoFilePath;
+                if (file_exists($videoPath)) {
+                    @unlink($videoPath);
+                }
+            }
+
+            $_SESSION['flash_message'] = "Recipe deleted successfully.";
+            $_SESSION['flash_type'] = "success";
+            header("Location: my-recipes.php");
+            exit();            
+
+        } catch (Exception $e) {
+            $conn->rollback();
+            header("Location: my-recipes.php?deleted=0");
+            exit();
+        }
+    } else {
+            $_SESSION['flash_message'] = "Failed to delete recipe.";
+            $_SESSION['flash_type'] = "error";
+            header("Location: my-recipes.php");
+            exit();      
+    }
+}
+
+/* =========================
+   GET USER RECIPES
+   ========================= */
 $sql = "SELECT recipe.*, recipecategory.categoryName
         FROM recipe
         JOIN recipecategory ON recipe.categoryID = recipecategory.id
@@ -34,6 +109,8 @@ $result = $stmt->get_result();
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="my-recipes-style.css">
 </head>
+
+
 <body>
 
 <header class="site-header">
@@ -69,6 +146,17 @@ $result = $stmt->get_result();
             <p>Start by adding your first recipe.</p>
         </div>
     <?php else: ?>
+    
+<?php if (isset($_SESSION['flash_message'])): ?>
+    <div class="flash-message <?php echo $_SESSION['flash_type'] === 'success' ? 'flash-success' : 'flash-error'; ?>">
+        <?php echo htmlspecialchars($_SESSION['flash_message']); ?>
+    </div>
+    <?php
+        unset($_SESSION['flash_message']);
+        unset($_SESSION['flash_type']);
+    ?>
+<?php endif; ?>
+
     <div class="recipes-grid">
         <?php while ($row = $result->fetch_assoc()): ?>
         <?php
@@ -137,9 +225,12 @@ $result = $stmt->get_result();
                 <div class="recipe-footer">
                     <div class="action-buttons">
                         <a href="../edit_recipe-page/edit_recipe.php?id=<?php echo $recipeID; ?>" class="action-link edit-link">Edit</a>
-                        <a href="delete_recipe.php?id=<?php echo $recipeID; ?>"
-                           class="action-link delete-link"
-                           onclick="return confirm('Are you sure you want to delete this recipe?');">Delete</a>
+                        <form method="POST" action="my-recipes.php" style="display:inline;" class="delete-form">
+                            <input type="hidden" name="delete_recipe_id" value="<?php echo $recipeID; ?>">
+                            <button type="button" class="action-link delete-link open-delete-modal">
+                                Delete
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -154,6 +245,53 @@ $result = $stmt->get_result();
         <span>&copy; 2026 Lunchy. All rights reserved.</span>
     </div>
 </footer>
+<div id="deleteModal" class="delete-modal hidden">
+  <div class="delete-modal-card">
+    <div class="delete-modal-icon">🗑️</div>
+    <h3>Delete Recipe?</h3>
+    <p>Are you sure you want to delete this recipe? This action cannot be undone.</p>
 
+    <div class="delete-modal-actions">
+      <button type="button" id="cancelDeleteBtn" class="btn btn-ghost modal-btn">Cancel</button>
+      <button type="button" id="confirmDeleteBtn" class="btn btn-danger modal-btn">Yes, Delete</button>
+    </div>
+  </div>
+</div>
+<script>
+  const deleteModal = document.getElementById("deleteModal");
+  const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
+  const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+  const openDeleteButtons = document.querySelectorAll(".open-delete-modal");
+
+  let selectedDeleteForm = null;
+
+  openDeleteButtons.forEach(button => {
+    button.addEventListener("click", function () {
+      selectedDeleteForm = this.closest(".delete-form");
+      deleteModal.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+    });
+  });
+
+  cancelDeleteBtn.addEventListener("click", function () {
+    deleteModal.classList.add("hidden");
+    selectedDeleteForm = null;
+    document.body.style.overflow = "";
+  });
+
+  confirmDeleteBtn.addEventListener("click", function () {
+    if (selectedDeleteForm) {
+      selectedDeleteForm.submit();
+    }
+  });
+
+  deleteModal.addEventListener("click", function (e) {
+    if (e.target === deleteModal) {
+      deleteModal.classList.add("hidden");
+      selectedDeleteForm = null;
+      document.body.style.overflow = "";
+    }
+  });
+</script>
 </body>
 </html>

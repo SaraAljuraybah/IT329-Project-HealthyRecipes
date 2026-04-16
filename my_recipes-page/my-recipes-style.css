@@ -306,7 +306,159 @@
   margin: 0;
   font-size: 15px;
 }
+.action-buttons form {
+  display: inline;
+}
 
+.action-buttons button.action-link {
+  font: inherit;
+}
+
+.delete-modal.hidden {
+  display: none;
+}
+
+.delete-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 24, 40, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.delete-modal-card {
+  width: 100%;
+  max-width: 430px;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 28px 24px;
+  box-shadow: 0 20px 50px rgba(16, 24, 40, 0.18);
+  text-align: center;
+  border: 1px solid #e5efe8;
+}
+
+.delete-modal-icon {
+  font-size: 34px;
+  margin-bottom: 10px;
+}
+
+.delete-modal-card h3 {
+  margin: 0 0 10px;
+  font-size: 28px;
+  font-weight: 900;
+  color: #243c35;
+}
+
+.delete-modal-card p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #667085;
+}
+
+.delete-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.modal-btn {
+  min-width: 130px;
+}
+
+.btn-danger {
+  background: #ef4444;
+  color: white;
+  border: 1px solid #ef4444;
+  border-radius: 14px;
+  padding: 12px 18px;
+  font-weight: 800;
+}
+
+.btn-danger:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+}
+
+.action-buttons form {
+  display: inline;
+}
+
+.action-buttons button.action-link {
+  font: inherit;
+}
+.delete-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.modal-btn {
+  min-width: 130px;
+}
+
+.delete-modal-actions .btn-ghost {
+  background: #ffffff;
+  color: #243c35;
+  border: 1px solid #d0d5dd;
+  border-radius: 14px;
+  padding: 12px 18px;
+  font-weight: 800;
+}
+
+.delete-modal-actions .btn-ghost:hover {
+  background: #f8fafc;
+}
+
+.btn-danger {
+  background: #ef4444;
+  color: white;
+  border: 1px solid #ef4444;
+  border-radius: 14px;
+  padding: 12px 18px;
+  font-weight: 800;
+}
+
+.btn-danger:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+}
+
+.flash-message {
+  margin: 12px 0 18px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+.flash-success {
+  background: #ecfdf3;
+  color: #166534;
+}
+
+.flash-error {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+.action-buttons form {
+  display: inline;
+  margin: 0;
+}
+
+.action-buttons button.action-link {
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+  margin: 0;
+  cursor: pointer;
+}
 @media (max-width: 900px) {
   .page-header {
     flex-direction: column;
@@ -327,3 +479,8 @@
     max-width: none;
   }
 }
+
+
+
+
+
