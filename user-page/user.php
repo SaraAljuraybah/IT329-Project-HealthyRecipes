@@ -139,7 +139,7 @@ $favsResult = $conn->query($sqlFavs);
       <div class="panel profile-card">
         <div class="profile-top">
           <img class="avatar" 
-               src="../uploads/<?php echo htmlspecialchars($user['photoFileName']); ?>" 
+               src="../uploads/images/<?php echo htmlspecialchars($user['photoFileName']); ?>" 
                alt="Profile photo">
           <div>
             <div class="p-name"><?php echo htmlspecialchars($user['firstName'] . ' ' . $user['lastName']); ?></div>
@@ -228,7 +228,7 @@ $favsResult = $conn->query($sqlFavs);
             </p>
             <div class="r-creator">
               <img class="mini-ava" 
-                   src="../uploads/<?php echo htmlspecialchars($recipe['userPhoto']); ?>" 
+                   src="../uploads/images/<?php echo htmlspecialchars($recipe['userPhoto']); ?>" 
                    alt="creator">
               <span class="muted">
                 <?php echo htmlspecialchars($recipe['firstName'] . ' ' . $recipe['lastName']); ?>
