@@ -173,7 +173,7 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
             <h1 class="title_vr"><?php echo htmlspecialchars($recipe['name']); ?></h1>
 
             <div class="image-container_vr">
-                <img src="../media/<?php echo htmlspecialchars($recipe['photoFileName']); ?>" alt="Recipe Image" class="recipe-img_vr">
+                <img src="../uploads/images/<?php echo htmlspecialchars($recipe['photoFileName']); ?>" alt="Recipe Image" class="recipe-img_vr">
             </div>
 
             <div class="catchy-text_vr">
