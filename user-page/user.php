@@ -100,7 +100,7 @@ $favsResult = $conn->query($sqlFavs);
         </span>
       </a>
       <nav class="nav">
-        <a class="nav-link" href="../explore-page/explore.html">Explore</a>
+        <a class="nav-link" href="../explore-page/explore.php">Explore</a>
         <a class="nav-link" href="../my_recipes-page/my-recipes.php">My Recipes</a>
         <a class="nav-link" href="../about-us-page/about-us.html">About Us</a>
       </nav>
@@ -183,6 +183,57 @@ $favsResult = $conn->query($sqlFavs);
 
     </section>
 
+
+
+    <!-- 5) Favourite recipes -->
+    <section class="panel">
+      <div class="section-head">
+        <div>
+          <h2>Favourites ❤️</h2>
+          <p class="muted">Your favourite lunchbox ideas.</p>
+        </div>
+        <a class="btn btn-primary btn-explore" href="../explore-page/explore.php">
+          Explore Lunchboxes <span class="arrow">→</span>
+        </a>
+      </div>
+
+      <?php if ($favsResult && $favsResult->num_rows > 0): ?>
+      <div class="fav-grid">
+        <?php while ($fav = $favsResult->fetch_assoc()): ?>
+        <div class="fav-card">
+          <img class="fav-img" 
+               src="../uploads/images/<?php echo htmlspecialchars($fav['photoFileName']); ?>" 
+               alt="<?php echo htmlspecialchars($fav['name']); ?>">
+          <div class="fav-body">
+            <div class="fav-title">
+              <a href="../view_recipe-page/view_recipe.php?id=<?php echo $fav['id']; ?>">
+                <?php echo htmlspecialchars($fav['name']); ?>
+              </a>
+            </div>
+            <div class="fav-actions">
+              <a class="remove" href="../remove_favourite.php?recipeID=<?php echo $fav['id']; ?>">Remove</a>
+            </div>
+          </div>
+        </div>
+        <?php endwhile; ?>
+      </div>
+      <?php else: ?>
+        <p class="muted">You have no favourite recipes yet.</p>
+      <?php endif; ?>
+
+      <div class="signout-row">
+        <a class="text-link" href="../logout.php">Sign out</a>
+      </div>
+    </section>
+
+
+
+
+
+
+
+
+
     <!-- 4) All Available Recipes -->
     <section class="panel">
       <div class="section-head">
@@ -243,46 +294,20 @@ $favsResult = $conn->query($sqlFavs);
       <?php endif; ?>
     </section>
 
-    <!-- 5) Favourite recipes -->
-    <section class="panel">
-      <div class="section-head">
-        <div>
-          <h2>Favourites ❤️</h2>
-          <p class="muted">Your favourite lunchbox ideas.</p>
-        </div>
-        <a class="btn btn-primary btn-explore" href="../explore-page/explore.html">
-          Explore Lunchboxes <span class="arrow">→</span>
-        </a>
-      </div>
 
-      <?php if ($favsResult && $favsResult->num_rows > 0): ?>
-      <div class="fav-grid">
-        <?php while ($fav = $favsResult->fetch_assoc()): ?>
-        <div class="fav-card">
-          <img class="fav-img" 
-               src="../uploads/images/<?php echo htmlspecialchars($fav['photoFileName']); ?>" 
-               alt="<?php echo htmlspecialchars($fav['name']); ?>">
-          <div class="fav-body">
-            <div class="fav-title">
-              <a href="../view_recipe-page/view_recipe.php?id=<?php echo $fav['id']; ?>">
-                <?php echo htmlspecialchars($fav['name']); ?>
-              </a>
-            </div>
-            <div class="fav-actions">
-              <a class="remove" href="../remove_favourite.php?recipeID=<?php echo $fav['id']; ?>">Remove</a>
-            </div>
-          </div>
-        </div>
-        <?php endwhile; ?>
-      </div>
-      <?php else: ?>
-        <p class="muted">You have no favourite recipes yet.</p>
-      <?php endif; ?>
 
-      <div class="signout-row">
-        <a class="text-link" href="../logout.php">Sign out</a>
-      </div>
-    </section>
+
+
+
+
+
+
+
+
+
+
+
+
 
   </main>
 
