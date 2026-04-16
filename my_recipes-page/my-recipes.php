@@ -125,7 +125,7 @@ $result = $stmt->get_result();
                 <div class="video-container">
                     <?php if (!empty($row['videoFilePath'])): ?>
                         <video controls class="recipe-video">
-                            <source src="../media/recipes/<?php echo htmlspecialchars($row['videoFilePath']); ?>" type="video/mp4">
+                            <source src="../uploads/videos/<?php echo htmlspecialchars($row['videoFilePath']); ?>" type="video/mp4">
                         </video>
                     <?php elseif (!empty($row['videoURL'])): ?>
                         <a href="<?php echo htmlspecialchars($row['videoURL']); ?>" target="_blank">Watch Video</a>
