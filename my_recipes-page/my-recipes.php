@@ -92,7 +92,7 @@ $result = $stmt->get_result();
         <div class="recipe-card">
             <div class="recipe-header">
                 <a href="../view_recipe-page/View-recipe-page.php?id=<?php echo $recipeID; ?>">
-                    <img src="../uploads/images/<?php echo htmlspecialchars($row['photoFileName']); ?>"
+                    <img src="../media/recipes/<?php echo htmlspecialchars($row['photoFileName']); ?>"
                          alt="<?php echo htmlspecialchars($row['name']); ?>"
                          class="recipe-thumb-large">
                 </a>

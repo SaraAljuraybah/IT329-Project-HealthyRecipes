@@ -2,13 +2,15 @@
 session_start();
 require_once __DIR__ . '/../db.php';
 
-// #5 - Security
+// Security
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../login-page/login.html");
     exit();
 }
 
-
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    die("Invalid request method.");
+}
 
 $userID = $_SESSION['user_id'];
 
@@ -22,16 +24,51 @@ $ingredientNames = $_POST['ingredientName'] ?? [];
 $ingredientQuantities = $_POST['ingredientQuantity'] ?? [];
 $steps = $_POST['step'] ?? [];
 
+// Basic validation
 if ($name === '' || $categoryID <= 0 || $lunchBoxType === '' || $description === '') {
     die("Please fill in all required fields.");
+}
+
+if (empty($_FILES['photo']['name'])) {
+    die("Photo is required.");
 }
 
 if (!empty($_FILES['videoFile']['name']) && $videoURL !== '') {
     die("Please choose either a video file or a video URL, not both.");
 }
 
-$imageFolder = "../uploads/images/";
-$videoFolder = "../uploads/videos/";
+// Validate at least one full ingredient
+$hasValidIngredient = false;
+for ($i = 0; $i < count($ingredientNames); $i++) {
+    $ingredientName = trim($ingredientNames[$i] ?? '');
+    $ingredientQuantity = trim($ingredientQuantities[$i] ?? '');
+
+    if ($ingredientName !== '' && $ingredientQuantity !== '') {
+        $hasValidIngredient = true;
+        break;
+    }
+}
+
+if (!$hasValidIngredient) {
+    die("At least one complete ingredient is required.");
+}
+
+// Validate at least one step
+$hasValidStep = false;
+foreach ($steps as $stepText) {
+    if (trim($stepText) !== '') {
+        $hasValidStep = true;
+        break;
+    }
+}
+
+if (!$hasValidStep) {
+    die("At least one instruction step is required.");
+}
+
+// Use folders that match your display pages
+$imageFolder = "../media/recipes/";
+$videoFolder = "../media/recipes/";
 
 if (!is_dir($imageFolder)) {
     mkdir($imageFolder, 0777, true);
@@ -41,10 +78,7 @@ if (!is_dir($videoFolder)) {
     mkdir($videoFolder, 0777, true);
 }
 
-if (empty($_FILES['photo']['name'])) {
-    die("Photo is required.");
-}
-
+// Upload photo
 $photoFileName = time() . "_" . basename($_FILES['photo']['name']);
 $photoTarget = $imageFolder . $photoFileName;
 
@@ -52,6 +86,7 @@ if (!move_uploaded_file($_FILES['photo']['tmp_name'], $photoTarget)) {
     die("Failed to upload photo.");
 }
 
+// Upload video if exists
 $videoFilePath = null;
 
 if (!empty($_FILES['videoFile']['name'])) {
@@ -94,7 +129,7 @@ try {
     ");
 
     for ($i = 0; $i < count($ingredientNames); $i++) {
-        $ingredientName = trim($ingredientNames[$i]);
+        $ingredientName = trim($ingredientNames[$i] ?? '');
         $ingredientQuantity = trim($ingredientQuantities[$i] ?? '');
 
         if ($ingredientName !== '' && $ingredientQuantity !== '') {
@@ -125,6 +160,16 @@ try {
 
 } catch (Exception $e) {
     $conn->rollback();
+
+    // optional cleanup if insert fails
+    if (file_exists($photoTarget)) {
+        @unlink($photoTarget);
+    }
+
+    if (!empty($videoFilePath) && file_exists($videoFolder . $videoFilePath)) {
+        @unlink($videoFolder . $videoFilePath);
+    }
+
     die("Insert failed: " . $e->getMessage());
 }
 ?>
