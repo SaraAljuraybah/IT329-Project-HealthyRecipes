@@ -92,7 +92,7 @@ $result = $stmt->get_result();
         <div class="recipe-card">
             <div class="recipe-header">
                 <a href="../view_recipe-page/View-recipe-page.php?id=<?php echo $recipeID; ?>">
-                    <img src="../media/recipes/<?php echo htmlspecialchars($row['photoFileName']); ?>"
+                    <img src="../uploads/images/<?php echo htmlspecialchars($row['photoFileName']); ?>"
                          alt="<?php echo htmlspecialchars($row['name']); ?>"
                          class="recipe-thumb-large">
                 </a>
@@ -125,7 +125,7 @@ $result = $stmt->get_result();
                 <div class="video-container">
                     <?php if (!empty($row['videoFilePath'])): ?>
                         <video controls class="recipe-video">
-                            <source src="../uploads/videos/<?php echo htmlspecialchars($row['videoFilePath']); ?>" type="video/mp4">
+                            <source src="../media/recipes/<?php echo htmlspecialchars($row['videoFilePath']); ?>" type="video/mp4">
                         </video>
                     <?php elseif (!empty($row['videoURL'])): ?>
                         <a href="<?php echo htmlspecialchars($row['videoURL']); ?>" target="_blank">Watch Video</a>
