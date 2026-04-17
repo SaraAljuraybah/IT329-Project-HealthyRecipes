@@ -5,21 +5,13 @@ ini_set('display_errors', 1);
 session_start();
 include("../db.php");
 
-/* check login */
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_type'])) {
-    header("Location: ../login-page/login.html?error=Please login first");
-    exit();
-}
-
-/* check admin */
-if ($_SESSION['user_type'] != 'admin') {
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_type']) || $_SESSION['user_type'] != 'admin') {
     header("Location: ../login-page/login.html?error=Access denied");
     exit();
 }
 
 if (!isset($_POST['reportID']) || !isset($_POST['recipeID']) || !isset($_POST['action'])) {
-    echo "Invalid request.";
-    exit();
+    die("Invalid request.");
 }
 
 $reportID = intval($_POST['reportID']);
@@ -38,24 +30,23 @@ if ($action == "dismiss") {
 
 if ($action == "block") {
     /* get recipe owner */
-    $sqlRecipe = "SELECT recipe.userID, user.firstName, user.lastName, user.emailAddress
-                  FROM recipe
-                  JOIN user ON recipe.userID = user.id
-                  WHERE recipe.id = ?";
-    $stmtRecipe = mysqli_prepare($conn, $sqlRecipe);
-    mysqli_stmt_bind_param($stmtRecipe, "i", $recipeID);
-    mysqli_stmt_execute($stmtRecipe);
-    $resultRecipe = mysqli_stmt_get_result($stmtRecipe);
+    $sqlOwner = "SELECT recipe.userID, user.firstName, user.lastName, user.emailAddress
+                 FROM recipe
+                 JOIN user ON recipe.userID = user.id
+                 WHERE recipe.id = ?";
+    $stmtOwner = mysqli_prepare($conn, $sqlOwner);
+    mysqli_stmt_bind_param($stmtOwner, "i", $recipeID);
+    mysqli_stmt_execute($stmtOwner);
+    $resultOwner = mysqli_stmt_get_result($stmtOwner);
 
-    if (mysqli_num_rows($resultRecipe) == 0) {
-        echo "Recipe or user not found.";
-        exit();
+    if (!$resultOwner || mysqli_num_rows($resultOwner) == 0) {
+        die("Recipe owner not found.");
     }
 
-    $owner = mysqli_fetch_assoc($resultRecipe);
-    $ownerID = $owner['userID'];
+    $owner = mysqli_fetch_assoc($resultOwner);
+    $ownerID = intval($owner['userID']);
 
-    /* add to blockeduser first */
+    /* add blocked user first */
     $sqlCheckBlocked = "SELECT * FROM blockeduser WHERE emailAddress = ?";
     $stmtCheckBlocked = mysqli_prepare($conn, $sqlCheckBlocked);
     mysqli_stmt_bind_param($stmtCheckBlocked, "s", $owner['emailAddress']);
@@ -69,13 +60,53 @@ if ($action == "block") {
         mysqli_stmt_execute($stmtInsertBlocked);
     }
 
-    /* delete user -> recipes and related data will be deleted by cascade */
+    /* delete recipe files first */
+    $sqlRecipes = "SELECT id, photoFileName, videoFilePath FROM recipe WHERE userID = ?";
+    $stmtRecipes = mysqli_prepare($conn, $sqlRecipes);
+    mysqli_stmt_bind_param($stmtRecipes, "i", $ownerID);
+    mysqli_stmt_execute($stmtRecipes);
+    $resultRecipes = mysqli_stmt_get_result($stmtRecipes);
+
+    while ($recipe = mysqli_fetch_assoc($resultRecipes)) {
+        $photo = $recipe['photoFileName'];
+        $video = $recipe['videoFilePath'];
+
+        $possiblePhotoPaths = [
+            "../media/" . $photo,
+            "../uploads/" . $photo,
+            "../uploads/recipes/photos/" . $photo
+        ];
+
+        $possibleVideoPaths = [
+            "../media/" . $video,
+            "../uploads/" . $video,
+            "../uploads/recipes/videos/" . $video
+        ];
+
+        if (!empty($photo) && $photo != "default-user.png") {
+            foreach ($possiblePhotoPaths as $path) {
+                if (file_exists($path) && is_file($path)) {
+                    @unlink($path);
+                }
+            }
+        }
+
+        if (!empty($video)) {
+            foreach ($possibleVideoPaths as $path) {
+                if (file_exists($path) && is_file($path)) {
+                    @unlink($path);
+                }
+            }
+        }
+    }
+
+    /* then delete user; cascade handles related rows */
     $sqlDeleteUser = "DELETE FROM user WHERE id = ?";
     $stmtDeleteUser = mysqli_prepare($conn, $sqlDeleteUser);
     mysqli_stmt_bind_param($stmtDeleteUser, "i", $ownerID);
     mysqli_stmt_execute($stmtDeleteUser);
 
-    /* just in case, delete the original report by id if still exists */
+    /* delete current report if still exists */
     $sqlDeleteReport = "DELETE FROM report WHERE id = ?";
     $stmtDeleteReport = mysqli_prepare($conn, $sqlDeleteReport);
     mysqli_stmt_bind_param($stmtDeleteReport, "i", $reportID);
@@ -85,5 +116,5 @@ if ($action == "block") {
     exit();
 }
 
-echo "Invalid action.";
+die("Invalid action.");
 ?>
