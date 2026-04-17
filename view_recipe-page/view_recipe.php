@@ -4,19 +4,19 @@ ini_set('display_errors', 1);
 
 session_start();
 
-/* TEMP SESSION FOR DEVELOPMENT ONLY
-   احذفي هذا الجزء بعد ما يضبط login.php */
 if (!isset($_SESSION['user_id'])) {
-    $_SESSION['user_id'] = 2;
-    $_SESSION['firstName'] = 'Sara';
-    $_SESSION['user_type'] = 'user';
+    header("Location: ../login-page/login.html");
+    exit();
 }
 
 include("../db.php");
 
-/* TEMP recipe id for testing
-   احذفيه لاحقًا وخلي الصفحة تعتمد على ?id=... */
-$recipeID = 1;
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    echo "Recipe not found.";
+    exit();
+}
+
+$recipeID = intval($_GET['id']);
 
 $currentUserID = $_SESSION['user_id'];
 $currentUserType = $_SESSION['user_type'];
@@ -115,28 +115,26 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
 </head>
 <body class="body_vr">
 
-<header class="site-header">
+ <header class="site-header">
     <div class="container header-inner">
-        <a class="brand" href="../explore-page/explore.html">
-            <img class="brand-logo" src="../media/logo.png" alt="Lunchy logo">
-            <span class="brand-text">
-                <span class="brand-name">Lunchy</span>
-                <span class="brand-tagline">Pack smart. Eat better.</span>
-            </span>
-        </a>
-
-        <nav class="nav">
-            <a class="nav-link" href="../explore-page/explore.html">Explore</a>
-            <a class="nav-link" href="../my_recipes-page/my-recipes.html">My Recipes</a>
-            <a class="nav-link" href="../about-us-page/about-us.html">About Us</a>
-        </nav>
-
-        <div class="actions">
-            <a class="btn btn-primary" href="../user-page/user.php">My Profile</a>
-            <a class="btn btn-ghost" href="../logout.php">Log Out</a>
-        </div>
+      <a class="brand" href="../explore-page/explore.html">
+        <img class="brand-logo" src="../media/logo.png" alt="Lunchy logo">
+        <span class="brand-text">
+          <span class="brand-name">Lunchy</span>
+          <span class="brand-tagline">Pack smart. Eat better.</span>
+        </span>
+      </a>
+      <nav class="nav">
+        <a class="nav-link" href="../explore-page/explore.php">Explore</a>
+        <a class="nav-link" href="../my_recipes-page/my-recipes.php">My Recipes</a>
+        <a class="nav-link" href="../about-us-page/about-us.html">About Us</a>
+      </nav>
+      <div class="actions">
+        <a class="btn btn-primary" href="user.php">My Profile</a>
+        <a class="btn btn-ghost" href="../logout.php">Log Out</a>
+      </div>
     </div>
-</header>
+  </header>
 
 <?php if ($showButtons) { ?>
 <div class="actions_vr">
