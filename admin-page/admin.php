@@ -35,7 +35,8 @@ $sqlReports = "SELECT
                     recipe.userID AS recipeOwnerID,
                     user.firstName,
                     user.lastName,
-                    user.emailAddress
+                    user.emailAddress,
+                    user.photoFileName
                FROM report
                JOIN recipe ON report.recipeID = recipe.id
                JOIN user ON recipe.userID = user.id
@@ -299,7 +300,13 @@ $blockedCount = ($resultBlocked) ? mysqli_num_rows($resultBlocked) : 0;
 
                 <td>
                   <div class="user-mini">
-                    <img class="avatar" src="../media/user.png" alt="user">
+                    <?php 
+                     $uPic = $report['photoFileName'];
+                    $uFolder = ($uPic == "default-user.png") ? "images" : "profiles";
+                    ?>
+                   <img class="avatar" src="../uploads/<?php echo $uFolder; ?>/<?php echo htmlspecialchars($uPic); ?>" alt="user">
+                    
+                    
                     <div>
                       <div class="user-name"><?php echo htmlspecialchars($report['firstName'] . " " . $report['lastName']); ?></div>
                       <div class="muted"><?php echo htmlspecialchars($report['emailAddress']); ?></div>

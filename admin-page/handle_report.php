@@ -68,28 +68,30 @@ if ($action == "block") {
     $resultRecipes = mysqli_stmt_get_result($stmtRecipes);
 
     while ($recipe = mysqli_fetch_assoc($resultRecipes)) {
-        $photo = $recipe['photoFileName'];
-        $video = $recipe['videoFilePath'];
+    $photo = $recipe['photoFileName'];
+    $video = $recipe['videoFilePath'];
 
-        $possiblePhotoPaths = [
-            "../media/" . $photo,
-            "../uploads/" . $photo,
-            "../uploads/recipes/photos/" . $photo
-        ];
-
-        $possibleVideoPaths = [
-            "../media/" . $video,
-            "../uploads/" . $video,
-            "../uploads/recipes/videos/" . $video
-        ];
-
-        if (!empty($photo) && $photo != "default-user.png") {
-            foreach ($possiblePhotoPaths as $path) {
-                if (file_exists($path) && is_file($path)) {
-                    @unlink($path);
-                }
-            }
+        // 1. حذف صورة الوصفة (موجودة في مجلد images)
+        $recipePhotoPath = "../uploads/images/" . $photo;
+        if (!empty($photo) && file_exists($recipePhotoPath)) {
+            @unlink($recipePhotoPath);
         }
+
+        // 2. حذف فيديو الوصفة (موجودة في مجلد videos)
+        $videoPath = "../uploads/videos/" . $video;
+        if (!empty($video) && file_exists($videoPath)) {
+            @unlink($videoPath);
+        }
+   }
+
+    // 3. حذف صورة بروفايل المستخدم (موجودة في مجلد profiles)
+    // نستخدم $owner['photoFileName'] الذي جلبناه في سطر 45
+    $userPic = $owner['photoFileName'];
+    $profilePath = "../uploads/profiles/" . $userPic;
+
+    if (!empty($userPic) && $userPic != "default-user.png" && file_exists($profilePath)) {
+        @unlink($profilePath);
+    }
 
         if (!empty($video)) {
             foreach ($possibleVideoPaths as $path) {
@@ -98,7 +100,7 @@ if ($action == "block") {
                 }
             }
         }
-    }
+    
 
     /* then delete user; cascade handles related rows */
     $sqlDeleteUser = "DELETE FROM user WHERE id = ?";

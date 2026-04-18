@@ -51,7 +51,7 @@ mysqli_stmt_bind_param($stmtInstructions, "i", $recipeID);
 mysqli_stmt_execute($stmtInstructions);
 $resultInstructions = mysqli_stmt_get_result($stmtInstructions);
 
-$sqlComments = "SELECT comment.*, user.firstName, user.lastName
+$sqlComments = "SELECT comment.*, user.firstName, user.lastName, user.photoFileName
                 FROM comment
                 JOIN user ON comment.userID = user.id
                 WHERE comment.recipeID = ?
@@ -184,11 +184,16 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
         <article class="card_vr">
             <div class="card-top_vr"><h2>Recipe Creator</h2></div>
             <div class="creator-box_vr">
-                <img src="../media/account_vr.svg" alt="Profile Icon" class="profile-icon_vr">
-                <span class="user-name_vr">
-                    <?php echo htmlspecialchars($recipe['firstName'] . " " . $recipe['lastName']); ?>
-                </span>
-            </div>
+    <?php 
+        // منطق ذكي: إذا كانت الصورة ديفولت تروح لمجلد images، غير كذا تروح لـ profiles
+        $userImg = $recipe['photoFileName'];
+        $folder = ($userImg == "default-user.png") ? "images" : "profiles";
+    ?>
+    <img src="../uploads/<?php echo $folder; ?>/<?php echo htmlspecialchars($userImg); ?>" alt="Profile Icon" class="profile-icon_vr">
+    <span class="user-name_vr">
+        <?php echo htmlspecialchars($recipe['firstName'] . " " . $recipe['lastName']); ?>
+    </span>
+</div>
         </article>
 
         <article class="card_vr">
@@ -260,7 +265,11 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
 
         <div class="comments-scroll-box_vr">
             <?php if (mysqli_num_rows($resultComments) > 0) { ?>
-                <?php while ($comment = mysqli_fetch_assoc($resultComments)) { ?>
+                <?php while ($comment = mysqli_fetch_assoc($resultComments)) { 
+                    // منطق اختيار المجلد
+                  $cImg = $comment['photoFileName'];
+                    $cFolder = ($cImg == "default-user.png") ? "images" : "profiles";
+                ?>
                     <div class="comment-item_vr">
                         <div class="comment-text-wrapper_vr">
                             <div class="comment-header_vr">
@@ -269,7 +278,7 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
                             </div>
                             <p class="comment-body_vr"><?php echo htmlspecialchars($comment['comment']); ?></p>
                         </div>
-                        <img src="../media/account_vr.svg" alt="Profile" class="profile-icon_vr">
+                        <img src="../uploads/<?php echo $cFolder; ?>/<?php echo htmlspecialchars($cImg); ?>" alt="Profile" class="profile-icon_vr">
                     </div>
                 <?php } ?>
             <?php } else { ?>
