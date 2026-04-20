@@ -21,7 +21,7 @@ $recipeID = intval($_GET['id']);
 $currentUserID = $_SESSION['user_id'];
 $currentUserType = $_SESSION['user_type'];
 
-$sql = "SELECT recipe.*, user.firstName, user.lastName, recipecategory.categoryName
+$sql = "SELECT recipe.*, user.firstName, user.lastName, user.photoFileName AS userPhoto, recipecategory.categoryName
         FROM recipe
         JOIN user ON recipe.userID = user.id
         JOIN recipecategory ON recipe.categoryID = recipecategory.id
@@ -184,12 +184,11 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
         <article class="card_vr">
             <div class="card-top_vr"><h2>Recipe Creator</h2></div>
             <div class="creator-box_vr">
-    <?php 
-        $userImg = $recipe['photoFileName'];
-        $folder = ($userImg == "default-user.png") ? "images" : "profiles";
-    ?>
-    <img src="../uploads/<?php echo $folder; ?>/<?php echo htmlspecialchars($userImg); ?>" alt="Profile Icon" class="profile-icon_vr">
-    <span class="user-name_vr">
+  <?php 
+    $userImg = $recipe['userPhoto']; // غيرنا photoFileName إلى userPhoto
+    $folder = ($userImg == "default-user.png" || empty($userImg)) ? "images" : "profiles";
+?>
+<img src="../uploads/<?php echo $folder; ?>/<?php echo htmlspecialchars($userImg); ?>" alt="Profile Icon" class="profile-icon_vr">  <span class="user-name_vr">
         <?php echo htmlspecialchars($recipe['firstName'] . " " . $recipe['lastName']); ?>
     </span>
 </div>
@@ -269,6 +268,10 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
                   $cImg = $comment['photoFileName'];
                     $cFolder = ($cImg == "default-user.png") ? "images" : "profiles";
                 ?>
+
+                
+
+
                     <div class="comment-item_vr">
                         <div class="comment-text-wrapper_vr">
                             <div class="comment-header_vr">
