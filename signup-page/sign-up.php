@@ -54,12 +54,6 @@ if($conn->query($sql)){
     $_SESSION['firstName'] = $first;
     $_SESSION['user_type'] = $userType;
 
-    # توجيه حسب النوع
-    if($userType == "admin"){
-        header("Location: ../admin-page/admin.php");
-    } else {
-        header("Location: ../user-page/user.php");
-    }
 
     exit();
 
