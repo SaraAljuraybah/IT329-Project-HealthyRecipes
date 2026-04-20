@@ -12,12 +12,6 @@ $email = $_POST['email'];
 $password = $_POST['password'];
 
 
-if(isset($_POST['adminCode']) && $_POST['adminCode'] == "1445"){
-    $userType = "admin";
-} else {
-    $userType = "user";
-}
-
 # check email exists
 $sql = "SELECT * FROM user WHERE emailAddress='$email'";
 $result = $conn->query($sql);
