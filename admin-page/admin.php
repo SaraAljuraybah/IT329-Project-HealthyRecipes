@@ -227,18 +227,13 @@ $blockedCount = ($resultBlocked) ? mysqli_num_rows($resultBlocked) : 0;
     
  <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="../explore-page/explore.html">
-        <img class="brand-logo" src="../media/logo.png" alt="Lunchy logo">
+      <a class="brand" href="admin.php">
+        <img class="brand-logo" src="../uploads/images/logo.png" alt="Lunchy logo">
         <span class="brand-text">
           <span class="brand-name">Lunchy</span>
           <span class="brand-tagline">Pack smart. Eat better.</span>
         </span>
       </a>
-      <nav class="nav">
-        <a class="nav-link" href="../explore-page/explore.php">Explore</a>
-        <a class="nav-link" href="../my_recipes-page/my-recipes.php">My Recipes</a>
-        <a class="nav-link" href="../about-us-page/about-us.html">About Us</a>
-      </nav>
       <div class="actions">
         <a class="btn btn-primary" href="admin.php">My Profile</a>
         <a class="btn btn-ghost" href="../logout.php">Log Out</a>
@@ -361,7 +356,7 @@ $blockedCount = ($resultBlocked) ? mysqli_num_rows($resultBlocked) : 0;
               <tr>
                 <td>
                   <div class="user-mini">
-                    <img class="avatar" src="../media/user.png" alt="user">
+                    <img class="avatar" src="../uploads/images/default-user.png" alt="user">
                     <div class="user-name"><?php echo htmlspecialchars($blocked['firstName'] . " " . $blocked['lastName']); ?></div>
                   </div>
                 </td>

@@ -118,7 +118,7 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
  <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="../explore-page/explore.html">
-        <img class="brand-logo" src="../media/logo.png" alt="Lunchy logo">
+        <img class="brand-logo" src="../uploads/images/logo.png" alt="Lunchy logo">
         <span class="brand-text">
           <span class="brand-name">Lunchy</span>
           <span class="brand-tagline">Pack smart. Eat better.</span>
@@ -141,7 +141,7 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
     <form action="add_favourite.php" method="post">
         <input type="hidden" name="recipeID" value="<?php echo $recipeID; ?>">
         <button type="submit" class="btn_vr btn-square_vr <?php echo $favourited ? 'btn-done_vr' : 'btn-gradient_vr'; ?>" <?php if ($favourited) echo "disabled"; ?>>
-            <img src="../media/fav-icon.png" alt="" class="btn-icon_vr">
+            <img src="../uploads/images/fav-icon.png" alt="" class="btn-icon_vr">
             <span><?php echo $favourited ? "Added" : "Favourites"; ?></span>
         </button>
     </form>
@@ -149,7 +149,7 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
     <form action="add_like.php" method="post">
         <input type="hidden" name="recipeID" value="<?php echo $recipeID; ?>">
         <button type="submit" class="btn_vr btn-square_vr <?php echo $liked ? 'btn-done_vr' : 'btn-gradient_vr'; ?>" <?php if ($liked) echo "disabled"; ?>>
-            <img src="../media/like-icon.png" alt="" class="btn-icon_vr">
+            <img src="../uploads/images/like-icon.png" alt="" class="btn-icon_vr">
             <span><?php echo $liked ? "Liked" : "Like"; ?></span>
         </button>
     </form>
@@ -157,7 +157,7 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
     <form action="add_report.php" method="post">
         <input type="hidden" name="recipeID" value="<?php echo $recipeID; ?>">
         <button type="submit" class="btn_vr btn-square_vr <?php echo $reported ? 'btn-reported_vr' : 'btn-report_vr'; ?>" <?php if ($reported) echo "disabled"; ?>>
-            <img src="../media/report-icon.png" alt="" class="btn-icon_vr">
+            <img src="../uploads/images/report-icon.png" alt="" class="btn-icon_vr">
             <span><?php echo $reported ? "Reported" : "Report"; ?></span>
         </button>
     </form>
@@ -242,7 +242,7 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
         <div class="video-content_vr">
             <?php if (!empty($recipe['videoFilePath'])) { ?>
                 <video controls class="recipe-video_vr">
-                    <source src="../media/<?php echo htmlspecialchars($recipe['videoFilePath']); ?>" type="video/mp4">
+                    <source src="../uploads/videos/<?php echo htmlspecialchars($recipe['videoFilePath']); ?>" type="video/mp4">
                 </video>
             <?php } elseif (!empty($recipe['videoURL'])) { ?>
                 <a href="<?php echo htmlspecialchars($recipe['videoURL']); ?>" target="_blank" class="link_vr">Watch Video 🔗</a>
@@ -280,7 +280,7 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
                             </div>
                             <p class="comment-body_vr"><?php echo htmlspecialchars($comment['comment']); ?></p>
                         </div>
-                        <img src="../uploads/<?php echo $cFolder; ?>/<?php echo htmlspecialchars($cImg); ?>" alt="Profile" class="profile-icon_vr">
+                        <img src="../uploads/images/profiles<?php echo $cFolder; ?>/<?php echo htmlspecialchars($cImg); ?>" alt="Profile" class="profile-icon_vr">
                     </div>
                 <?php } ?>
             <?php } else { ?>

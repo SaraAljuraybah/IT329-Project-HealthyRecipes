@@ -64,7 +64,7 @@ $recipesResult = $conn->query($sqlRecipes);
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="#">
-        <img class="brand-logo" src="../media/logo.png" alt="Lunchy logo">
+        <img class="brand-logo" src="../uploads/images/logo.png" alt="Lunchy logo">
         <span class="brand-text">
           <span class="brand-name">Lunchy</span>
           <span class="brand-tagline">Pack smart. Eat better.</span>

@@ -92,8 +92,8 @@ $favsResult = $conn->query($sqlFavs);
 
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="../explore-page/explore.html">
-        <img class="brand-logo" src="../media/logo.png" alt="Lunchy logo">
+      <a class="brand" href="../explore-page/explore.php">
+        <img class="brand-logo" src="../uploads/images/logo.png" alt="Lunchy logo">
         <span class="brand-text">
           <span class="brand-name">Lunchy</span>
           <span class="brand-tagline">Pack smart. Eat better.</span>
@@ -139,7 +139,7 @@ $favsResult = $conn->query($sqlFavs);
       <div class="panel profile-card">
         <div class="profile-top">
           <img class="avatar" 
-               src="../uploads/images/<?php echo htmlspecialchars($user['photoFileName']); ?>" 
+               src="../uploads/profiles/<?php echo htmlspecialchars($user['photoFileName']); ?>" 
                alt="Profile photo">
           <div>
             <div class="p-name"><?php echo htmlspecialchars($user['firstName'] . ' ' . $user['lastName']); ?></div>
