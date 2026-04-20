@@ -2,17 +2,20 @@
 session_start();
 include '../db.php';
 
-// #5 - Security
+
+
+
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login-page/login.html");
+    header("Location: ../login-page/login.html?error=login_required");
     exit();
 }
 
-// #6a - Must be regular user
 if ($_SESSION['user_type'] != 'user') {
     header("Location: ../login-page/login.html?error=unauthorized");
     exit();
 }
+
+
 
 // #6b - Get user info
 $userID = $_SESSION['user_id'];
@@ -279,7 +282,7 @@ $favsResult = $conn->query($sqlFavs);
             </p>
             <div class="r-creator">
               <img class="mini-ava" 
-                   src="../uploads/images/<?php echo htmlspecialchars($recipe['userPhoto']); ?>" 
+                   src="../uploads/profiles/<?php echo htmlspecialchars($recipe['userPhoto']); ?>" 
                    alt="creator">
               <span class="muted">
                 <?php echo htmlspecialchars($recipe['firstName'] . ' ' . $recipe['lastName']); ?>

@@ -161,6 +161,23 @@
 .mini-title{ font-weight: 1000; margin-bottom: 4px; }
 .mini-text{ color: var(--muted); font-weight: 800; font-size: 13px; line-height: 1.5; }
 
+
+.error-message{
+  background: rgba(255, 242, 194, 0.6);
+  border: 1px solid rgba(255, 200, 120, 0.8);
+  color: red !important; 
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin: 12px 0 8px 0;
+  font-weight: 900;
+  font-size: 13px;
+  line-height: 1.6;
+  box-shadow: var(--shadow);
+}
+
+
+
+
 @media (max-width: 900px){
   .login-layout{ grid-template-columns: 1fr; }
   .login-actions{ grid-template-columns: 1fr; }

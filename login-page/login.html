@@ -40,6 +40,7 @@
       <p class="muted">
         Log in to save recipes, track favourites, and share quick lunchbox ideas.
       </p>
+<p id="error-message" class="error-message" ></p>
 
       <form class="login-form" action="login.php" method="POST">
         <label class="field">
@@ -118,6 +119,27 @@
       <span>&copy; 2026 Lunchy. All rights reserved.</span>
     </div>
   </footer>
+
+
+
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const error = params.get('error');
+  const errorBox = document.getElementById('error-message');
+
+  if (error === 'unauthorized') {
+    errorBox.textContent = 'Access denied. Only regular users can access this page.';
+    errorBox.style.display = 'block';
+  } else if (error === 'login_required') {
+    errorBox.textContent = 'Please log in first.';
+    errorBox.style.display = 'block';
+  }
+</script>
+
+
+
+
 
 </body>
 </html>
