@@ -29,7 +29,7 @@ if ($action == "dismiss") {
 }
 
 if ($action == "block") {
-    /* get recipe owner */
+    
     $sqlOwner = "SELECT recipe.userID, user.firstName, user.lastName, user.emailAddress
                  FROM recipe
                  JOIN user ON recipe.userID = user.id
@@ -46,7 +46,7 @@ if ($action == "block") {
     $owner = mysqli_fetch_assoc($resultOwner);
     $ownerID = intval($owner['userID']);
 
-    /* add blocked user first */
+    
     $sqlCheckBlocked = "SELECT * FROM blockeduser WHERE emailAddress = ?";
     $stmtCheckBlocked = mysqli_prepare($conn, $sqlCheckBlocked);
     mysqli_stmt_bind_param($stmtCheckBlocked, "s", $owner['emailAddress']);
@@ -60,7 +60,7 @@ if ($action == "block") {
         mysqli_stmt_execute($stmtInsertBlocked);
     }
 
-    /* delete recipe files first */
+    
     $sqlRecipes = "SELECT id, photoFileName, videoFilePath FROM recipe WHERE userID = ?";
     $stmtRecipes = mysqli_prepare($conn, $sqlRecipes);
     mysqli_stmt_bind_param($stmtRecipes, "i", $ownerID);
@@ -71,21 +71,19 @@ if ($action == "block") {
     $photo = $recipe['photoFileName'];
     $video = $recipe['videoFilePath'];
 
-        // 1. حذف صورة الوصفة (موجودة في مجلد images)
+        
         $recipePhotoPath = "../uploads/images/" . $photo;
         if (!empty($photo) && file_exists($recipePhotoPath)) {
             @unlink($recipePhotoPath);
         }
 
-        // 2. حذف فيديو الوصفة (موجودة في مجلد videos)
+        
         $videoPath = "../uploads/videos/" . $video;
         if (!empty($video) && file_exists($videoPath)) {
             @unlink($videoPath);
         }
-   }
+    }
 
-    // 3. حذف صورة بروفايل المستخدم (موجودة في مجلد profiles)
-    // نستخدم $owner['photoFileName'] الذي جلبناه في سطر 45
     $userPic = $owner['photoFileName'];
     $profilePath = "../uploads/profiles/" . $userPic;
 
@@ -93,22 +91,20 @@ if ($action == "block") {
         @unlink($profilePath);
     }
 
-        if (!empty($video)) {
-            foreach ($possibleVideoPaths as $path) {
-                if (file_exists($path) && is_file($path)) {
-                    @unlink($path);
-                }
-            }
+    if (!empty($video)) {
+         foreach ($possibleVideoPaths as $path) {
+             if (file_exists($path) && is_file($path)) {
+                @unlink($path);
+                 }
+           }
         }
     
 
-    /* then delete user; cascade handles related rows */
     $sqlDeleteUser = "DELETE FROM user WHERE id = ?";
     $stmtDeleteUser = mysqli_prepare($conn, $sqlDeleteUser);
     mysqli_stmt_bind_param($stmtDeleteUser, "i", $ownerID);
     mysqli_stmt_execute($stmtDeleteUser);
 
-    /* delete current report if still exists */
     $sqlDeleteReport = "DELETE FROM report WHERE id = ?";
     $stmtDeleteReport = mysqli_prepare($conn, $sqlDeleteReport);
     mysqli_stmt_bind_param($stmtDeleteReport, "i", $reportID);

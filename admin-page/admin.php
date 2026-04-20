@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 session_start();
 include("../db.php");
 
-/* requirement 11-a */
+
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_type']) || $_SESSION['user_type'] != 'admin') {
     header("Location: ../login-page/login.html?error=Access denied");
     exit();
@@ -13,7 +13,7 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_type']) || $_SESSION[
 
 $adminID = intval($_SESSION['user_id']);
 
-/* requirement 11-b */
+
 $sqlAdmin = "SELECT * FROM user WHERE id = ? AND userType = 'admin'";
 $stmtAdmin = mysqli_prepare($conn, $sqlAdmin);
 mysqli_stmt_bind_param($stmtAdmin, "i", $adminID);
@@ -27,7 +27,7 @@ if (!$resultAdmin || mysqli_num_rows($resultAdmin) == 0) {
 
 $admin = mysqli_fetch_assoc($resultAdmin);
 
-/* requirement 11-c */
+
 $sqlReports = "SELECT 
                     report.id AS reportID,
                     report.recipeID,
@@ -44,7 +44,7 @@ $sqlReports = "SELECT
 $resultReports = mysqli_query($conn, $sqlReports);
 $reportsCount = ($resultReports) ? mysqli_num_rows($resultReports) : 0;
 
-/* requirement 11-d */
+
 $sqlBlocked = "SELECT * FROM blockeduser ORDER BY id DESC";
 $resultBlocked = mysqli_query($conn, $sqlBlocked);
 $blockedCount = ($resultBlocked) ? mysqli_num_rows($resultBlocked) : 0;

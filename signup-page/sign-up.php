@@ -30,15 +30,15 @@ if($result->num_rows > 0){
 
 # hash password
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-/* --- ملف signup.php --- */
 
-# 1. Image Upload (تعديل المسار فقط)
+
+
 if(isset($_FILES['photo']) && $_FILES['photo']['name'] != ""){
     $photo = time() . "_" . $_FILES['photo']['name'];
-    // تعديل: أضفنا مجلد profiles للمسار
+    
     move_uploaded_file($_FILES['photo']['tmp_name'], "../uploads/profiles/" . $photo);
 } else {
-    // إذا ما حط صورة، تبقى القيمة default-user.png
+    
     $photo = "default-user.png";
 }
 # insert user

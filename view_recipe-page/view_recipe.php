@@ -185,7 +185,6 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
             <div class="card-top_vr"><h2>Recipe Creator</h2></div>
             <div class="creator-box_vr">
     <?php 
-        // منطق ذكي: إذا كانت الصورة ديفولت تروح لمجلد images، غير كذا تروح لـ profiles
         $userImg = $recipe['photoFileName'];
         $folder = ($userImg == "default-user.png") ? "images" : "profiles";
     ?>
@@ -266,7 +265,7 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
         <div class="comments-scroll-box_vr">
             <?php if (mysqli_num_rows($resultComments) > 0) { ?>
                 <?php while ($comment = mysqli_fetch_assoc($resultComments)) { 
-                    // منطق اختيار المجلد
+            
                   $cImg = $comment['photoFileName'];
                     $cFolder = ($cImg == "default-user.png") ? "images" : "profiles";
                 ?>
