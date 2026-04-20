@@ -55,7 +55,7 @@ $categoryResult = $conn->query("SELECT id, categoryName FROM recipecategory ORDE
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="../explore-page/explore.html">
-        <img class="brand-logo" src="../media/logo.png" alt="Lunchy logo">
+        <img class="brand-logo" src="../uploads/images/logo.png" alt="Lunchy logo">
         <span class="brand-text">
           <span class="brand-name">Lunchy</span>
           <span class="brand-tagline">Pack smart. Eat better.</span>
@@ -63,7 +63,7 @@ $categoryResult = $conn->query("SELECT id, categoryName FROM recipecategory ORDE
       </a>
 
       <nav class="nav">
-        <a class="nav-link" href="../explore-page/explore.html">Explore</a>
+        <a class="nav-link" href="../explore-page/explore.php">Explore</a>
         <a class="nav-link" href="../my_recipes-page/my-recipes.php">My Recipes</a>
         <a class="nav-link" href="../about-us-page/about-us.html">About Us</a>
       </nav>

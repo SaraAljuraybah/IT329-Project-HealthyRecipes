@@ -391,7 +391,7 @@ $instructions = $insStmt->get_result();
 <header class="site-header">
   <div class="container header-inner">
     <a class="brand" href="../explore-page/explore.html">
-      <img class="brand-logo" src="../media/logo.png" alt="Lunchy logo">
+      <img class="brand-logo" src="../uploads/images/logo.png" alt="Lunchy logo">
       <span class="brand-text">
         <span class="brand-name">Lunchy</span>
         <span class="brand-tagline">Pack smart. Eat better.</span>
@@ -451,7 +451,7 @@ $instructions = $insStmt->get_result();
         <label>Recipe Photo</label>
         <input type="file" name="photo" accept="image/*">
         <p>Current photo:</p>
-        <img src="../media/<?php echo htmlspecialchars($recipe['photoFileName']); ?>" alt="Current photo" style="width:180px; border-radius:12px;">
+        <img src="../uploads/images/<?php echo htmlspecialchars($recipe['photoFileName']); ?>" alt="Current photo" style="width:180px; border-radius:12px;">
       </div>
 
       <div class="section">
