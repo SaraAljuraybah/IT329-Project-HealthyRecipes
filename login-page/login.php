@@ -46,12 +46,7 @@ $_SESSION['user_id'] = $user['id'];
 $_SESSION['firstName'] = $user['firstName'];
 $_SESSION['user_type'] = $user['userType'];
 
-// 5) Redirect based on role
-if ($user['userType'] == "admin") {
-    header("Location: ../admin-page/admin.php");
-} else {
-    header("Location: ../user-page/user.php");
-}
+
 
 exit();
 
