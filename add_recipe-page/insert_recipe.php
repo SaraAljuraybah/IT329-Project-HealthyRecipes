@@ -67,8 +67,8 @@ if (!$hasValidStep) {
 }
 
 // Use folders that match your display pages
-$imageFolder = "../media/recipes/";
-$videoFolder = "../media/recipes/";
+$imageFolder = "../uploads/images/";
+$videoFolder = "../uploads/videos/";
 
 if (!is_dir($imageFolder)) {
     mkdir($imageFolder, 0777, true);

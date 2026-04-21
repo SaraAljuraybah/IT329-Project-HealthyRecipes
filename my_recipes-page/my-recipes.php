@@ -51,8 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_recipe_id'])) 
 
             // delete files after DB success
             if (!empty($photoFileName)) {
-                $photoPath1 = __DIR__ . '/../media/recipes/' . $photoFileName;
-                $photoPath2 = __DIR__ . '/../media/' . $photoFileName;
+                $photoPath1 = __DIR__ . '/../uploads/recipes/' . $photoFileName;
+                $photoPath2 = __DIR__ . '/../uploads/' . $photoFileName;
 
                 if (file_exists($photoPath1)) {
                     @unlink($photoPath1);
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_recipe_id'])) 
             }
 
             if (!empty($videoFilePath)) {
-                $videoPath = __DIR__ . '/../media/recipes/' . $videoFilePath;
+                $videoPath = __DIR__ . '/../uploads/images/' . $videoFilePath;
                 if (file_exists($videoPath)) {
                     @unlink($videoPath);
                 }
@@ -184,7 +184,7 @@ $result = $stmt->get_result();
                          alt="<?php echo htmlspecialchars($row['name']); ?>"
                          class="recipe-thumb-large">
                 </a>
-                <div class="recipe-badge">❤ <?php echo $totalLikes; ?> likes</div>
+                <div class="recipe-badge">❤️ <?php echo $totalLikes; ?> likes</div>
             </div>
 
             <div class="recipe-body">
@@ -201,7 +201,7 @@ $result = $stmt->get_result();
                     </ul>
                 </div>
 
-                <div class="recipe-section">
+<div class="recipe-section">
                     <div class="section-label">Instructions</div>
                     <ol class="instructions-list">
                         <?php while ($ins = $instructions->fetch_assoc()): ?>
@@ -247,7 +247,7 @@ $result = $stmt->get_result();
 </footer>
 <div id="deleteModal" class="delete-modal hidden">
   <div class="delete-modal-card">
-    <div class="delete-modal-icon">🗑️</div>
+    <div class="delete-modal-icon">🗑</div>
     <h3>Delete Recipe?</h3>
     <p>Are you sure you want to delete this recipe? This action cannot be undone.</p>
 
