@@ -5,11 +5,11 @@ ini_set('display_errors', 1);
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login-page/login.html");
+    header("Location: ../login-page/login.html?error=login_required");
     exit();
 }
 if ($_SESSION['user_type'] != 'user') {
-    header("Location: ../login-page/login.html?error=unauthorized");
+    header("Location: ../login-page/login.html?error=user_only");
     exit();
 }
 

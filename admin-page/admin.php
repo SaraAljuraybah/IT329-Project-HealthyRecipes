@@ -9,7 +9,6 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: ../login-page/login.html?error=login_required");
     exit();
 }
-
 if ($_SESSION['user_type'] != 'admin') {
     header("Location: ../login-page/login.html?error=admin_only");
     exit();
