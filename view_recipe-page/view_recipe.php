@@ -289,8 +289,7 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
                             </div>
                             <p class="comment-body_vr"><?php echo htmlspecialchars($comment['comment']); ?></p>
                         </div>
-                        <img src="../uploads/images/profiles<?php echo $cFolder; ?>/<?php echo htmlspecialchars($cImg); ?>" alt="Profile" class="profile-icon_vr">
-                    </div>
+<img src="../uploads/<?php echo $cFolder; ?>/<?php echo htmlspecialchars($cImg); ?>" alt="Profile" class="profile-icon_vr">                    </div>
                 <?php } ?>
             <?php } else { ?>
                 <p>No comments yet.</p>
