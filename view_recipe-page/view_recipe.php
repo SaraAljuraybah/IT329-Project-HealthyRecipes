@@ -8,6 +8,11 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: ../login-page/login.html");
     exit();
 }
+if ($_SESSION['user_type'] != 'user') {
+    header("Location: ../login-page/login.html?error=unauthorized");
+    exit();
+}
+
 
 include("../db.php");
 
@@ -124,11 +129,15 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
           <span class="brand-tagline">Pack smart. Eat better.</span>
         </span>
       </a>
-      <nav class="nav">
+    <nav class="nav">
+    <?php if ($currentUserType != 'admin'): ?>
         <a class="nav-link" href="../explore-page/explore.php">Explore</a>
         <a class="nav-link" href="../my_recipes-page/my-recipes.php">My Recipes</a>
         <a class="nav-link" href="../about-us-page/about-us.html">About Us</a>
-      </nav>
+    <?php else: ?>
+        <span class="nav-link" style="color: var(--primary-3); font-weight: bold;">Admin View</span>
+    <?php endif; ?>
+</nav>
       <div class="actions">
         <a class="btn btn-primary" href="../user-page/user.php">My Profile</a>
         <a class="btn btn-ghost" href="../logout.php">Log Out</a>
@@ -280,8 +289,7 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
                             </div>
                             <p class="comment-body_vr"><?php echo htmlspecialchars($comment['comment']); ?></p>
                         </div>
-                        <img src="../uploads/images/profiles<?php echo $cFolder; ?>/<?php echo htmlspecialchars($cImg); ?>" alt="Profile" class="profile-icon_vr">
-                    </div>
+<img src="../uploads/<?php echo $cFolder; ?>/<?php echo htmlspecialchars($cImg); ?>" alt="Profile" class="profile-icon_vr">                    </div>
                 <?php } ?>
             <?php } else { ?>
                 <p>No comments yet.</p>

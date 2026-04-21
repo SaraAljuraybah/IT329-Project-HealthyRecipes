@@ -12,12 +12,6 @@ $email = $_POST['email'];
 $password = $_POST['password'];
 
 
-if(isset($_POST['adminCode']) && $_POST['adminCode'] == "1445"){
-    $userType = "admin";
-} else {
-    $userType = "user";
-}
-
 # check email exists
 $sql = "SELECT * FROM user WHERE emailAddress='$email'";
 $result = $conn->query($sql);
@@ -54,12 +48,6 @@ if($conn->query($sql)){
     $_SESSION['firstName'] = $first;
     $_SESSION['user_type'] = $userType;
 
-    # توجيه حسب النوع
-    if($userType == "admin"){
-        header("Location: ../admin-page/admin.php");
-    } else {
-        header("Location: ../user-page/user.php");
-    }
 
     exit();
 
