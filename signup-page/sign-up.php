@@ -38,7 +38,23 @@ if (strlen($password) < 6) {
     exit();
 }
 
-// Check if email already exists
+/* 1) Check if email exists in blockeduser table first */
+$stmt = $conn->prepare("SELECT id FROM blockeduser WHERE emailAddress = ?");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    echo "<script>
+    alert('This account is blocked. You cannot sign up with this email.');
+    window.location.href='sign-up.html';
+    </script>";
+    exit();
+}
+
+$stmt->close();
+
+/* 2) Check if email already exists in user table */
 $stmt = $conn->prepare("SELECT id FROM user WHERE emailAddress = ?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
@@ -52,10 +68,12 @@ if ($result->num_rows > 0) {
     exit();
 }
 
-// Hash password
+$stmt->close();
+
+/* 3) Hash password */
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-// Handle profile image
+/* 4) Handle profile image */
 $photo = "default-user.png";
 
 if (isset($_FILES['photo']) && !empty($_FILES['photo']['name'])) {
@@ -120,7 +138,7 @@ if (isset($_FILES['photo']) && !empty($_FILES['photo']['name'])) {
     }
 }
 
-// Insert user
+/* 5) Insert user */
 $stmt = $conn->prepare("
     INSERT INTO user (userType, firstName, lastName, emailAddress, password, photoFileName)
     VALUES (?, ?, ?, ?, ?, ?)
@@ -141,4 +159,7 @@ if ($stmt->execute()) {
     </script>";
     exit();
 }
+
+$stmt->close();
+$conn->close();
 ?>
