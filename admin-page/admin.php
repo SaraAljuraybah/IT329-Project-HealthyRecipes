@@ -5,11 +5,19 @@ ini_set('display_errors', 1);
 session_start();
 include("../db.php");
 
-
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_type']) || $_SESSION['user_type'] != 'admin') {
-    header("Location: ../login-page/login.html?error=Access denied");
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login-page/login.html?error=login_required");
     exit();
 }
+
+if ($_SESSION['user_type'] != 'admin') {
+    header("Location: ../login-page/login.html?error=admin_only");
+    exit();
+}
+
+
+
+
 
 $adminID = intval($_SESSION['user_id']);
 
@@ -224,6 +232,7 @@ $blockedCount = ($resultBlocked) ? mysqli_num_rows($resultBlocked) : 0;
 </style>
 </head>
 <body>
+
     
  <header class="site-header">
     <div class="container header-inner">
