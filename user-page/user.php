@@ -2,13 +2,14 @@
 session_start();
 include '../db.php';
 
-
-
-
+// #5 - Security
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login-page/login.html?error=login_required");
+    header("Location: ../login-page/login.html");
     exit();
 }
+
+
+
 
 if ($_SESSION['user_type'] != 'user') {
     header("Location: ../login-page/login.html?error=unauthorized");
