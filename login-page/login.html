@@ -154,24 +154,6 @@
     </div>
   </footer>
 
-
-
-
-<script>
-  const params = new URLSearchParams(window.location.search);
-  const error = params.get('error');
-  const errorBox = document.getElementById('error-message');
-
-  if (error === 'unauthorized') {
-    errorBox.textContent = 'Access denied. Only regular users can access this page.';
-    errorBox.style.display = 'block';
-  }
-</script>
-
-
-
-
-
 </body>
 </html>
 
