@@ -44,9 +44,7 @@ if ($checkResult->num_rows === 0) {
 
 $recipe = $checkResult->fetch_assoc();
 
-// ----------------------
 // Handle photo upload
-// ----------------------
 $newPhotoName = $oldPhoto;
 $imageFolder = "../uploads/images/";
 
@@ -69,9 +67,7 @@ if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0 && $_FILES['photo
     }
 }
 
-// ----------------------
 // Handle video upload
-// ----------------------
 $newVideoFile = $oldVideoFile;
 $videoFolder = "../uploads/videos/";
 
@@ -97,9 +93,8 @@ if (isset($_FILES['videoFile']) && $_FILES['videoFile']['error'] === 0 && $_FILE
     }
 }
 
-// ----------------------
+
 // Update recipe table
-// ----------------------
 $updateSql = "UPDATE recipe 
               SET categoryID = ?, name = ?, description = ?, photoFileName = ?, videoFilePath = ?, videoURL = ?
               WHERE id = ? AND userID = ?";
@@ -120,9 +115,7 @@ if (!$updateStmt->execute()) {
     die("Failed to update recipe: " . $conn->error);
 }
 
-// ----------------------
 // Replace ingredients
-// ----------------------
 $deleteIngSql = "DELETE FROM ingredients WHERE recipeID = ?";
 $deleteIngStmt = $conn->prepare($deleteIngSql);
 $deleteIngStmt->bind_param("i", $recipeID);
@@ -141,9 +134,7 @@ for ($i = 0; $i < count($ingredientNames); $i++) {
     }
 }
 
-// ----------------------
 // Replace instructions
-// ----------------------
 $deleteInsSql = "DELETE FROM instructions WHERE recipeID = ?";
 $deleteInsStmt = $conn->prepare($deleteInsSql);
 $deleteInsStmt->bind_param("i", $recipeID);
