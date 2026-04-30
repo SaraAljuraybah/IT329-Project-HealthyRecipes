@@ -40,45 +40,41 @@
       <p class="muted">
         Log in to save recipes, track favourites, and share quick lunchbox ideas.
       </p>
-<p id="error-message" class="error-message" ></p>
 <div id="error-box" style="display: none; background-color: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 10px; margin-bottom: 20px; text-align: center; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-    <span id="error-message" style="font-weight: bold;"></span>
+  <span id="error-text" style="font-weight: bold;"></span>
 </div>
 
+
 <script>
-    // 1. Get the parameters from the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const errorType = urlParams.get('error');
+  const urlParams = new URLSearchParams(window.location.search);
+  const errorType = urlParams.get('error');
 
-    // 2. Map error codes to English messages
-    if (errorType) {
-        const errorBox = document.getElementById('error-box');
-        const errorMsg = document.getElementById('error-message');
-        
-        let message = "";
-        
-        switch(errorType) {
-            case 'login_required':
-                message = "🔐 Access Denied: Please log in to view this page.";
-                break;
-            case 'admin_only':
-                message = "🚫 Restricted: This page is for Administrators only.";
-                break;
-            case 'user_only':
-                message = "🚫 Restricted: This page is for regular Users only.";
-                break;
-            case 'unauthorized':
-                message = "⚠️ Unauthorized: You do not have permission to access this area.";
-                break;
-            default:
-                message = "❌ An error occurred with your access permissions.";
-        }
+  const errorBox = document.getElementById('error-box');
+  const errorText = document.getElementById('error-text');
 
-        if (message) {
-            errorMsg.innerText = message;
-            errorBox.style.display = 'block'; // Show the red box
-        }
-    }
+  let message = "";
+
+  switch (errorType) {
+    case 'login_required':
+      message = "🔐 Access Denied: Please log in to view this page.";
+      break;
+    case 'admin_only':
+      message = "🚫 Restricted: This page is for Administrators only.";
+      break;
+    case 'user_only':
+      message = "🚫 Restricted: This page is for regular Users only.";
+      break;
+    case 'unauthorized':
+      message = "⚠️ Unauthorized: You do not have permission to access this area.";
+      break;
+  }
+
+  if (message) {
+    errorText.innerText = message;
+    errorBox.style.display = 'block';
+  } else {
+    errorBox.style.display = 'none';
+  }
 </script>
       <form class="login-form" action="login.php" method="POST">
         <label class="field">
@@ -157,24 +153,6 @@
       <span>&copy; 2026 Lunchy. All rights reserved.</span>
     </div>
   </footer>
-
-
-
-
-<script>
-  const params = new URLSearchParams(window.location.search);
-  const error = params.get('error');
-  const errorBox = document.getElementById('error-message');
-
-  if (error === 'unauthorized') {
-    errorBox.textContent = 'Access denied. Only regular users can access this page.';
-    errorBox.style.display = 'block';
-  }
-</script>
-
-
-
-
 
 </body>
 </html>

@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/../db.php';
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     die("Invalid request method.");
 }
@@ -43,47 +44,48 @@ if ($checkResult->num_rows === 0) {
 
 $recipe = $checkResult->fetch_assoc();
 
-// ----------------------
 // Handle photo upload
-// ----------------------
 $newPhotoName = $oldPhoto;
+$imageFolder = "../uploads/images/";
+
+if (!is_dir($imageFolder)) {
+    mkdir($imageFolder, 0777, true);
+}
 
 if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0 && $_FILES['photo']['name'] !== '') {
     $photoTmp = $_FILES['photo']['tmp_name'];
     $photoName = time() . "_" . basename($_FILES['photo']['name']);
-    $photoTarget = "../media/" . $photoName;
+    $photoTarget = $imageFolder . $photoName;
 
     if (move_uploaded_file($photoTmp, $photoTarget)) {
         $newPhotoName = $photoName;
 
-        // optional: delete old photo if it exists and is not default/logo
-        if (!empty($oldPhoto) && file_exists("../media/" . $oldPhoto)) {
-            @unlink("../media/" . $oldPhoto);
+        // delete old photo if it exists
+        if (!empty($oldPhoto) && file_exists($imageFolder . $oldPhoto)) {
+            @unlink($imageFolder . $oldPhoto);
         }
     }
 }
 
-// ----------------------
 // Handle video upload
-// ----------------------
 $newVideoFile = $oldVideoFile;
+$videoFolder = "../uploads/videos/";
+
+if (!is_dir($videoFolder)) {
+    mkdir($videoFolder, 0777, true);
+}
 
 if (isset($_FILES['videoFile']) && $_FILES['videoFile']['error'] === 0 && $_FILES['videoFile']['name'] !== '') {
     $videoTmp = $_FILES['videoFile']['tmp_name'];
     $videoName = time() . "_" . basename($_FILES['videoFile']['name']);
-    $videoTarget = "../media/recipes/" . $videoName;
-
-    // create folder if missing
-    if (!is_dir("../media/recipes")) {
-        mkdir("../media/recipes", 0777, true);
-    }
+    $videoTarget = $videoFolder . $videoName;
 
     if (move_uploaded_file($videoTmp, $videoTarget)) {
         $newVideoFile = $videoName;
 
-        // optional: delete old video file
-        if (!empty($oldVideoFile) && file_exists("../media/recipes/" . $oldVideoFile)) {
-            @unlink("../media/recipes/" . $oldVideoFile);
+        // delete old video file
+        if (!empty($oldVideoFile) && file_exists($videoFolder . $oldVideoFile)) {
+            @unlink($videoFolder . $oldVideoFile);
         }
 
         // if new video file uploaded, clear URL
@@ -91,9 +93,8 @@ if (isset($_FILES['videoFile']) && $_FILES['videoFile']['error'] === 0 && $_FILE
     }
 }
 
-// ----------------------
+
 // Update recipe table
-// ----------------------
 $updateSql = "UPDATE recipe 
               SET categoryID = ?, name = ?, description = ?, photoFileName = ?, videoFilePath = ?, videoURL = ?
               WHERE id = ? AND userID = ?";
@@ -114,9 +115,7 @@ if (!$updateStmt->execute()) {
     die("Failed to update recipe: " . $conn->error);
 }
 
-// ----------------------
 // Replace ingredients
-// ----------------------
 $deleteIngSql = "DELETE FROM ingredients WHERE recipeID = ?";
 $deleteIngStmt = $conn->prepare($deleteIngSql);
 $deleteIngStmt->bind_param("i", $recipeID);
@@ -135,9 +134,7 @@ for ($i = 0; $i < count($ingredientNames); $i++) {
     }
 }
 
-// ----------------------
 // Replace instructions
-// ----------------------
 $deleteInsSql = "DELETE FROM instructions WHERE recipeID = ?";
 $deleteInsStmt = $conn->prepare($deleteInsSql);
 $deleteInsStmt->bind_param("i", $recipeID);
@@ -157,7 +154,6 @@ foreach ($steps as $stepText) {
     }
 }
 
-// Redirect back
 header("Location: ../my_recipes-page/my-recipes.php");
 exit();
 ?>

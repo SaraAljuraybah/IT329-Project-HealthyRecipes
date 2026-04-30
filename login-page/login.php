@@ -1,14 +1,28 @@
 <?php
-
 session_start();
-include "../db.php";
+require_once "../db.php";
 
-$email = $_POST['email'];
-$password = $_POST['password'];
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header("Location: login.html");
+    exit();
+}
 
-// 1) Check if email exists in blockeduser table first
-$blockedSql = "SELECT * FROM blockeduser WHERE emailAddress='$email'";
-$blockedResult = $conn->query($blockedSql);
+$email = trim($_POST['email'] ?? '');
+$password = $_POST['password'] ?? '';
+
+if ($email === '' || $password === '') {
+    echo "<script>
+    alert('Please enter email and password.');
+    window.location.href='login.html';
+    </script>";
+    exit();
+}
+
+// Check blocked users first
+$stmt = $conn->prepare("SELECT id FROM blockeduser WHERE emailAddress = ?");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$blockedResult = $stmt->get_result();
 
 if ($blockedResult->num_rows > 0) {
     echo "<script>
@@ -18,11 +32,13 @@ if ($blockedResult->num_rows > 0) {
     exit();
 }
 
-// 2) Check if email exists in user table
-$sql = "SELECT * FROM user WHERE emailAddress='$email'";
-$result = $conn->query($sql);
+// Check user table
+$stmt = $conn->prepare("SELECT * FROM user WHERE emailAddress = ?");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
 
-if ($result->num_rows == 0) {
+if ($result->num_rows === 0) {
     echo "<script>
     alert('Invalid Email or Password');
     window.location.href='login.html';
@@ -30,10 +46,9 @@ if ($result->num_rows == 0) {
     exit();
 }
 
-// 3) Get user data
 $user = $result->fetch_assoc();
 
-// 4) Verify password
+// Verify hashed password
 if (!password_verify($password, $user['password'])) {
     echo "<script>
     alert('Invalid Email or Password');
@@ -42,18 +57,16 @@ if (!password_verify($password, $user['password'])) {
     exit();
 }
 
-// 5) Save session
+// Save session
 $_SESSION['user_id'] = $user['id'];
 $_SESSION['firstName'] = $user['firstName'];
 $_SESSION['user_type'] = $user['userType'];
 
-// 6) Redirect based on role
-if ($user['userType'] == "admin") {
+// Redirect by role
+if ($user['userType'] === "admin") {
     header("Location: ../admin-page/admin.php");
 } else {
     header("Location: ../user-page/user.php");
 }
-
 exit();
-
 ?>
