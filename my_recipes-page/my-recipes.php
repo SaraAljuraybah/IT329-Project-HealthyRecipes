@@ -9,82 +9,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-/* =========================
-   DELETE RECIPE (same page)
-   ========================= */
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_recipe_id'])) {
-    $recipeID = (int) $_POST['delete_recipe_id'];
-
-    // Check recipe belongs to this user
-    $checkStmt = $conn->prepare("SELECT photoFileName, videoFilePath FROM recipe WHERE id = ? AND userID = ?");
-    $checkStmt->bind_param("ii", $recipeID, $user_id);
-    $checkStmt->execute();
-    $checkResult = $checkStmt->get_result();
-
-    if ($checkResult->num_rows > 0) {
-        $recipe = $checkResult->fetch_assoc();
-        $photoFileName = $recipe['photoFileName'] ?? '';
-        $videoFilePath = $recipe['videoFilePath'] ?? '';
-
-        $conn->begin_transaction();
-
-        try {
-            // delete related records first
-            $tables = ["ingredients", "instructions", "likes", "favourites", "comment", "report"];
-
-            foreach ($tables as $table) {
-                $stmt = $conn->prepare("DELETE FROM $table WHERE recipeID = ?");
-                $stmt->bind_param("i", $recipeID);
-                $stmt->execute();
-            }
-
-            // delete recipe itself
-            $deleteStmt = $conn->prepare("DELETE FROM recipe WHERE id = ? AND userID = ?");
-            $deleteStmt->bind_param("ii", $recipeID, $user_id);
-            $deleteStmt->execute();
-
-            if ($deleteStmt->affected_rows === 0) {
-                throw new Exception("Recipe deletion failed.");
-            }
-
-            $conn->commit();
-
-            // delete files after DB success
-            if (!empty($photoFileName)) {
-                $photoPath1 = __DIR__ . '/../uploads/recipes/' . $photoFileName;
-                $photoPath2 = __DIR__ . '/../uploads/' . $photoFileName;
-
-                if (file_exists($photoPath1)) {
-                    @unlink($photoPath1);
-                } elseif (file_exists($photoPath2)) {
-                    @unlink($photoPath2);
-                }
-            }
-
-            if (!empty($videoFilePath)) {
-                $videoPath = __DIR__ . '/../uploads/images/' . $videoFilePath;
-                if (file_exists($videoPath)) {
-                    @unlink($videoPath);
-                }
-            }
-
-            $_SESSION['flash_message'] = "Recipe deleted successfully.";
-            $_SESSION['flash_type'] = "success";
-            header("Location: my-recipes.php");
-            exit();            
-
-        } catch (Exception $e) {
-            $conn->rollback();
-            header("Location: my-recipes.php?deleted=0");
-            exit();
-        }
-    } else {
-            $_SESSION['flash_message'] = "Failed to delete recipe.";
-            $_SESSION['flash_type'] = "error";
-            header("Location: my-recipes.php");
-            exit();      
-    }
-}
 
 /* =========================
    GET USER RECIPES
@@ -177,8 +101,8 @@ $result = $stmt->get_result();
             $insStmt->execute();
             $instructions = $insStmt->get_result();
         ?>
-        <div class="recipe-card">
-            <div class="recipe-header">
+<div class="recipe-card" id="recipe-<?php echo $recipeID; ?>">
+                <div class="recipe-header">
                 <a href="../view_recipe-page/view_recipe.php?id=<?php echo $recipeID; ?>">
                     <img src="../uploads/images/<?php echo htmlspecialchars($row['photoFileName']); ?>"
                          alt="<?php echo htmlspecialchars($row['name']); ?>"
@@ -225,12 +149,11 @@ $result = $stmt->get_result();
                 <div class="recipe-footer">
                     <div class="action-buttons">
                         <a href="../edit_recipe-page/edit_recipe.php?id=<?php echo $recipeID; ?>" class="action-link edit-link">Edit</a>
-                        <form method="POST" action="my-recipes.php" style="display:inline;" class="delete-form">
-                            <input type="hidden" name="delete_recipe_id" value="<?php echo $recipeID; ?>">
-                            <button type="button" class="action-link delete-link open-delete-modal">
-                                Delete
-                            </button>
-                        </form>
+<form class="delete-form" data-recipe-id="<?php echo $recipeID; ?>">
+    <button type="button" class="action-link delete-link open-delete-modal">
+        Delete
+    </button>
+</form>
                     </div>
                 </div>
             </div>
@@ -257,38 +180,60 @@ $result = $stmt->get_result();
     </div>
   </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
 <script>
   const deleteModal = document.getElementById("deleteModal");
   const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
   const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
-  const openDeleteButtons = document.querySelectorAll(".open-delete-modal");
 
-  let selectedDeleteForm = null;
+  let selectedRecipeId = null;
 
-  openDeleteButtons.forEach(button => {
-    button.addEventListener("click", function () {
-      selectedDeleteForm = this.closest(".delete-form");
-      deleteModal.classList.remove("hidden");
-      document.body.style.overflow = "hidden";
-    });
+  $(".open-delete-modal").on("click", function () {
+    selectedRecipeId = $(this).closest(".delete-form").data("recipe-id");
+    deleteModal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
   });
 
-  cancelDeleteBtn.addEventListener("click", function () {
+  $("#cancelDeleteBtn").on("click", function () {
     deleteModal.classList.add("hidden");
-    selectedDeleteForm = null;
+    selectedRecipeId = null;
     document.body.style.overflow = "";
   });
 
-  confirmDeleteBtn.addEventListener("click", function () {
-    if (selectedDeleteForm) {
-      selectedDeleteForm.submit();
-    }
+  $("#confirmDeleteBtn").on("click", function () {
+    if (!selectedRecipeId) return;
+
+    $.ajax({
+      url: "ajax_delete_recipe.php",
+      type: "POST",
+      dataType: "json",
+      data: {
+        recipe_id: selectedRecipeId
+      },
+      success: function (response) {
+        if (response.success === true) {
+          $("#recipe-" + selectedRecipeId).fadeOut(300, function () {
+            $(this).remove();
+          });
+
+          deleteModal.classList.add("hidden");
+          document.body.style.overflow = "";
+          selectedRecipeId = null;
+        } else {
+          alert("Failed to delete recipe.");
+        }
+      },
+      error: function () {
+        alert("AJAX request failed.");
+      }
+    });
   });
 
   deleteModal.addEventListener("click", function (e) {
     if (e.target === deleteModal) {
       deleteModal.classList.add("hidden");
-      selectedDeleteForm = null;
+      selectedRecipeId = null;
       document.body.style.overflow = "";
     }
   });
