@@ -56,7 +56,6 @@ $blockedCount = ($resultBlocked) ? mysqli_num_rows($resultBlocked) : 0;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Page</title>
     <link rel="stylesheet" href="../style.css">
-    <!-- jQuery for AJAX -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <style>
@@ -218,11 +217,19 @@ $blockedCount = ($resultBlocked) ? mysqli_num_rows($resultBlocked) : 0;
   border-radius: 14px;
 }
 
-/* Fade-out animation for removed rows */
 .row-removing {
   transition: opacity 0.4s ease, background-color 0.4s ease;
   opacity: 0;
   background-color: rgba(255, 80, 80, 0.08) !important;
+}
+
+.row-adding {
+  animation: fadeInRow 0.4s ease forwards;
+}
+
+@keyframes fadeInRow {
+  from { opacity: 0; background-color: rgba(99, 211, 165, 0.18); }
+  to   { opacity: 1; background-color: transparent; }
 }
 
 @media (max-width: 900px){
@@ -345,7 +352,7 @@ $blockedCount = ($resultBlocked) ? mysqli_num_rows($resultBlocked) : 0;
   <section class="panel">
     <div class="panel-head">
       <h2>Blocked Users</h2>
-      <span class="count-pill"><?php echo $blockedCount; ?> users</span>
+      <span class="count-pill" id="blocked-count"><?php echo $blockedCount; ?> users</span>
     </div>
 
     <div class="table-wrap">
@@ -357,7 +364,7 @@ $blockedCount = ($resultBlocked) ? mysqli_num_rows($resultBlocked) : 0;
           </tr>
         </thead>
 
-        <tbody>
+        <tbody id="blocked-tbody">
         <?php if ($resultBlocked && mysqli_num_rows($resultBlocked) > 0) { ?>
             <?php while ($blocked = mysqli_fetch_assoc($resultBlocked)) { ?>
               <tr>
@@ -371,7 +378,7 @@ $blockedCount = ($resultBlocked) ? mysqli_num_rows($resultBlocked) : 0;
               </tr>
             <?php } ?>
         <?php } else { ?>
-            <tr>
+            <tr id="no-blocked-row">
               <td colspan="2">No blocked users.</td>
             </tr>
         <?php } ?>
@@ -390,11 +397,10 @@ $blockedCount = ($resultBlocked) ? mysqli_num_rows($resultBlocked) : 0;
 <script>
 $(document).ready(function () {
 
-    // Handle report action submit via AJAX
     $(document).on('click', '.submit-report', function () {
-        var $btn = $(this);
-        var $row = $btn.closest('tr');
-        var $form = $btn.closest('.action-form');
+        var $btn   = $(this);
+        var $row   = $btn.closest('tr');
+        var $form  = $btn.closest('.action-form');
 
         var reportID = $form.find('.report-id').val();
         var recipeID = $form.find('.recipe-id').val();
@@ -405,38 +411,41 @@ $(document).ready(function () {
             return;
         }
 
-        // Disable button to prevent double-submit
         $btn.prop('disabled', true).text('Processing...');
 
         $.ajax({
             url: 'handle_report.php',
             type: 'POST',
+            // Always receive as plain text — we parse manually below
+            dataType: 'text',
             data: {
                 reportID: reportID,
                 recipeID: recipeID,
                 action: action
             },
-            success: function (response) {
-                if (response.trim() === 'true') {
-                    // Fade out then remove the row
-                    $row.addClass('row-removing');
-                    setTimeout(function () {
-                        $row.remove();
+            success: function (raw) {
+                var response = raw.trim();
 
-                        // Update the count pill
-                        var remaining = $('#reports-tbody tr').length;
-                        // If the only remaining row is a "no reports" message row, keep it;
-                        // otherwise check if we need to add one
-                        if (remaining === 0) {
-                            $('#reports-tbody').append(
-                                '<tr id="no-reports-row"><td colspan="3">No reports found.</td></tr>'
-                            );
-                            remaining = 0;
-                        }
+                // ── DISMISS ───────────────────────────────────────────────
+                if (response === 'true') {
+                    removeReportRow($row);
+                    return;
+                }
 
-                        // Update pill count
-                        $('#reports-count').text(remaining + ' report' + (remaining === 1 ? '' : 's'));
-                    }, 400);
+                // ── BLOCK: try to parse JSON ──────────────────────────────
+                var data = null;
+                try {
+                    data = JSON.parse(response);
+                } catch (e) {
+                    // response was not valid JSON
+                }
+
+                if (data && data.success === true) {
+                    removeReportRow($row);
+
+                    if (!data.alreadyBlocked) {
+                        addBlockedUserRow(data.firstName, data.lastName, data.emailAddress);
+                    }
                 } else {
                     alert('Action failed. Please try again.');
                     $btn.prop('disabled', false).text('Submit');
@@ -448,6 +457,48 @@ $(document).ready(function () {
             }
         });
     });
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+
+    function removeReportRow($row) {
+        $row.addClass('row-removing');
+        setTimeout(function () {
+            $row.remove();
+            var remaining = $('#reports-tbody tr').length;
+            if (remaining === 0) {
+                $('#reports-tbody').append(
+                    '<tr id="no-reports-row"><td colspan="3">No reports found.</td></tr>'
+                );
+                remaining = 0;
+            }
+            $('#reports-count').text(remaining + ' report' + (remaining === 1 ? '' : 's'));
+        }, 400);
+    }
+
+    function addBlockedUserRow(firstName, lastName, email) {
+        $('#no-blocked-row').remove();
+
+        // Safely escape the values before inserting into HTML
+        var fullName  = $('<span>').text(firstName + ' ' + lastName).html();
+        var safeEmail = $('<span>').text(email).html();
+
+        var $newRow = $(
+            '<tr class="row-adding">' +
+                '<td>' +
+                    '<div class="user-mini">' +
+                        '<img class="avatar" src="../uploads/images/default-user.png" alt="user">' +
+                        '<div class="user-name">' + fullName + '</div>' +
+                    '</div>' +
+                '</td>' +
+                '<td class="muted">' + safeEmail + '</td>' +
+            '</tr>'
+        );
+
+        $('#blocked-tbody').prepend($newRow);
+
+        var blockedCount = $('#blocked-tbody tr').length;
+        $('#blocked-count').text(blockedCount + ' user' + (blockedCount === 1 ? '' : 's'));
+    }
 
 });
 </script>
