@@ -14,12 +14,7 @@ if ($_SESSION['user_type'] != 'admin') {
     exit();
 }
 
-
-
-
-
 $adminID = intval($_SESSION['user_id']);
-
 
 $sqlAdmin = "SELECT * FROM user WHERE id = ? AND userType = 'admin'";
 $stmtAdmin = mysqli_prepare($conn, $sqlAdmin);
@@ -33,7 +28,6 @@ if (!$resultAdmin || mysqli_num_rows($resultAdmin) == 0) {
 }
 
 $admin = mysqli_fetch_assoc($resultAdmin);
-
 
 $sqlReports = "SELECT 
                     report.id AS reportID,
@@ -51,7 +45,6 @@ $sqlReports = "SELECT
 $resultReports = mysqli_query($conn, $sqlReports);
 $reportsCount = ($resultReports) ? mysqli_num_rows($resultReports) : 0;
 
-
 $sqlBlocked = "SELECT * FROM blockeduser ORDER BY id DESC";
 $resultBlocked = mysqli_query($conn, $sqlBlocked);
 $blockedCount = ($resultBlocked) ? mysqli_num_rows($resultBlocked) : 0;
@@ -63,6 +56,8 @@ $blockedCount = ($resultBlocked) ? mysqli_num_rows($resultBlocked) : 0;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Page</title>
     <link rel="stylesheet" href="../style.css">
+    <!-- jQuery for AJAX -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <style>
 .page{ padding: 22px 0 30px; }
@@ -223,6 +218,13 @@ $blockedCount = ($resultBlocked) ? mysqli_num_rows($resultBlocked) : 0;
   border-radius: 14px;
 }
 
+/* Fade-out animation for removed rows */
+.row-removing {
+  transition: opacity 0.4s ease, background-color 0.4s ease;
+  opacity: 0;
+  background-color: rgba(255, 80, 80, 0.08) !important;
+}
+
 @media (max-width: 900px){
   .page-top{ flex-direction: column; }
   .info-grid{ grid-template-columns: 1fr; }
@@ -232,8 +234,7 @@ $blockedCount = ($resultBlocked) ? mysqli_num_rows($resultBlocked) : 0;
 </head>
 <body>
 
-    
- <header class="site-header">
+<header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="admin.php">
         <img class="brand-logo" src="../uploads/images/logo.png" alt="Lunchy logo">
@@ -247,7 +248,7 @@ $blockedCount = ($resultBlocked) ? mysqli_num_rows($resultBlocked) : 0;
         <a class="btn btn-ghost" href="../logout.php">Log Out</a>
       </div>
     </div>
-  </header>
+</header>
 
 <main class="container page">
   <section class="page-top">
@@ -278,11 +279,11 @@ $blockedCount = ($resultBlocked) ? mysqli_num_rows($resultBlocked) : 0;
   <section class="panel">
     <div class="panel-head">
       <h2>Pending Reports</h2>
-      <span class="count-pill"><?php echo $reportsCount; ?> reports</span>
+      <span class="count-pill" id="reports-count"><?php echo $reportsCount; ?> reports</span>
     </div>
 
     <div class="table-wrap">
-      <table class="table">
+      <table class="table" id="reports-table">
         <thead>
           <tr>
             <th>Recipe</th>
@@ -291,10 +292,10 @@ $blockedCount = ($resultBlocked) ? mysqli_num_rows($resultBlocked) : 0;
           </tr>
         </thead>
 
-        <tbody>
+        <tbody id="reports-tbody">
         <?php if ($resultReports && mysqli_num_rows($resultReports) > 0) { ?>
             <?php while ($report = mysqli_fetch_assoc($resultReports)) { ?>
-              <tr>
+              <tr data-report-id="<?php echo $report['reportID']; ?>">
                 <td>
                   <a class="table-link" href="../view_recipe-page/view_recipe.php?id=<?php echo $report['recipeID']; ?>">
                     <?php echo htmlspecialchars($report['recipeName']); ?>
@@ -304,12 +305,10 @@ $blockedCount = ($resultBlocked) ? mysqli_num_rows($resultBlocked) : 0;
                 <td>
                   <div class="user-mini">
                     <?php 
-                     $uPic = $report['photoFileName'];
-                    $uFolder = ($uPic == "default-user.png") ? "images" : "profiles";
+                      $uPic = $report['photoFileName'];
+                      $uFolder = ($uPic == "default-user.png") ? "images" : "profiles";
                     ?>
-                   <img class="avatar" src="../uploads/<?php echo $uFolder; ?>/<?php echo htmlspecialchars($uPic); ?>" alt="user">
-                    
-                    
+                    <img class="avatar" src="../uploads/<?php echo $uFolder; ?>/<?php echo htmlspecialchars($uPic); ?>" alt="user">
                     <div>
                       <div class="user-name"><?php echo htmlspecialchars($report['firstName'] . " " . $report['lastName']); ?></div>
                       <div class="muted"><?php echo htmlspecialchars($report['emailAddress']); ?></div>
@@ -318,23 +317,23 @@ $blockedCount = ($resultBlocked) ? mysqli_num_rows($resultBlocked) : 0;
                 </td>
 
                 <td>
-                  <form class="action-form" action="handle_report.php" method="post">
-                    <input type="hidden" name="reportID" value="<?php echo $report['reportID']; ?>">
-                    <input type="hidden" name="recipeID" value="<?php echo $report['recipeID']; ?>">
+                  <div class="action-form">
+                    <input type="hidden" class="report-id" value="<?php echo $report['reportID']; ?>">
+                    <input type="hidden" class="recipe-id" value="<?php echo $report['recipeID']; ?>">
 
-                    <select class="select" name="action" required>
+                    <select class="select report-action" required>
                       <option value="" selected disabled>Choose action</option>
                       <option value="block">Block user</option>
                       <option value="dismiss">Dismiss report</option>
                     </select>
 
-                    <button class="btn btn-primary btn-small" type="submit">Submit</button>
-                  </form>
+                    <button class="btn btn-primary btn-small submit-report" type="button">Submit</button>
+                  </div>
                 </td>
               </tr>
             <?php } ?>
         <?php } else { ?>
-            <tr>
+            <tr id="no-reports-row">
               <td colspan="3">No reports found.</td>
             </tr>
         <?php } ?>
@@ -387,6 +386,71 @@ $blockedCount = ($resultBlocked) ? mysqli_num_rows($resultBlocked) : 0;
     <span>&copy; 2026 Lunchy. All rights reserved.</span>
   </div>
 </footer>
+
+<script>
+$(document).ready(function () {
+
+    // Handle report action submit via AJAX
+    $(document).on('click', '.submit-report', function () {
+        var $btn = $(this);
+        var $row = $btn.closest('tr');
+        var $form = $btn.closest('.action-form');
+
+        var reportID = $form.find('.report-id').val();
+        var recipeID = $form.find('.recipe-id').val();
+        var action   = $form.find('.report-action').val();
+
+        if (!action) {
+            alert('Please choose an action before submitting.');
+            return;
+        }
+
+        // Disable button to prevent double-submit
+        $btn.prop('disabled', true).text('Processing...');
+
+        $.ajax({
+            url: 'handle_report.php',
+            type: 'POST',
+            data: {
+                reportID: reportID,
+                recipeID: recipeID,
+                action: action
+            },
+            success: function (response) {
+                if (response.trim() === 'true') {
+                    // Fade out then remove the row
+                    $row.addClass('row-removing');
+                    setTimeout(function () {
+                        $row.remove();
+
+                        // Update the count pill
+                        var remaining = $('#reports-tbody tr').length;
+                        // If the only remaining row is a "no reports" message row, keep it;
+                        // otherwise check if we need to add one
+                        if (remaining === 0) {
+                            $('#reports-tbody').append(
+                                '<tr id="no-reports-row"><td colspan="3">No reports found.</td></tr>'
+                            );
+                            remaining = 0;
+                        }
+
+                        // Update pill count
+                        $('#reports-count').text(remaining + ' report' + (remaining === 1 ? '' : 's'));
+                    }, 400);
+                } else {
+                    alert('Action failed. Please try again.');
+                    $btn.prop('disabled', false).text('Submit');
+                }
+            },
+            error: function () {
+                alert('A network error occurred. Please try again.');
+                $btn.prop('disabled', false).text('Submit');
+            }
+        });
+    });
+
+});
+</script>
 
 </body>
 </html>
