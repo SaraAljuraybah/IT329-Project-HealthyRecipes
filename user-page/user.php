@@ -211,7 +211,7 @@ $favsResult = $conn->query($sqlFavs);
               </a>
             </div>
             <div class="fav-actions">
-              <a class="remove" href="../remove_favourite.php?recipeID=<?php echo $fav['id']; ?>">Remove</a>
+              <a href="#" class="remove remove-fav" data-recipe-id="<?php echo $fav['id']; ?>">Remove</a>
             </div>
           </div>
         </div>
@@ -316,6 +316,38 @@ $favsResult = $conn->query($sqlFavs);
       <span>&copy; 2026 Lunchy. All rights reserved.</span>
     </div>
   </footer>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
+<script>
+$(document).ready(function() {
+
+    $(".remove-fav").click(function(event) {
+        event.preventDefault();
+
+        var clickedLink = $(this);
+        var recipeID = clickedLink.data("recipe-id");
+
+        $.ajax({
+            url: "../remove_favourite.php",
+            type: "POST",
+            data: {
+                recipeID: recipeID
+            },
+            success: function(response) {
+                if (response.trim() === "true") {
+                    clickedLink.closest(".fav-card").remove();
+                } else {
+                    alert("Could not remove the recipe from favourites.");
+                }
+            },
+            error: function() {
+                alert("AJAX request failed.");
+            }
+        });
+
+    });
+
+});
+</script>
 </body>
 </html>

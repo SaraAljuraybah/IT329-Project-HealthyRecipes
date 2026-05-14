@@ -2,17 +2,28 @@
 session_start();
 include 'db.php';
 
+header("Content-Type: text/plain");
+
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login-page/login.html");
+    echo "false";
+    exit();
+}
+
+if (!isset($_POST['recipeID'])) {
+    echo "false";
     exit();
 }
 
 $userID = $_SESSION['user_id'];
-$recipeID = $_GET['recipeID'];
+$recipeID = $_POST['recipeID'];
 
-$sql = "DELETE FROM favourites WHERE userID = $userID AND recipeID = $recipeID";
-$conn->query($sql);
+$sql = "DELETE FROM favourites 
+        WHERE userID = $userID 
+        AND recipeID = $recipeID";
 
-header("Location: user-page/user.php");
-exit();
+if ($conn->query($sql) && $conn->affected_rows > 0) {
+    echo "true";
+} else {
+    echo "false";
+}
 ?>
