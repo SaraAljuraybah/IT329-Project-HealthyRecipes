@@ -13,7 +13,6 @@ if ($_SESSION['user_type'] != 'user') {
     exit();
 }
 
-
 include("../db.php");
 
 if (!isset($_GET['id']) || empty($_GET['id'])) {
@@ -21,9 +20,8 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
     exit();
 }
 
-$recipeID = intval($_GET['id']);
-
-$currentUserID = $_SESSION['user_id'];
+$recipeID       = intval($_GET['id']);
+$currentUserID  = $_SESSION['user_id'];
 $currentUserType = $_SESSION['user_type'];
 
 $sql = "SELECT recipe.*, user.firstName, user.lastName, user.photoFileName AS userPhoto, recipecategory.categoryName
@@ -71,37 +69,27 @@ $sqlLike = "SELECT * FROM likes WHERE userID = ? AND recipeID = ?";
 $stmtLike = mysqli_prepare($conn, $sqlLike);
 mysqli_stmt_bind_param($stmtLike, "ii", $currentUserID, $recipeID);
 mysqli_stmt_execute($stmtLike);
-$resultLike = mysqli_stmt_get_result($stmtLike);
-if (mysqli_num_rows($resultLike) > 0) {
-    $liked = true;
-}
+if (mysqli_num_rows(mysqli_stmt_get_result($stmtLike)) > 0) $liked = true;
 
 $favourited = false;
 $sqlFav = "SELECT * FROM favourites WHERE userID = ? AND recipeID = ?";
 $stmtFav = mysqli_prepare($conn, $sqlFav);
 mysqli_stmt_bind_param($stmtFav, "ii", $currentUserID, $recipeID);
 mysqli_stmt_execute($stmtFav);
-$resultFav = mysqli_stmt_get_result($stmtFav);
-if (mysqli_num_rows($resultFav) > 0) {
-    $favourited = true;
-}
+if (mysqli_num_rows(mysqli_stmt_get_result($stmtFav)) > 0) $favourited = true;
 
 $reported = false;
 $sqlReport = "SELECT * FROM report WHERE userID = ? AND recipeID = ?";
 $stmtReport = mysqli_prepare($conn, $sqlReport);
 mysqli_stmt_bind_param($stmtReport, "ii", $currentUserID, $recipeID);
 mysqli_stmt_execute($stmtReport);
-$resultReport = mysqli_stmt_get_result($stmtReport);
-if (mysqli_num_rows($resultReport) > 0) {
-    $reported = true;
-}
+if (mysqli_num_rows(mysqli_stmt_get_result($stmtReport)) > 0) $reported = true;
 
 $sqlCountLikes = "SELECT COUNT(*) AS totalLikes FROM likes WHERE recipeID = ?";
 $stmtCountLikes = mysqli_prepare($conn, $sqlCountLikes);
 mysqli_stmt_bind_param($stmtCountLikes, "i", $recipeID);
 mysqli_stmt_execute($stmtCountLikes);
-$resultCountLikes = mysqli_stmt_get_result($stmtCountLikes);
-$rowLikes = mysqli_fetch_assoc($resultCountLikes);
+$rowLikes   = mysqli_fetch_assoc(mysqli_stmt_get_result($stmtCountLikes));
 $totalLikes = $rowLikes['totalLikes'];
 
 $showButtons = true;
@@ -114,64 +102,71 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View recipe page</title>
+    <title>View Recipe - Lunchy</title>
     <link rel="stylesheet" href="style-vr.css">
-    <script src="Script.js" defer></script>
 </head>
 <body class="body_vr">
 
- <header class="site-header">
+<header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="../explore-page/explore.html">
-        <img class="brand-logo" src="../uploads/images/logo.png" alt="Lunchy logo">
-        <span class="brand-text">
-          <span class="brand-name">Lunchy</span>
-          <span class="brand-tagline">Pack smart. Eat better.</span>
-        </span>
-      </a>
-    <nav class="nav">
-    <?php if ($currentUserType != 'admin'): ?>
-        <a class="nav-link" href="../explore-page/explore.php">Explore</a>
-        <a class="nav-link" href="../my_recipes-page/my-recipes.php">My Recipes</a>
-        <a class="nav-link" href="../about-us-page/about-us.html">About Us</a>
-    <?php else: ?>
-        <span class="nav-link" style="color: var(--primary-3); font-weight: bold;">Admin View</span>
-    <?php endif; ?>
-</nav>
-      <div class="actions">
-        <a class="btn btn-primary" href="../user-page/user.php">My Profile</a>
-        <a class="btn btn-ghost" href="../logout.php">Log Out</a>
-      </div>
+        <a class="brand" href="../home-page/index.html">
+            <img class="brand-logo" src="../uploads/images/logo.png" alt="Lunchy logo">
+            <span class="brand-text">
+                <span class="brand-name">Lunchy</span>
+                <span class="brand-tagline">Pack smart. Eat better.</span>
+            </span>
+        </a>
+        <nav class="nav">
+            <?php if ($currentUserType != 'admin'): ?>
+                <a class="nav-link" href="../explore-page/explore.php">Explore</a>
+                <a class="nav-link" href="../my_recipes-page/my-recipes.php">My Recipes</a>
+                <a class="nav-link" href="../about-us-page/about-us.html">About Us</a>
+            <?php else: ?>
+                <span class="nav-link" style="color: var(--primary-3); font-weight: bold;">Admin View</span>
+            <?php endif; ?>
+        </nav>
+        <div class="actions">
+            <a class="btn btn-primary" href="../user-page/user.php">My Profile</a>
+            <a class="btn btn-ghost" href="../logout.php">Log Out</a>
+        </div>
     </div>
-  </header>
+</header>
 
-<?php if ($showButtons) { ?>
+<?php if ($showButtons): ?>
 <div class="actions_vr">
-    <form action="add_favourite.php" method="post">
-        <input type="hidden" name="recipeID" value="<?php echo $recipeID; ?>">
-        <button type="submit" class="btn_vr btn-square_vr <?php echo $favourited ? 'btn-done_vr' : 'btn-gradient_vr'; ?>" <?php if ($favourited) echo "disabled"; ?>>
-            <img src="../uploads/images/fav-icon.png" alt="" class="btn-icon_vr">
-            <span><?php echo $favourited ? "Added" : "Favourites"; ?></span>
-        </button>
-    </form>
 
-    <form action="add_like.php" method="post">
-        <input type="hidden" name="recipeID" value="<?php echo $recipeID; ?>">
-        <button type="submit" class="btn_vr btn-square_vr <?php echo $liked ? 'btn-done_vr' : 'btn-gradient_vr'; ?>" <?php if ($liked) echo "disabled"; ?>>
-            <img src="../uploads/images/like-icon.png" alt="" class="btn-icon_vr">
-            <span><?php echo $liked ? "Liked" : "Like"; ?></span>
-        </button>
-    </form>
+    <!-- Favourites Button -->
+    <button type="button"
+            id="btn-fav"
+            class="btn_vr btn-square_vr <?php echo $favourited ? 'btn-done_vr' : 'btn-gradient_vr'; ?>"
+            data-recipe-id="<?php echo $recipeID; ?>"
+            <?php if ($favourited) echo 'disabled'; ?>>
+        <img src="../uploads/images/fav-icon.png" alt="" class="btn-icon_vr">
+        <span><?php echo $favourited ? 'Added' : 'Favourites'; ?></span>
+    </button>
 
-    <form action="add_report.php" method="post">
-        <input type="hidden" name="recipeID" value="<?php echo $recipeID; ?>">
-        <button type="submit" class="btn_vr btn-square_vr <?php echo $reported ? 'btn-reported_vr' : 'btn-report_vr'; ?>" <?php if ($reported) echo "disabled"; ?>>
-            <img src="../uploads/images/report-icon.png" alt="" class="btn-icon_vr">
-            <span><?php echo $reported ? "Reported" : "Report"; ?></span>
-        </button>
-    </form>
+    <!-- Like Button -->
+    <button type="button"
+            id="btn-like"
+            class="btn_vr btn-square_vr <?php echo $liked ? 'btn-done_vr' : 'btn-gradient_vr'; ?>"
+            data-recipe-id="<?php echo $recipeID; ?>"
+            <?php if ($liked) echo 'disabled'; ?>>
+        <img src="../uploads/images/like-icon.png" alt="" class="btn-icon_vr">
+        <span><?php echo $liked ? 'Liked' : 'Like'; ?></span>
+    </button>
+
+    <!-- Report Button -->
+    <button type="button"
+            id="btn-report"
+            class="btn_vr btn-square_vr <?php echo $reported ? 'btn-reported_vr' : 'btn-report_vr'; ?>"
+            data-recipe-id="<?php echo $recipeID; ?>"
+            <?php if ($reported) echo 'disabled'; ?>>
+        <img src="../uploads/images/report-icon.png" alt="" class="btn-icon_vr">
+        <span><?php echo $reported ? 'Reported' : 'Report'; ?></span>
+    </button>
+
 </div>
-<?php } ?>
+<?php endif; ?>
 
 <main class="container container_vr">
 
@@ -180,7 +175,8 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
             <h1 class="title_vr"><?php echo htmlspecialchars($recipe['name']); ?></h1>
 
             <div class="image-container_vr">
-                <img src="../uploads/images/<?php echo htmlspecialchars($recipe['photoFileName']); ?>" alt="Recipe Image" class="recipe-img_vr">
+                <img src="../uploads/images/<?php echo htmlspecialchars($recipe['photoFileName']); ?>"
+                     alt="Recipe Image" class="recipe-img_vr">
             </div>
 
             <div class="catchy-text_vr">
@@ -193,21 +189,23 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
         <article class="card_vr">
             <div class="card-top_vr"><h2>Recipe Creator</h2></div>
             <div class="creator-box_vr">
-  <?php 
-    $userImg = $recipe['userPhoto']; // غيرنا photoFileName إلى userPhoto
-    $folder = ($userImg == "default-user.png" || empty($userImg)) ? "images" : "profiles";
-?>
-<img src="../uploads/<?php echo $folder; ?>/<?php echo htmlspecialchars($userImg); ?>" alt="Profile Icon" class="profile-icon_vr">  <span class="user-name_vr">
-        <?php echo htmlspecialchars($recipe['firstName'] . " " . $recipe['lastName']); ?>
-    </span>
-</div>
+                <?php
+                    $userImg = $recipe['userPhoto'];
+                    $folder  = ($userImg == "default-user.png" || empty($userImg)) ? "images" : "profiles";
+                ?>
+                <img src="../uploads/<?php echo $folder; ?>/<?php echo htmlspecialchars($userImg); ?>"
+                     alt="Profile Icon" class="profile-icon_vr">
+                <span class="user-name_vr">
+                    <?php echo htmlspecialchars($recipe['firstName'] . " " . $recipe['lastName']); ?>
+                </span>
+            </div>
         </article>
 
         <article class="card_vr">
             <div class="card-top_vr"><h2>Details</h2></div>
             <p><span class="tag_vr tag-protein_vr"><?php echo htmlspecialchars($recipe['categoryName']); ?></span></p>
             <p class="desc_text_vr"><strong>Lunch Box Type:</strong> <?php echo htmlspecialchars($recipe['lunchBoxType']); ?></p>
-            <p class="desc_text_vr"><strong>Total Likes:</strong> <?php echo $totalLikes; ?></p>
+            <p class="desc_text_vr"><strong>Total Likes:</strong> <span id="likes-count"><?php echo $totalLikes; ?></span></p>
         </article>
     </section>
 
@@ -223,7 +221,7 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
             </div>
 
             <ul class="list_vr ingredients_list_vr">
-                <?php while ($ingredient = mysqli_fetch_assoc($resultIngredients)) { ?>
+                <?php while ($ingredient = mysqli_fetch_assoc($resultIngredients)): ?>
                     <li>
                         <label class="checkbox_container_vr">
                             <input type="checkbox" class="ingredient_check_vr">
@@ -232,16 +230,16 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
                             <span class="checkmark_vr"></span>
                         </label>
                     </li>
-                <?php } ?>
+                <?php endwhile; ?>
             </ul>
         </article>
 
         <article class="card_vr">
             <div class="card-top_vr"><h2>Instructions</h2></div>
             <ol class="list_vr">
-                <?php while ($instruction = mysqli_fetch_assoc($resultInstructions)) { ?>
+                <?php while ($instruction = mysqli_fetch_assoc($resultInstructions)): ?>
                     <li><?php echo htmlspecialchars($instruction['step']); ?></li>
-                <?php } ?>
+                <?php endwhile; ?>
             </ol>
         </article>
     </section>
@@ -249,15 +247,15 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
     <section class="card_vr video-card_vr">
         <div class="card-top_vr"><h2>Recipe Video</h2></div>
         <div class="video-content_vr">
-            <?php if (!empty($recipe['videoFilePath'])) { ?>
+            <?php if (!empty($recipe['videoFilePath'])): ?>
                 <video controls class="recipe-video_vr">
                     <source src="../uploads/videos/<?php echo htmlspecialchars($recipe['videoFilePath']); ?>" type="video/mp4">
                 </video>
-            <?php } elseif (!empty($recipe['videoURL'])) { ?>
+            <?php elseif (!empty($recipe['videoURL'])): ?>
                 <a href="<?php echo htmlspecialchars($recipe['videoURL']); ?>" target="_blank" class="link_vr">Watch Video 🔗</a>
-            <?php } else { ?>
+            <?php else: ?>
                 <p>No video available.</p>
-            <?php } ?>
+            <?php endif; ?>
         </div>
     </section>
 
@@ -271,29 +269,30 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
         </form>
 
         <div class="comments-scroll-box_vr">
-            <?php if (mysqli_num_rows($resultComments) > 0) { ?>
-                <?php while ($comment = mysqli_fetch_assoc($resultComments)) { 
-            
-                  $cImg = $comment['photoFileName'];
+            <?php if (mysqli_num_rows($resultComments) > 0): ?>
+                <?php while ($comment = mysqli_fetch_assoc($resultComments)):
+                    $cImg    = $comment['photoFileName'];
                     $cFolder = ($cImg == "default-user.png") ? "images" : "profiles";
                 ?>
-
-                
-
-
                     <div class="comment-item_vr">
                         <div class="comment-text-wrapper_vr">
                             <div class="comment-header_vr">
-                                <span class="comment-author_vr"><?php echo htmlspecialchars($comment['firstName'] . " " . $comment['lastName']); ?></span>
-                                <span class="comment-date_vr"><?php echo date("Y-m-d h:i A", strtotime($comment['date'])); ?></span>
+                                <span class="comment-author_vr">
+                                    <?php echo htmlspecialchars($comment['firstName'] . " " . $comment['lastName']); ?>
+                                </span>
+                                <span class="comment-date_vr">
+                                    <?php echo date("Y-m-d h:i A", strtotime($comment['date'])); ?>
+                                </span>
                             </div>
                             <p class="comment-body_vr"><?php echo htmlspecialchars($comment['comment']); ?></p>
                         </div>
-<img src="../uploads/<?php echo $cFolder; ?>/<?php echo htmlspecialchars($cImg); ?>" alt="Profile" class="profile-icon_vr">                    </div>
-                <?php } ?>
-            <?php } else { ?>
+                        <img src="../uploads/<?php echo $cFolder; ?>/<?php echo htmlspecialchars($cImg); ?>"
+                             alt="Profile" class="profile-icon_vr">
+                    </div>
+                <?php endwhile; ?>
+            <?php else: ?>
                 <p>No comments yet.</p>
-            <?php } ?>
+            <?php endif; ?>
         </div>
     </section>
 
@@ -304,6 +303,94 @@ if ($currentUserID == $recipe['userID'] || $currentUserType == 'admin') {
         <span>&copy; 2026 Lunchy. All rights reserved.</span>
     </div>
 </footer>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- Ingredients progress bar (vanilla JS) -->
+<script src="Script.js" defer></script>
+
+<script>
+$(document).ready(function () {
+
+    // ── Favourites ──────────────────────────────────────────────
+    $("#btn-fav").on("click", function () {
+        var recipeID = $(this).data("recipe-id");
+
+        $.ajax({
+            url: "ajax_add_favourite.php",
+            type: "POST",
+            dataType: "json",
+            data: { recipeID: recipeID },
+            success: function (response) {
+                if (response.success === true) {
+                    $("#btn-fav")
+                        .removeClass("btn-gradient_vr")
+                        .addClass("btn-done_vr")
+                        .prop("disabled", true)
+                        .find("span").text("Added");
+                }
+            },
+            error: function () {
+                alert("Something went wrong. Please try again.");
+            }
+        });
+    });
+
+    // ── Like ─────────────────────────────────────────────────────
+    $("#btn-like").on("click", function () {
+        var recipeID = $(this).data("recipe-id");
+
+        $.ajax({
+            url: "ajax_add_like.php",
+            type: "POST",
+            dataType: "json",
+            data: { recipeID: recipeID },
+            success: function (response) {
+                if (response.success === true) {
+                    $("#btn-like")
+                        .removeClass("btn-gradient_vr")
+                        .addClass("btn-done_vr")
+                        .prop("disabled", true)
+                        .find("span").text("Liked");
+
+                    // Update likes counter live
+                    var current = parseInt($("#likes-count").text()) || 0;
+                    $("#likes-count").text(current + 1);
+                }
+            },
+            error: function () {
+                alert("Something went wrong. Please try again.");
+            }
+        });
+    });
+
+    // ── Report ───────────────────────────────────────────────────
+    $("#btn-report").on("click", function () {
+        var recipeID = $(this).data("recipe-id");
+
+        $.ajax({
+            url: "ajax_add_report.php",
+            type: "POST",
+            dataType: "json",
+            data: { recipeID: recipeID },
+            success: function (response) {
+                if (response.success === true) {
+                    $("#btn-report")
+                        .removeClass("btn-report_vr")
+                        .addClass("btn-reported_vr")
+                        .prop("disabled", true)
+                        .find("span").text("Reported");
+                }
+            },
+            error: function () {
+                alert("Something went wrong. Please try again.");
+            }
+        });
+    });
+
+});
+</script>
 
 </body>
 </html>
