@@ -33,42 +33,16 @@ $likesCount = $likesCountResult->fetch_assoc()['total'];
 $sqlCategories = "SELECT * FROM recipecategory";
 $categoriesResult = $conn->query($sqlCategories);
 
-// #6e - Get recipes (all or filtered)
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['category'])) {
-    $categoryID = $_POST['category'];
-    if ($categoryID == 'all') {
-        $sqlRecipes = "SELECT recipe.*, user.firstName, user.lastName, 
-                       user.photoFileName AS userPhoto,
-                       recipecategory.categoryName,
-                       COUNT(likes.recipeID) AS likeCount
-                       FROM recipe
-                       JOIN user ON recipe.userID = user.id
-                       JOIN recipecategory ON recipe.categoryID = recipecategory.id
-                       LEFT JOIN likes ON likes.recipeID = recipe.id
-                       GROUP BY recipe.id";
-    } else {
-        $sqlRecipes = "SELECT recipe.*, user.firstName, user.lastName, 
-                       user.photoFileName AS userPhoto,
-                       recipecategory.categoryName,
-                       COUNT(likes.recipeID) AS likeCount
-                       FROM recipe
-                       JOIN user ON recipe.userID = user.id
-                       JOIN recipecategory ON recipe.categoryID = recipecategory.id
-                       LEFT JOIN likes ON likes.recipeID = recipe.id
-                       WHERE recipe.categoryID = $categoryID
-                       GROUP BY recipe.id";
-    }
-} else {
-    $sqlRecipes = "SELECT recipe.*, user.firstName, user.lastName, 
-                   user.photoFileName AS userPhoto,
-                   recipecategory.categoryName,
-                   COUNT(likes.recipeID) AS likeCount
-                   FROM recipe
-                   JOIN user ON recipe.userID = user.id
-                   JOIN recipecategory ON recipe.categoryID = recipecategory.id
-                   LEFT JOIN likes ON likes.recipeID = recipe.id
-                   GROUP BY recipe.id";
-}
+// #6e - Get all recipes first
+$sqlRecipes = "SELECT recipe.*, user.firstName, user.lastName, 
+               user.photoFileName AS userPhoto,
+               recipecategory.categoryName,
+               COUNT(likes.recipeID) AS likeCount
+               FROM recipe
+               JOIN user ON recipe.userID = user.id
+               JOIN recipecategory ON recipe.categoryID = recipecategory.id
+               LEFT JOIN likes ON likes.recipeID = recipe.id
+               GROUP BY recipe.id";
 $recipesResult = $conn->query($sqlRecipes);
 
 // #6f - Get favourites
@@ -241,24 +215,22 @@ $favsResult = $conn->query($sqlFavs);
           <h2>All Available Recipes</h2>
           <p class="muted">Discover lunchbox ideas from the community.</p>
         </div>
-        <!-- Filter form -->
-        <form method="POST" action="user.php" class="filter-ui">
-          <select name="category" class="select">
+        <!-- Filter dropdown -->
+        <div class="filter-ui">
+          <select id="categoryFilter" name="category" class="select">
             <option value="all">All Categories</option>
             <?php while ($cat = $categoriesResult->fetch_assoc()): ?>
-              <option value="<?php echo $cat['id']; ?>"
-                <?php if (isset($_POST['category']) && $_POST['category'] == $cat['id']) echo 'selected'; ?>>
+              <option value="<?php echo $cat['id']; ?>">
                 <?php echo htmlspecialchars($cat['categoryName']); ?>
               </option>
             <?php endwhile; ?>
           </select>
-          <button type="submit" class="btn-filter">🔍 Filter</button>
-        </form>
+        </div>
       </div>
 
       <!-- Recipe cards -->
       <?php if ($recipesResult && $recipesResult->num_rows > 0): ?>
-      <div class="recipe-grid">
+      <div class="recipe-grid" id="recipesContainer">
         <?php while ($recipe = $recipesResult->fetch_assoc()): ?>
         <div class="recipe-card">
           <img class="r-img" 
@@ -342,6 +314,73 @@ $(document).ready(function() {
             },
             error: function() {
                 alert("AJAX request failed.");
+            }
+        });
+
+    });
+
+
+    $("#categoryFilter").change(function() {
+
+        var selectedCategory = $(this).val();
+
+        $.ajax({
+            url: "filter_recipes.php",
+            type: "GET",
+            dataType: "json",
+            data: {
+                category: selectedCategory
+            },
+            success: function(recipes) {
+
+                $("#recipesContainer").empty();
+
+                if (recipes.length === 0) {
+                    $("#recipesContainer").html(
+                        '<p class="muted" style="margin-top:1rem;">No recipes found in this category.</p>'
+                    );
+                    return;
+                }
+
+                $.each(recipes, function(index, recipe) {
+
+                    var description = recipe.description.substring(0, 60) + "...";
+
+                    var card = `
+                        <div class="recipe-card">
+                            <img class="r-img" 
+                                 src="../uploads/images/${recipe.photoFileName}" 
+                                 alt="${recipe.name}">
+                            <div class="r-body">
+                                <div class="r-top">
+                                    <span class="cat balanced">${recipe.categoryName}</span>
+                                    <span class="likes">❤️ ${recipe.likeCount}</span>
+                                </div>
+                                <h3 class="r-title">
+                                    <a href="../view_recipe-page/view_recipe.php?id=${recipe.id}">
+                                        ${recipe.name}
+                                    </a>
+                                </h3>
+                                <p class="r-desc muted">
+                                    ${description}
+                                </p>
+                                <div class="r-creator">
+                                    <img class="mini-ava" 
+                                         src="../uploads/profiles/${recipe.userPhoto}" 
+                                         alt="creator">
+                                    <span class="muted">
+                                        ${recipe.firstName} ${recipe.lastName}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    $("#recipesContainer").append(card);
+                });
+            },
+            error: function() {
+                alert("Could not load recipes.");
             }
         });
 
